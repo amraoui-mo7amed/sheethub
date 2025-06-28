@@ -150,7 +150,7 @@ i{
 .notification-popup {
     position: absolute;
     top: 60px;
-    right: -24px;
+    right: 0px;
     width: 340px;
     background-color: white;
     border-radius: 10px;
