@@ -1,0 +1,52 @@
+{% extends "dashboard/index.html" %}
+
+{% load i18n static %}
+
+
+{% block dashContent %}
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                {% trans "Waitlist Emails" %}
+            </h5>
+        </div>
+        <div class="card-body">
+            {% if objects %}
+                <table class="custom-table table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-primary">
+                                {% trans "Name" %}
+                            </th>
+                            <th class="text-primary">
+                                {% trans "Email" %}
+                            </th>
+                            <th class="text-primary">
+                                {% trans "Date Created" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in objects %}
+                            <tr>
+                                <td>
+                                    {{ object.fullname }}
+                                </td>
+                                <td>
+                                    {{ object.email }}
+                                </td>
+                                <td>
+                                    {{ object.created_at }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            {% else %}
+                {% include "components/alert.html" with alert_message=_("No Emails found") alert_type="danger" %}
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock dashContent %}

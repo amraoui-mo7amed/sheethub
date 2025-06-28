@@ -1,0 +1,138 @@
+{% extends 'frontend/index.html' %}
+
+{% load static i18n %}
+
+{% block subtitle %}
+    {% trans "Sign Up" %}
+{% endblock subtitle %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}?v={% now "U" %}" />
+{% endblock extra_css %}
+
+{% block nav %}
+{% endblock nav %}
+
+{% block hero %}
+{% endblock hero %}
+
+{% block content %}
+    <div class="container">
+        <div class="row signup-container">
+            <!-- Gradient Image Section -->
+            <div class="col-md-6 d-none d-md-block signup-image">
+                <div class="site-brand">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-2">
+                            <img src="{% static "icons/favicon.png" %}"
+                                 alt="Site logo"
+                                 class="border rounded w-100 me-2 " />
+                        </div>
+                        <div class="col-md-10">
+                            <div class="d-flex align-items-start flex-column">
+                                <h2 class="fw-bold mb-2 d-flex flex-nowrap">
+                                    {% trans "Welcome to" %}
+                                    <div class="d-flex align-items-center mx-2 bg-secondary">
+                                        <span class="text-primary">Sheet</span>
+                                        <span class="text-accent">Hub</span>
+                                    </div>
+                                </h2>
+                                <small class="text-muted text-secondary">{% trans "Signup to enjoy the amazing features to grow your business " %}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Site Features -->
+                <div class="features-container mt-5">
+                    <div class="feature-item mb-4">
+                        <i class="fas fa-chart-line text-secondary me-2"></i>
+                        <span class="text-secondary">{% trans "Powerful business insights with live reports" %}</span>
+                    </div>
+                    <div class="feature-item mb-4">
+                        <i class="fas fa-truck-fast text-secondary me-2"></i>
+                        <span class="text-secondary">{% trans "Seamless order processing & fulfillment" %}</span>
+                    </div>
+                    <div class="feature-item mb-4">
+                        <i class="fas fa-boxes text-secondary me-2"></i>
+                        <span class="text-secondary">{% trans "Smart stock tracking with real-time alerts" %}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-10 col-sm-12 signup-form">
+                <h2 class="text-center mb-4">
+                    {% trans "Create Account" %}
+                </h2>
+
+                <form method="POST" action="{% url 'user_auth:signup' %}" class="form">
+                    {% csrf_token %}
+                    <ul id="errorList">
+                    </ul>
+                    <div class="row p-2">
+                        <!-- Left Column -->
+                        <div class="col-md-12">
+                            <div class="p-1">
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <input type="text"
+                                                   name="first_name"
+                                                   class="form-control"
+                                                   placeholder="{% trans 'First Name' %}"
+                                                   required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <input type="text"
+                                                   name="last_name"
+                                                   class="form-control"
+                                                   placeholder="{% trans 'Last Name' %}"
+                                                   required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control"
+                                           placeholder="{% trans 'Email Address' %}"
+                                           required />
+                                </div>
+                                <div class="mb-3 password-field">
+                                    <div class="password-container">
+                                        <input type="password"
+                                               name="password1"
+                                               id="password1"
+                                               class="form-control"
+                                               placeholder="{% trans 'Password' %}"
+                                               required />
+                                        <button type="button" class="password-toggle" data-target="password1">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        {% trans "Sign Up" %}
+                    </button>
+                    <div class="text-center mt-3">
+                        {% trans "Already have an account?" %}
+                        <a href="{% url 'user_auth:login' %}" class="login-link">
+                            {% trans "Log In" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/signup.js' %}?v={% now "U" %}"></script>
+{% endblock extra_js %}
+
+{% block footer %}
+{% endblock footer %}

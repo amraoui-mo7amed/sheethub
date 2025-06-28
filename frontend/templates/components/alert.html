@@ -1,0 +1,30 @@
+<div class="alert alert-{{ alert_type }} alert-dismissible fade show"
+     role="alert">
+    <div class="d-flex align-items-center">
+        {% if alert_type == 'success' %}
+            <i class="fas fa-check-circle me-2"></i>
+        {% elif alert_type == 'danger' %}
+            <i class="fas fa-exclamation-circle me-2"></i>
+        {% elif alert_type == 'warning' %}
+            <i class="fas fa-exclamation-triangle me-2"></i>
+        {% elif alert_type == 'info' %}
+            <i class="fas fa-info-circle me-2"></i>
+        {% endif %}
+
+        <div>
+            {% if alert_title %}
+                <strong>{{ alert_title }}</strong>
+                <br />
+            {% endif %}
+            {{ alert_message }}
+        </div>
+    </div>
+    {% if is_dismissable %}
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close">
+        </button>
+    {% endif %}
+
+</div>

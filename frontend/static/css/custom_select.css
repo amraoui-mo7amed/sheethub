@@ -1,0 +1,83 @@
+/* Custom Select Container */
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+/* Select Header (visible toggle) */
+.select-header {
+    padding: 7px 15px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-header:hover {
+    background-color: #e9e9e9;
+}
+
+/* Dropdown Options Container */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: white;
+    z-index: 1000;
+    display: none;
+}
+
+.select-options.show {
+    display: block;
+}
+
+/* Individual Options */
+.select-option {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.select-option:hover {
+    background-color: var(--highlight);
+    color: #fff;
+}
+
+.select-option.selected {
+    background-color: var(--accent);
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Search Box */
+.search-box {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: var(--bs-light);
+    position: sticky;
+    top: 0;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Dropdown Arrow */
+.arrow {
+    transition: transform 0.2s;
+}
+
+.arrow.rotate {
+    transform: rotate(180deg);
+}

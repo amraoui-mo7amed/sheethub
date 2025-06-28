@@ -1,0 +1,238 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="{% static "css/subscriptions.css" %}?v={% now "U" %}" />
+    <link rel="stylesheet"
+          href="{% static "css/action_buttons.css" %}?v={% now "U" %}" />
+
+{% endblock extra_css %}
+
+{% block dashContent %}
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                {% trans "Subscription Plans" %}
+            </h5>
+            <button class="btn btn-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createPlanModal">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="container">
+                {% if plans %}
+                    <div class="row g-4">
+                        {% for plan in plans %}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="subscription-card {% if forloop.first %}featured{% endif %}">
+                                    <div class="card-header">
+                                        <h3>
+                                            {{ plan.name|capfirst }}
+                                        </h3>
+                                        <div class="price">
+                                            ${{ plan.price }}/mo
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="features-list">
+                                            <li>
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ plan.max_orders }} {% trans "orders per month" %}
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ plan.max_products }} {% trans "products" %}
+                                            </li>
+
+                                            <li>
+                                                {% if plan.can_export %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Data export" %}
+                                            </li>
+
+                                            <li>
+                                                {% if plan.can_import %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Data import" %}
+                                            </li>
+                                            <li>
+                                                {% if plan.email_support %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Email support" %}
+                                            </li>
+                                            <li>
+                                                {% if plan.has_analytics %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Advanced analytics" %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-end">
+                                            {% url "subs:delete_subscription" plan.pk as delete_url %}
+                                            {% with delete_url=delete_url %}
+                                                {% include "components/action_buttons.html" %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% with alert_type="danger" alert_message=_("No plans found") %}
+                        {% include "components/alert.html" %}
+
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Plan Modal -->
+    <div class="modal fade"
+         id="createPlanModal"
+         tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title">
+                        {% trans "Create New Plan" %}
+                    </h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+                </div>
+                <div class="container">
+                    {% include "components/errorList.html" %}
+
+                </div>
+                <form method="post" class="form" action="{% url 'subs:create_plan' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <!-- Plan Name -->
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    {% trans "Plan Name" %} <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="name" class="form-control" required maxlength="20" />
+                                <small class="text-muted">{% trans "Unique name for the plan" %}</small>
+                            </div>
+
+                            <!-- Price in USD -->
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    {% trans "Monthly Price (USD)" %} <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="price" class="form-control" required />
+                            </div>
+
+                            <!-- Limits -->
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    {% trans "Max Orders" %} <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="max_orders" class="form-control" min="1" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    {% trans "Max Products" %} <span class="text-danger">*</span>
+                                </label>
+                                <input type="number"
+                                       name="max_products"
+                                       class="form-control"
+                                       min="1"
+                                       required />
+                            </div>
+
+                            <!-- Features -->
+                            <div class="col-12 mt-3">
+                                <h6 class="mb-3">
+                                    {% trans "Plan Features" %}
+                                </h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="can_export"
+                                                   id="exportSwitch" />
+                                            <label class="form-check-label" for="exportSwitch">
+                                                {% trans "Data Export" %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="email_support"
+                                                   id="supportSwitch" />
+                                            <label class="form-check-label" for="supportSwitch">
+                                                {% trans "Email Support" %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="can_import"
+                                                   id="importSwitch" />
+                                            <label class="form-check-label" for="importSwitch">
+                                                {% trans "Import Data" %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   name="has_analytics"
+                                                   id="analyticsSwitch" />
+                                            <label class="form-check-label" for="analyticsSwitch">
+                                                {% trans "Advanced Analytics" %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
+                            {% trans "Cancel" %}
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Create Plan" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock dashContent %}

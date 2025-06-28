@@ -1,0 +1,320 @@
+.signup-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--light);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin: 3rem auto;
+    border-radius: 15px;
+}
+
+
+.signup-form h2 {
+    color: var(--dark);
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    height: 50px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid var(--primary) !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--dark);
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+}
+
+.btn-primary {
+    height: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--primary);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+}
+
+.terms-link, .login-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.terms-link:hover, .login-link:hover {
+    color: var(--secondary);
+}
+
+/* Add these styles to your existing CSS */
+.input-group-text {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+.form-select {
+    height: 50px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background-position: right 15px center;
+}
+
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.1);
+}
+
+input[type="date"] {
+    padding: 10px 15px;
+}
+
+.form-text {
+    font-size: 0.85rem;
+    color: var(--dark);
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+/* Custom select styling */
+.form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+/* Province Select Styling */
+.provinces-select {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--light);
+}
+
+.provinces-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.provinces-select::-webkit-scrollbar-track {
+    background: var(--light);
+    border-radius: 4px;
+}
+
+.provinces-select::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 4px;
+}
+
+/* Limit visible options */
+.provinces-select[size] {
+    height: auto;
+}
+
+.provinces-select option {
+    padding: 8px 15px;
+}
+
+/* RTL Support */
+.rtl .password-toggle {
+    right: auto;
+    left: 15px;
+}
+
+/* RTL support */
+.rtl .input-group .input-group-text {
+    border-radius: 0 8px 8px 0;
+}
+
+.rtl .form-select {
+    background-position: left 15px center;
+    padding-right: 15px;
+    padding-left: 40px;
+}
+
+/* Two Column Form Responsive */
+@media (max-width: 768px) {
+    .signup-form {
+        padding: 20px;
+    }
+    
+    .row > [class*='col-'] {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+    
+    .form-control, .form-select {
+        font-size: 0.9rem;
+    }
+}
+
+/* RTL Support for Two Columns */
+.rtl .provinces-select {
+    direction: rtl;
+}
+
+/* Custom Dropdown Styling */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    height: 50px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-toggle::after {
+    content: '';
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle.active::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(5 * 40px); /* Show exactly 5 items */
+    overflow-y: auto;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    margin-top: 5px;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(156, 39, 176, 0.1);
+}
+
+.dropdown-item.selected {
+    background-color: rgba(156, 39, 176, 0.2);
+}
+
+/* Scrollbar styling */
+.dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: var(--light);
+    border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 4px;
+}
+
+/* RTL Support */
+.rtl .dropdown-toggle {
+    text-align: right;
+}
+
+.rtl .dropdown-menu {
+    text-align: right;
+}
+
+/* Signup Image Section */
+.signup-image {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    padding: 3rem;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    color: white;
+}
+
+.signup-image-content {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.signup-image h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.benefit-item i {
+    font-size: 1.5rem;
+}

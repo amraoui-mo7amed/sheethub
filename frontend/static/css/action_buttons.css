@@ -1,0 +1,69 @@
+.action-buttons {
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-action {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1.5px solid transparent;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+}
+
+.btn-view {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: transparent;
+}
+
+.btn-view:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-edit {
+    color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: transparent;
+}
+
+.btn-edit:hover {
+    background-color: #10b981;
+    color: white;
+}
+
+.btn-delete {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: transparent;
+}
+
+.btn-delete:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Hover Effects */
+.btn-action i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.btn-action:hover i {
+    transform: scale(1.1);
+}
+
+/* Tooltip styling */
+.btn-action:hover::before {
+    opacity: 1;
+    transform: translateY(-10px);
+}

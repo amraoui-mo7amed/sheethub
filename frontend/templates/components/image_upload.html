@@ -1,0 +1,29 @@
+{% load static i18n %}
+
+<div class="image-upload-wrapper" data-upload-id="{{ upload_id|default:'default' }}">
+    <input type="file" 
+           class="form-control" 
+           name="{{ input_name|default:'image' }}" 
+           accept="image/*" 
+           {% if required %}required{% endif %} />
+           
+    <div class="upload-preview {% if image_url %}has-image{% endif %}">
+        {% if image_url %}
+            <img src="{{ image_url }}" 
+                 alt="{% trans 'Preview' %}" 
+                 class="preview-image" />
+        {% else %}
+            <div class="upload-placeholder">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>{% trans "Drop your image here or click to browse" %}</p>
+                <span class="upload-size">{% trans "Maximum file size:" %} 5MB</span>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if error %}
+        <div class="upload-error">
+            {{ error }}
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,648 @@
+i{
+    font-size: 1.7rem;
+}
+/* Sidebar */
+.sidebar {
+    background-color: white;
+    height: 100vh;
+    position: fixed;
+    width: 280px;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
+    z-index: 101;
+    transition: all 0.3s ease;
+}
+
+.sidebar-brand {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.sidebar-brand h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 0;
+}
+.sidebar-brand .text-muted 
+{
+    font-size: .75rem !important;
+}
+.sidebar-menu {
+    padding: 20px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    margin: 5px 0;
+    color: var(--dark);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(193, 154, 107, 0.1);
+    border-left-color: var(--primary);
+    color: var(--primary);
+}
+
+.menu-item i {
+    margin-right: 12px;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item span {
+    font-weight: 500;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: var(--bs-light);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    background-color: var(--bs-light);
+    height: 100vh;
+}
+
+/* Top Navigation */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 100;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #777;
+    margin-bottom: 0;
+}
+
+.user-menu {
+    display: flex;
+    align-items: end;
+}
+
+.user-menu .notification {
+    position: relative;
+    margin-right: 20px;
+    font-size: 1.2rem;
+    color: var(--dark);
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-profile img {
+    width: 40px;
+    border: 4px solid var(--primary);
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.user-profile .user-name {
+    font-weight: 600;
+}
+
+/* Notification Popup */
+.notification-popup {
+    position: absolute;
+    top: 60px;
+    right: -24px;
+    width: 340px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: none;
+    z-index: 1000;
+}
+
+.notification-popup.show {
+    display: block;
+    animation: fadeInDown 0.3s ease;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.notification-header h5 {
+    margin-bottom: 0;
+    font-size: 1rem;
+}
+
+.mark-all-read {
+    color: var(--primary);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.notification-item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: flex-start;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(193, 154, 107, 0.1);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-text {
+    font-size: 0.85rem;
+    margin-bottom: 3px;
+}
+
+.notification-time {
+    font-size: 0.7rem;
+    color: #777;
+}
+
+.notification-unread {
+    background-color: rgba(193, 154, 107, 0.05);
+}
+
+/* Account Popup */
+.account-popup {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: none;
+    z-index: 103;
+}
+
+.account-popup.show {
+    display: block;
+    animation: fadeInDown 0.3s ease;
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.account-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.account-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+.account-email {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.account-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-menu li {
+    padding: 8px 0;
+}
+
+.account-menu a {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.account-menu a:hover {
+    color: var(--primary);
+}
+
+.account-menu i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.account-footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.logout-btn {
+    color: #e74a3b;
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn i {
+    margin-right: 10px;
+}
+
+/* Global Keyframes */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Overlay for popups */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    display: none;
+}
+
+/* Booking Overview */
+.booking-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h5 {
+    margin-bottom: 0;
+}
+
+.card-header .view-all {
+    color: var(--primary);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.booking-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.booking-item:hover {
+    background-color: rgba(193, 154, 107, 0.05);
+}
+
+.booking-item:last-child {
+    border-bottom: none;
+}
+
+.booking-info {
+    display: flex;
+    align-items: center;
+    direction: ltr;
+}
+
+.booking-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.booking-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.booking-date {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.booking-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-confirmed {
+    background-color: rgba(28, 200, 138, 0.1);
+    color: #1cc88a;
+}
+
+.status-pending {
+    background-color: rgba(246, 194, 62, 0.1);
+    color: #f6c23e;
+}
+
+.status-cancelled {
+    background-color: rgba(231, 74, 59, 0.1);
+    color: #e74a3b;
+}
+
+/* Activity Feed */
+.activity-item {
+    display: flex;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(193, 154, 107, 0.1);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex-grow: 1;
+}
+
+.activity-text {
+    margin-bottom: 5px;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+/* RTL Support for Arabic */
+html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Cairo', sans-serif;
+}
+
+/* Sidebar RTL Adjustments */
+html[lang="ar"] .sidebar {
+    right: 0;
+    left: auto;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+html[lang="ar"] .menu-item {
+    border-left: none;
+    border-right: 3px solid transparent;
+}
+
+html[lang="ar"] .menu-item:hover, 
+html[lang="ar"] .menu-item.active {
+    border-right-color: var(--primary);
+}
+
+html[lang="ar"] .menu-item i {
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+/* Main Content RTL Adjustments */
+html[lang="ar"] .main-content {
+    margin-left: 0;
+    margin-right: 280px;
+}
+
+/* User Menu RTL Adjustments */
+html[lang="ar"] .user-menu .notification {
+    margin-right: 0;
+    margin-left: 20px;
+}
+
+html[lang="ar"] .notification-badge {
+    right: auto;
+    left: -5px;
+}
+
+html[lang="ar"] .user-profile img {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+/* Popups RTL Adjustments */
+html[lang="ar"] .notification-popup {
+    right: auto;
+    left: 200px;
+}
+
+html[lang="ar"] .account-popup {
+    right: auto;
+    left: 20px;
+}
+
+html[lang="ar"] .account-header img {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+html[lang="ar"] .account-menu i {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+html[lang="ar"] .logout-btn i {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+/* Stats Cards RTL Adjustments */
+html[lang="ar"] .stats-card {
+    border-right: none;
+}
+
+/* Booking Items RTL Adjustments */
+html[lang="ar"] .booking-info {
+    flex-direction: row-reverse;
+}
+
+html[lang="ar"] .booking-img {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+/* Activity Feed RTL Adjustments */
+html[lang="ar"] .activity-icon {
+    margin-right: 0;
+    margin-left: 15px;
+}
+.menu-toggle
+{
+    display: none;
+    line-height: 1;
+    margin: 0 5px;
+}
+/* Mobile Menu Toggle RTL */
+html[lang="ar"] .menu-toggle {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 992px) {
+    .menu-toggle
+    {
+        display: block !important;
+    }
+    .sidebar{
+        transform: translate(-280px);
+    }
+    .sidebar.active 
+    {
+        transform: translateX(0);
+    }
+    .main-content
+    {
+        margin-left: 0px;
+        padding: 7px;
+    }
+    html[lang="ar"] .sidebar {
+        transform: translateX(100%);
+    }
+    
+    html[lang="ar"] .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    html[lang="ar"] .main-content {
+        margin-right: 0;
+    }
+    
+    html[lang="ar"] .notification-popup {
+        left: 20px;
+        right: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    html[lang="ar"] .notification-popup {
+        left: 10px;
+        right: auto;
+    }
+    .user-name
+    {
+        display: none;
+    }
+
+}
+
+/* RTL Animations */
+html[lang="ar"] .notification-popup.show,
+html[lang="ar"] .account-popup.show {
+    animation: fadeInDown 0.3s ease;
+}

@@ -1,0 +1,44 @@
+{% load i18n %}
+
+{% get_current_language as current_language %}
+
+{% with id=id|default:'' name=name|default:'' selected_label=selected_label selected=selected %}
+    <div class="custom-select" {% if id %}id="{{ id }}"{% endif %}>
+        <input type="hidden" name="{{ name }}" value="{{ selected|default:'' }}" />
+        <div class="select-header">
+            <span class="selected-value">
+                <span class="selected-value">
+                    {% if selected %}
+                        {% for value, label in options %}
+                            {% if value == selected %}
+                                {{ label }}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ selected_label }}
+                    {% endif %}
+                </span>
+            </span>
+            <span class="arrow ">
+                <i class="fa-solid fa-caret-down"></i>
+            </span>
+        </div>
+        <div class="select-options">
+            <div class="search-box">
+                {% if current_language == 'ar' %}
+                    <input type="text" placeholder="{% trans "إبحث" %}" class="select-search" />
+                {% else %}
+                    <input type="text"
+                           placeholder="{% trans 'Search...' %}"
+                           class="select-search" />
+
+                {% endif %}
+            </div>
+            {% for value, label in options %}
+                <div class="select-option" data-value="{{ value }}">
+                    {{ label }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endwith %}

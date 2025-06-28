@@ -1,0 +1,204 @@
+{% extends "frontend/index.html" %}
+
+{% load static i18n filters %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/dash.css" %}?v={% now "U" %}" />
+{% endblock css %}
+{% block subtitle %}
+    {% trans "Dashboard" %}
+{% endblock subtitle %}
+{% block nav %}
+{% endblock nav %}
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <!-- Sidebar -->
+    {% if request.user.profile.role == "admin" %}
+        <div class="sidebar">
+            <div class="sidebar-brand d-flex">
+                <div class="d-flex gap-2 align-items-center">
+                    <img src="{% static "icons/favicon.png" %}"
+                         alt="Logo"
+                         class="w-25 border rounded" />
+                    <div class="d-flex flex-column align-items-start w-75">
+                        <h2 class="fw-bold mb-0 d-flex">
+                            <span class="text-primary">Sheet</span>
+                            <span class="text-accent">Hub</span>
+                        </h2>
+                        <span class="text-muted w-100 text-truncate">
+                            {% trans "OMS that saves you time" %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                {% include "menu/list.html" with menu_items=menu_items %}
+            </div>
+            <div class="sidebar-footer d-flex flex-column justify-content-center">
+                <a href="#" class="btn btn-md btn-primary-custom w-100 mb-2">
+                    {% trans "Website Settings" %}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="d-flex align-items-center">
+                {% if request.user.profile.role == "admin" %}
+                    <div class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                {% endif %}
+                <div class="page-title">
+                    <h3 class="text-truncate fw-bold mb-0">
+                        {% block PageTitle %}
+                            {% trans "Dashboard" %}
+                        {% endblock PageTitle %}
+                    </h3>
+                </div>
+            </div>
+            <div class="user-menu">
+                <div class="notification" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile" id="accountBtn">
+                    <img src="{{ request.user.email|gravatar:120 }}"
+                         alt="{% trans 'User Profile' %}" />
+                    <div>
+                        <div class="user-name">
+                            {% if request.user.profile.role == "admin" %}
+                                admin
+                            {% else %}
+                                {{ request.user.first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Notification Popup -->
+            <div class="notification-popup" id="notificationPopup">
+                <div class="notification-header">
+                    <h5>
+                        {% trans "Notifications" %}
+                    </h5>
+                    <span class="mark-all-read">{% trans "Mark all as read" %}</span>
+                </div>
+                <div class="notification-list">
+                    <div class="notification-item notification-unread">
+                        <div class="notification-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>{% trans "New booking" %}</strong> {% trans "received for Sahara Expedition" %}
+                            </div>
+                            <div class="notification-time">
+                                {% trans "10 minutes ago" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item notification-unread">
+                        <div class="notification-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>{% trans "New review" %}</strong>: {% trans "Amazing desert experience!" %}
+                            </div>
+                            <div class="notification-time">
+                                {% trans "1 hour ago" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>{% trans "New inquiry" %}</strong> {% trans "from potential client" %}
+                            </div>
+                            <div class="notification-time">
+                                {% trans "3 hours ago" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>{% trans "New user" %}</strong> {% trans "registered: Michael Brown" %}
+                            </div>
+                            <div class="notification-time">
+                                {% trans "1 day ago" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Account Popup -->
+            <div class="account-popup" id="accountPopup">
+                <div class="account-header">
+                    <img src="{{ request.user.email|gravatar:120 }}"
+                         alt="{% trans 'User Profile' %}" />
+                    <div>
+                        <div class="account-name text-truncate">
+                            {% if request.user.first_name and request.user.last_name %}
+                                {{ request.user.first_name }} {{ request.user.last_name }}
+                            {% else %}
+                                {% trans "User " %}
+                            {% endif %}
+                        </div>
+                        <div class="account-email">
+                            {{ request.user.email }}
+                        </div>
+                    </div>
+                </div>
+                <ul class="account-menu">
+                    <li>
+                        <a href="{% url "dash:user_profile" request.user.pk %}">
+                            <i class="fas fa-user"></i>
+                            {% trans "My Profile" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            {% trans "Settings" %}
+                        </a>
+                    </li>
+                </ul>
+                <div class="account-footer">
+                    <a href="{% url "user_auth:logout" %}" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        {% trans "Logout" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Overlay for popups -->
+        <div class="popup-overlay" id="popupOverlay">
+        </div>
+        {% block dashContent %}
+        {% endblock dashContent %}
+    </div>
+{% endblock content %}
+{% block extra_js %}
+{% endblock extra_js %}
+{% block js %}
+    <script src="{% static "js/dash.js" %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- TinyMce -->
+    <script src="{% static "tinymce/tinymce.min.js" %}"></script>
+{% endblock js %}
+{% block footer %}
+{% endblock footer %}

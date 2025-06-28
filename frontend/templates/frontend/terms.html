@@ -1,0 +1,69 @@
+{% extends 'frontend/index.html' %}
+
+{% load static i18n %}
+
+{% block subtitle %}
+    {% trans "Terms & Conditions" %}
+{% endblock subtitle %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/terms.css' %}?v={% now "U" %}" />
+{% endblock extra_css %}
+
+{% block nav %}
+{% endblock nav %}
+
+{% block hero %}
+{% endblock hero %}
+
+{% block content %}
+    <div class="container">
+        <div class="row terms-container">
+            <div class="col-lg-8 col-md-10 col-sm-12 terms-content">
+                <h1 class="text-center mb-5">{% trans "Terms & Conditions" %} – Galawave</h1>
+
+                <div class="terms-section">
+                    <h2>{% trans "Liability Limitations" %}</h2>
+                    <p>{% trans "Galawave provides its services 'AS IS' without any express or implied warranties." %}</p>
+                    <p>{% trans "Galawave, its founders, and team are not liable for any direct or indirect damages resulting from the use of the site or service disruptions." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Third-Party Services" %}</h2>
+                    <p>{% trans "Galawave acts as an intermediary between organizers and users and is not responsible for the quality or execution of events, or any changes or cancellations made by organizers." %}</p>
+                    <p>{% trans "Any disputes or disagreements must be resolved directly between the concerned parties without recourse to Galawave or its founders." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Intellectual Property" %}</h2>
+                    <p>{% trans "All content, including logos, designs, and software, is the exclusive property of Galawave and may not be reused or copied without prior written permission." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Financial Transactions" %}</h2>
+                    <p>{% trans "Galawave bears no financial responsibility regarding payment transactions or refunds between users and organizers." %}</p>
+                    <p>{% trans "The user is solely responsible for verifying ticket or service purchase terms before payment." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Terms Modification" %}</h2>
+                    <p>{% trans "Galawave management reserves the right to modify or update these terms at any time without prior notice. Continued use of the site indicates your full acceptance of the updated terms." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Applicable Law" %}</h2>
+                    <p>{% trans "These terms are subject to the laws of the People's Democratic Republic of Algeria, and Algerian courts shall have jurisdiction over any disputes." %}</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>{% trans "Contact" %}</h2>
+                    <p>{% trans "For any inquiries or complaints, please contact via email:" %} <a href="mailto:legal@galawave.dz">legal@galawave.dz</a></p>
+                </div>
+
+                <div class="terms-footer text-center mt-5">
+                    <p class="text-muted">{% trans "Last updated:" %} {% now "F j, Y" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
