@@ -22,13 +22,18 @@ menu_items = [
         "icon" : "fas fa-credit-card",
         "roles": ["admin"]
     },
+        {
+        "name" : _('SMTP Server'),
+        "url" : "dash:smtp_config",
+        "icon" : "fas fa-envelope",
+        "roles": ["admin"]
+    },
     {
         "name" : _('Waitlist'),
         "url" : "dash:waitlist",
         "icon" : "fas fa-user-clock",
         "roles": ["admin"]
     },
-
 
 ]
 

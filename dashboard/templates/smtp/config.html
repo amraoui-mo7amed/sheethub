@@ -1,0 +1,227 @@
+{% extends 'dashboard/index.html' %}
+
+{% load i18n static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/smtp.css' %}?v={% now 'U' %}" />
+    <link rel="stylesheet"
+          href="{% static 'css/action_buttons.css' %}?v={% now 'U' %}" />
+{% endblock extra_css %}
+
+{% block extra_js %}
+    <script src="{% static 'js/smtp.js' %}?v={% now 'U' %}"></script>
+{% endblock extra_js %}
+
+{% block dashContent %}
+    <!-- SMTP Servers List -->
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                {% trans "SMTP Servers" %}
+            </h5>
+            <!-- Button trigger modal -->
+            <button type="button"
+                    class="btn btn-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#smtpConfigModal">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <div class="card-body">
+            {% if smtp_servers %}
+                <div class="row g-3">
+                    {% for server in smtp_servers %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row g-2 align-items-top">
+                                        <div class="col-md-5">
+                                            <img src="https://png.pngtree.com/png-clipart/20200225/original/pngtree-open-envelope-with-lined-sheet-of-paper-icon-png-image_5256502.jpg"
+                                                 alt="Server"
+                                                 class="img-fluid w-100 rounded" />
+                                        </div>
+                                        <div class="col-md-7 d-flex flex-column">
+                                            <h5 class="mb-0 fw-bold text-truncate" title={{ server.host }}> {{ server.host }}
+                                            </h5>
+                                            <small class="mb-0 text-truncate text-muted" title={{ server.username }}> {{ server.username }}  </small>
+
+                                            <small class="mb-0 text-truncate text-muted" title={{ server.password }}> {{ server.password }} | {{ server.port }}</small>
+
+                                            <small class="mb-0 text-truncate text-muted" title={{ server.from_email }}> {{ server.from_email }} </small>
+
+                                            <div class="d-flex align-items-center">
+                                                {% if server.use_tls %}
+                                                    <span class="badge bg-success">TLS</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">SSL</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-end">
+                                        {% url "dash:smtp_delete" server.pk as delete_url %}
+                                        {% include "components/action_buttons.html" with delete_url=delete_url %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {% include "components/alert.html" with alert_type="warning" alert_message=_("No SMTP servers for the moment, add some and refresh the page") %}
+
+            {% endif %}
+        </div>
+    </div>
+    <!-- SMTP Configuration Modal -->
+    <div class="modal fade"
+         id="smtpConfigModal"
+         tabindex="-1"
+         aria-labelledby="smtpConfigModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="smtpConfigModalLabel">
+                        {% trans 'SMTP Server Configuration' %}
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="{% trans 'Close' %}">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% include "components/errorList.html" %}
+
+                    <div id="test_result">
+                    </div>
+                    <form id="smtpConfigForm"
+                          method="post"
+                          action="{% url 'dash:update_smtp_config' %}"
+                          class="form">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="host" class="form-label">
+                                        {% trans "SMTP Host" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="host"
+                                           name="host"
+                                           value="{{ smtp_config.host|default:'' }}"
+                                           required />
+                                    <small class="form-hint">{% trans "e.g., smtp.gmail.com" %}</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="port" class="form-label">
+                                        {% trans "Port" %}
+                                    </label>
+                                    <input type="number"
+                                           class="form-control"
+                                           id="port"
+                                           name="port"
+                                           value="{{ smtp_config.port|default:'587' }}"
+                                           min="1"
+                                           max="65535"
+                                           required />
+                                    <small class="form-hint">{% trans "Common ports: 587 (TLS), 465 (SSL)" %}</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="username" class="form-label">
+                                        {% trans "Username" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="username"
+                                           name="username"
+                                           value="{{ smtp_config.username|default:'' }}"
+                                           required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password" class="form-label">
+                                        {% trans "Password" %}
+                                    </label>
+                                    <div class="password-wrapper">
+                                        <input type="password"
+                                               class="form-control"
+                                               id="password"
+                                               name="password"
+                                               value="{{ smtp_config.password|default:'' }}"
+                                               required />
+                                        <button type="button"
+                                                class="toggle-password"
+                                                aria-label="{% trans 'Toggle password visibility' %}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small class="form-hint">{% trans "For Gmail, use an App Password" %}</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">
+                                        {% trans "From Email" %}
+                                    </label>
+                                    <input type="email"
+                                           class="form-control"
+                                           id="email"
+                                           name="email"
+                                           value="{{ smtp_config.from_email|default:'' }}"
+                                           required />
+                                    <small class="form-hint">{% trans "This will be the sender's email address" %}</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        {% trans "Security" %}
+                                    </label>
+                                    <div class="d-flex align-items-center">
+                                        <label class="switch">
+                                            <input type="checkbox"
+                                                   id="use_tls"
+                                                   name="use_tls"
+                                                   value="true"
+                                                   {% if smtp_config.use_tls %}checked{% endif %} />
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span class="ms-2">{% trans "Use TLS (recommended)" %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex gap-2">
+                    <button type="submit" form="smtpConfigForm" class="btn btn-primary">
+                        {% trans 'Save' %}
+                    </button>
+                    <button type="button"
+                            class="btn btn-outline-primary"
+                            id="testConnection"
+                            data-test-url="{% url 'dash:test_smtp_connection' %}">
+                        {% trans 'Test Connection' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock dashContent %}

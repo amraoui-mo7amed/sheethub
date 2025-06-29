@@ -16,3 +16,16 @@ class WaitList(models.Model):
         verbose_name = _("Waitlist")
         verbose_name_plural = _("Waitlist")
         ordering = ["-created_at"]
+
+class SMTPConfig(models.Model):
+    """Singleton model for SMTP configuration"""
+    host = models.CharField(max_length=255, default='smtp.gmail.com')
+    port = models.IntegerField(default=587)
+    use_tls = models.BooleanField(default=True)
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    from_email = models.EmailField()
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"SMTP: {self.host}"
