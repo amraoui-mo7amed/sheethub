@@ -93,24 +93,57 @@ def update_smtp_config(request):
             }, status=500)
 
 @login_required
-@admin_required
+@login_required
 @require_http_methods(["POST"])
-@csrf_exempt
 def test_connection(request):
-    if request.method == 'POST':
+    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse(
+            {'success': False, 'error': 'Invalid request'}, 
+            status=400
+        )
+    
+    try:
         host = request.POST.get('host', '').strip()
-        port = int(request.POST.get('port', '').strip())
+        port_str = request.POST.get('port', '').strip()
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
         use_tls = request.POST.get('use_tls', 'false').lower() == 'true'
-        print(host, port, username, password, use_tls)
+        
+        # Validate required fields
+        if not all([host, port_str, username]):
+            return JsonResponse(
+                {'success': False, 'error': 'Missing required fields'}, 
+                status=400
+            )
+            
+        try:
+            port = int(port_str)
+            if not (0 < port <= 65535):
+                raise ValueError("Port out of range")
+        except ValueError:
+            return JsonResponse(
+                {'success': False, 'error': 'Invalid port number'}, 
+                status=400
+            )
 
         success, error = test_smtp_connection(host, port, username, password, use_tls)
         
         if success:
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'success': False, 'error': error}, status=400)
+            return JsonResponse(
+                {'success': False, 'error': str(error) if error else 'Connection failed'}, 
+                status=400
+            )
+            
+    except Exception as e:
+        import traceback
+        print(f"Error testing SMTP connection: {str(e)}")
+        print(traceback.format_exc())
+        return JsonResponse(
+            {'success': False, 'error': 'An unexpected error occurred'}, 
+            status=500
+        )
 
 @login_required
 @admin_required
