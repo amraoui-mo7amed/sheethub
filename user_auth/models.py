@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
@@ -63,15 +64,58 @@ class UserProfile(models.Model):
         ('admin', _('Admin')), 
         ('seller' , _('Seller'))
     ]
+    # Algerian provinces
+    ALGERIAN_PROVINCES = [
+        ('adrar', 'Adrar'), ('chlef', 'Chlef'), ('laghouat', 'Laghouat'),
+        ('oum_el_bouaghi', 'Oum El Bouaghi'), ('batna', 'Batna'),
+        ('bejaia', 'Béjaïa'), ('biskra', 'Biskra'), ('bechar', 'Béchar'),
+        ('blida', 'Blida'), ('bouira', 'Bouira'), ('tamanghasset', 'Tamanrasset'),
+        ('tebessa', 'Tébessa'), ('tlemcen', 'Tlemcen'), ('tiaret', 'Tiaret'),
+        ('tizi_ouzou', 'Tizi Ouzou'), ('alger', 'Alger'), ('djelfa', 'Djelfa'),
+        ('jijel', 'Jijel'), ('setif', 'Sétif'), ('saida', 'Saïda'),
+        ('skikda', 'Skikda'), ('sidi_bel_abbes', 'Sidi Bel Abbès'),
+        ('annaba', 'Annaba'), ('guelma', 'Guelma'), ('constantine', 'Constantine'),
+        ('medea', 'Médéa'), ('mostaganem', 'Mostaganem'), ('msila', 'M\'Sila'),
+        ('mascara', 'Mascara'), ('ouargla', 'Ouargla'), ('oran', 'Oran'),
+        ('el_bayadh', 'El Bayadh'), ('illizi', 'Illizi'), ('bordj_bou_arreridj', 'Bordj Bou Arréridj'),
+        ('boumerdes', 'Boumerdès'), ('el_tarf', 'El Tarf'), ('tindouf', 'Tindouf'),
+        ('tissemsilt', 'Tissemsilt'), ('el_oued', 'El Oued'), ('khenchela', 'Khenchela'),
+        ('souk_ahras', 'Souk Ahras'), ('tipaza', 'Tipaza'), ('mila', 'Mila'),
+        ('ain_defla', 'Aïn Defla'), ('naama', 'Naâma'), ('ain_temouchent', 'Aïn Témouchent'),
+        ('ghardaia', 'Ghardaïa'), ('relizane', 'Relizane')
+    ]
+
+    ECOMMERCE_CATEGORIES = [
+        ('electronics', _('Electronics')),
+        ('fashion', _('Fashion')),
+        ('home_garden', _('Home & Garden')),
+        ('beauty', _('Beauty & Personal Care')),
+        ('sports', _('Sports & Outdoors')),
+        ('toys', _('Toys & Games')),
+        ('food', _('Food & Groceries')),
+        ('health', _('Health & Wellness')),
+        ('automotive', _('Automotive')),
+        ('books', _('Books & Media')),
+        ('pets', _('Pet Supplies')),
+        ('office', _('Office Supplies')),
+        ('jewelry', _('Jewelry & Watches')),
+        ('baby', _('Baby Products')),
+        ('industrial', _('Industrial & Scientific'))
+    ]
+
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile', verbose_name=_('user'))
     role = models.CharField(_('role'), max_length=11, choices=ROLE_CHOICES, default='seller')
+    phone_number = models.CharField(_('phone number'), max_length=20, blank=True, null=True)
+    province = models.CharField(_('province'), max_length=50, choices=ALGERIAN_PROVINCES, blank=True, null=True)
+    category = models.CharField(_('business category'), max_length=50, choices=ECOMMERCE_CATEGORIES, blank=True, null=True)
     max_orders = models.IntegerField(_('max orders'), default=1)
     available_orders = models.IntegerField(_('available orders'), default=1)
     max_products = models.IntegerField(_('max products'), default=1)
     available_products = models.IntegerField(_('available products'), default=1)
+
     class Meta:
         verbose_name = _('user profile')
         verbose_name_plural = _('user profiles')
 
     def __str__(self):
-        return _('%(user)s\'s profile') % {'user': self.user.email}
+        return f"{self.user.email}'s profile"
