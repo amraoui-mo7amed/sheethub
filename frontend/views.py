@@ -54,3 +54,9 @@ def terms(request):
     Render the terms and conditions page.
     """
     return render(request, 'frontend/terms.html')
+
+
+from django.http import HttpResponse
+
+def domain_verification(request):
+    return HttpResponse("", content_type="text/plain")  # empty content
