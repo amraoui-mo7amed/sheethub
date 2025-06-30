@@ -217,7 +217,8 @@
                     <button type="button"
                             class="btn btn-outline-primary"
                             id="testConnection"
-                            data-test-url="{% url 'dash:test_smtp_connection' %}">
+                            data-test-url="{% url 'dash:test_smtp_connection' %}"
+                            data-csrf-token = {{ csrf_token }}>
                         {% trans 'Test Connection' %}
                     </button>
                 </div>

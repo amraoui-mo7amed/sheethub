@@ -93,7 +93,7 @@ def update_smtp_config(request):
             }, status=500)
 
 @login_required
-@login_required
+@admin_required
 @require_http_methods(["POST"])
 def test_connection(request):
     if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -106,35 +106,16 @@ def test_connection(request):
         host = request.POST.get('host', '').strip()
         port_str = request.POST.get('port', '').strip()
         username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '').strip()
+        password = request.POST.get('password', '')
         use_tls = request.POST.get('use_tls', 'false').lower() == 'true'
-        
-        # Validate required fields
-        if not all([host, port_str, username]):
-            return JsonResponse(
-                {'success': False, 'error': 'Missing required fields'}, 
-                status=400
-            )
-            
-        try:
-            port = int(port_str)
-            if not (0 < port <= 65535):
-                raise ValueError("Port out of range")
-        except ValueError:
-            return JsonResponse(
-                {'success': False, 'error': 'Invalid port number'}, 
-                status=400
-            )
+        print(host, port_str, username, password, use_tls)
 
-        success, error = test_smtp_connection(host, port, username, password, use_tls)
+        success, error = test_smtp_connection(host, int(port_str), username, password, use_tls)
         
         if success:
             return JsonResponse({'success': True})
         else:
-            return JsonResponse(
-                {'success': False, 'error': str(error) if error else 'Connection failed'}, 
-                status=400
-            )
+            return JsonResponse({'success': False, 'error': str(error) if error else 'Connection failed'}, status=400)
             
     except Exception as e:
         import traceback

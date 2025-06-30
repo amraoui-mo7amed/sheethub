@@ -33,23 +33,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: formData,
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                    },
-                    credentials: 'same-origin'
+                        'X-CSRFToken': testConnectionBtn.getAttribute('data-csrf-token')
+                    }
                 });
 
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const data = await response.json();
-                    if (data.success) {
-                        showResult('success', 'Connection test successful!', resultDiv);
-                    } else {
-                        showResult('danger', data.error || 'Connection test failed', resultDiv);
-                    }
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResult('success', 'Connection test successful!', resultDiv);
                 } else {
-                    const text = await response.text();
-                    console.error('Non-JSON response:', text);
-                    showResult('danger', 'Unexpected response from server. Please check the console for details.', resultDiv);
+                    showResult('danger', data.error || 'Connection test failed', resultDiv);
                 }
             } catch (error) {
                 console.error('Error:', error);
