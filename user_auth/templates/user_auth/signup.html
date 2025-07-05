@@ -98,17 +98,38 @@
                                            placeholder="{% trans 'Email Address' %}"
                                            required />
                                 </div>
-                                <div class="mb-3 password-field">
-                                    <div class="password-container">
-                                        <input type="password"
-                                               name="password1"
-                                               id="password1"
-                                               class="form-control"
-                                               placeholder="{% trans 'Password' %}"
-                                               required />
-                                        <button type="button" class="password-toggle" data-target="password1">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
+                                <div class="col-lg-12">
+                                    <div class="row g-2">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="mb-3 password-field">
+                                                <div class="password-container">
+                                                    <input type="password"
+                                                           name="password1"
+                                                           id="password1"
+                                                           class="form-control"
+                                                           placeholder="{% trans 'Password' %}"
+                                                           required />
+                                                    <button type="button" class="password-toggle" data-target="password1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="mb-3 password-field">
+                                                <div class="password-container">
+                                                    <input type="password"
+                                                           name="password2"
+                                                           id="password2"
+                                                           class="form-control"
+                                                           placeholder="{% trans 'Confirm Password' %}"
+                                                           required />
+                                                    <button type="button" class="password-toggle" data-target="password2">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +140,7 @@
                     </button>
                     <div class="text-center mt-3">
                         {% trans "Already have an account?" %}
-                        <a href="{% url 'user_auth:login' %}" class="login-link">
+                        <a href="{% url 'user_auth:login' %}" class="text-primary">
                             {% trans "Log In" %}
                         </a>
                     </div>

@@ -1,0 +1,99 @@
+{% extends 'frontend/index.html' %}
+{% load static i18n %}
+
+{% block subtitle %}
+    {% trans "Email Confirmation" %}
+{% endblock subtitle %}
+
+{% block extra_css %}
+    <style>
+        .confirmation-wrapper {
+            min-height: 75vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            padding: 3rem 2.5rem;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .confirmation-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-icon.success {
+            color: #28a745;
+        }
+
+        .confirmation-icon.error {
+            color: #dc3545;
+        }
+
+        .confirmation-message {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+        .confirmation-title {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .confirmation-btn {
+            margin-top: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+{% endblock extra_css %}
+
+{% block nav %}{% endblock nav %}
+{% block hero %}{% endblock hero %}
+
+{% block content %}
+<div class="confirmation-wrapper">
+    <div class="confirmation-card">
+        {% if success %}
+            <div class="confirmation-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="confirmation-title text-success">{% trans "Email Confirmed!" %}</h2>
+            <p class="confirmation-message">{{ message }}</p>
+            <a href="{% url 'user_auth:login' %}" class="btn btn-success confirmation-btn">
+                {% trans "Log In to Your Account" %}
+            </a>
+        {% else %}
+            <div class="confirmation-icon error">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <h2 class="confirmation-title text-danger">{% trans "Oops! Something went wrong" %}</h2>
+            <p class="confirmation-message">{{ message }}</p>
+            <a href="{% url 'user_auth:signup' %}" class="btn btn-outline-danger confirmation-btn">
+                {% trans "Try Signing Up Again" %}
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block footer %}{% endblock footer %}

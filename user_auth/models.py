@@ -1,8 +1,8 @@
-from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
-from django.utils import timezone
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+import random, string
 
 
 class CustomUserManager(BaseUserManager):
@@ -54,60 +54,39 @@ class UserAuth(models.Model):
     # Password reset fields
     password_reset_token = models.CharField(max_length=100, blank=True, null=True)
     password_reset_sent = models.DateTimeField(null=True, blank=True)
-    
+    created_at = models.DateTimeField(default=now)
 
     def __str__(self):
         return f"Auth Info for User {self.user.id}"
 
 class UserProfile(models.Model):
     ROLE_CHOICES = [
-        ('admin', _('Admin')), 
-        ('seller' , _('Seller'))
-    ]
-    # Algerian provinces
-    ALGERIAN_PROVINCES = [
-        ('adrar', 'Adrar'), ('chlef', 'Chlef'), ('laghouat', 'Laghouat'),
-        ('oum_el_bouaghi', 'Oum El Bouaghi'), ('batna', 'Batna'),
-        ('bejaia', 'Béjaïa'), ('biskra', 'Biskra'), ('bechar', 'Béchar'),
-        ('blida', 'Blida'), ('bouira', 'Bouira'), ('tamanghasset', 'Tamanrasset'),
-        ('tebessa', 'Tébessa'), ('tlemcen', 'Tlemcen'), ('tiaret', 'Tiaret'),
-        ('tizi_ouzou', 'Tizi Ouzou'), ('alger', 'Alger'), ('djelfa', 'Djelfa'),
-        ('jijel', 'Jijel'), ('setif', 'Sétif'), ('saida', 'Saïda'),
-        ('skikda', 'Skikda'), ('sidi_bel_abbes', 'Sidi Bel Abbès'),
-        ('annaba', 'Annaba'), ('guelma', 'Guelma'), ('constantine', 'Constantine'),
-        ('medea', 'Médéa'), ('mostaganem', 'Mostaganem'), ('msila', 'M\'Sila'),
-        ('mascara', 'Mascara'), ('ouargla', 'Ouargla'), ('oran', 'Oran'),
-        ('el_bayadh', 'El Bayadh'), ('illizi', 'Illizi'), ('bordj_bou_arreridj', 'Bordj Bou Arréridj'),
-        ('boumerdes', 'Boumerdès'), ('el_tarf', 'El Tarf'), ('tindouf', 'Tindouf'),
-        ('tissemsilt', 'Tissemsilt'), ('el_oued', 'El Oued'), ('khenchela', 'Khenchela'),
-        ('souk_ahras', 'Souk Ahras'), ('tipaza', 'Tipaza'), ('mila', 'Mila'),
-        ('ain_defla', 'Aïn Defla'), ('naama', 'Naâma'), ('ain_temouchent', 'Aïn Témouchent'),
-        ('ghardaia', 'Ghardaïa'), ('relizane', 'Relizane')
+        ('admin', _('Admin')),
+        ('seller', _('Seller'))
     ]
 
-    ECOMMERCE_CATEGORIES = [
-        ('electronics', _('Electronics')),
-        ('fashion', _('Fashion')),
-        ('home_garden', _('Home & Garden')),
-        ('beauty', _('Beauty & Personal Care')),
-        ('sports', _('Sports & Outdoors')),
-        ('toys', _('Toys & Games')),
-        ('food', _('Food & Groceries')),
-        ('health', _('Health & Wellness')),
-        ('automotive', _('Automotive')),
-        ('books', _('Books & Media')),
-        ('pets', _('Pet Supplies')),
-        ('office', _('Office Supplies')),
-        ('jewelry', _('Jewelry & Watches')),
-        ('baby', _('Baby Products')),
-        ('industrial', _('Industrial & Scientific'))
-    ]
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        verbose_name=_('user')
+    )
 
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile', verbose_name=_('user'))
-    role = models.CharField(_('role'), max_length=11, choices=ROLE_CHOICES, default='seller')
-    phone_number = models.CharField(_('phone number'), max_length=20, blank=True, null=True)
-    province = models.CharField(_('province'), max_length=50, choices=ALGERIAN_PROVINCES, blank=True, null=True)
-    category = models.CharField(_('business category'), max_length=50, choices=ECOMMERCE_CATEGORIES, blank=True, null=True)
+    shop_code = models.CharField(
+        _('shop code'),
+        max_length=6,
+        unique=True,
+        null=True,  # allow null initially, then remove later
+        editable=False
+    )
+
+    role = models.CharField(
+        _('role'),
+        max_length=11,
+        choices=ROLE_CHOICES,
+        default='seller'
+    )
+
     max_orders = models.IntegerField(_('max orders'), default=1)
     available_orders = models.IntegerField(_('available orders'), default=1)
     max_products = models.IntegerField(_('max products'), default=1)
@@ -118,4 +97,15 @@ class UserProfile(models.Model):
         verbose_name_plural = _('user profiles')
 
     def __str__(self):
-        return f"{self.user.email}'s profile"
+        return f"{self.user.email}'s profile (Shop Code: {self.shop_code})"
+
+    def save(self, *args, **kwargs):
+        if not self.shop_code:
+            self.shop_code = self._generate_unique_shop_code()
+        super().save(*args, **kwargs)
+
+    def _generate_unique_shop_code(self):
+        while True:
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            if not UserProfile.objects.filter(shop_code=code).exists():
+                return code

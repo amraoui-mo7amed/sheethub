@@ -14,13 +14,12 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
-
+from user_auth.models import UserAuth
 userModel = get_user_model()
 
 def confirm_email_view(request, token):
     try:
-        user_auth = get_object_or_404(userModel, email_confirmation_token=token)
-        
+        user_auth = get_object_or_404(UserAuth, email_confirmation_token=token)
         if timezone.now() > user_auth.email_confirmation_sent + timedelta(hours=24):
             return render(request, 'user_auth/email_confirmation.html', {
                 'success': False,

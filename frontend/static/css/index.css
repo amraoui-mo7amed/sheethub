@@ -14,6 +14,12 @@ body {
     line-height: 1.6;
 }
 
+body.rtl, 
+body.rtl *:not(i) {
+    direction: rtl;
+    font-family: 'Cairo', sans-serif;
+}
+
 h1,
 h2,
 h3,
@@ -21,7 +27,10 @@ h4 {
     font-weight: 600;
     line-height: 1.2;
 }
-
+/* body.rtl .container, body.rtl .container-fluid, section
+{
+    direction: rtl;
+} */
 /* texts */
 
 .bg-light-custom {

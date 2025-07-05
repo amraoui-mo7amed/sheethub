@@ -38,19 +38,31 @@
                                                     <h6 class="user-name  text-truncate mb-1">
                                                         {{ user.first_name }} {{ user.last_name }}
                                                     </h6>
-                                                    <small class="user-email text-muted text-truncate">
-                                                        {{ user.email }}
-                                                    </small>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <small class="user-email text-muted text-truncate">
+                                                            {{ user.email }}
+                                                        </small>
+                                                        <small>
+                                                            {% if user.auth.email_confirmed %}
+                                                                <span class="badge bg-success">
+                                                                    <i class="fas fa-check"></i>
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="badge bg-danger">
+                                                                    <i class="fas fa-times"></i>
+                                                                </span>
+                                                            {% endif %}
+                                                        </small>
+                                                    </div>
                                                     <span class="user-role d-block">
                                                         {{ user.profile.get_role_display }}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="user-actions mt-2 d-flex gap-2 justify-content-end w-100">
-                                                {% url 'dashboard:user_delete' user.pk as delete_url %}
+                                                {% url 'dash:user_delete' user.pk as delete_url %}
                                                 {% url "dash:user_profile" user.pk as view_url %}
                                                 {% include "components/action_buttons.html" with view_url=view_url delete_url=delete_url %}
-
                                             </div>
                                         </div>
                                     </div>
