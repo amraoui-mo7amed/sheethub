@@ -15,8 +15,12 @@ from django.utils.html import strip_tags
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from user_auth.models import UserAuth
+from user_auth.decorators import redirect_user
+
 userModel = get_user_model()
 
+
+@redirect_user
 def confirm_email_view(request, token):
     try:
         user_auth = get_object_or_404(UserAuth, email_confirmation_token=token)

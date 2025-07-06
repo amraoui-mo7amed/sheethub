@@ -20,9 +20,11 @@ from mailjet import MailJet
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.decorators.http import require_http_methods
+from user_auth.decorators import redirect_user
 
 userModel = get_user_model()
 
+@redirect_user
 def forgot_password(request):
 
     if request.method == "POST":
@@ -50,15 +52,15 @@ def forgot_password(request):
                     "activation_link": reset_link,
                     "template_text": str(_("Click the button below to reset your password. If you didn't request this, please ignore this email.")),
                     "template_title": str(_("Reset Your Password")),
-                    "subject": str(_("Password Reset Request")),
-                    "action_text": str(_("Reset Password"))
+                    "reset_text": str(_("Password Reset"))
                 }
                 
                 success, response = mailjet.sendMessage(
                     templateID=7132960,
                     subject=str(_("Password Reset Request")),
                     variabels=variables,
-                    recipiant_email=email
+                    recipiant_email=email,
+                    recipiant_name=user.first_name
                 )
                 
                 if success:
@@ -72,6 +74,7 @@ def forgot_password(request):
     else:
         return render(request, 'user_auth/forgot_password.html')
 
+@redirect_user
 def password_reset_confirm(request, token):
     """
     Confirm password reset using a secure token.

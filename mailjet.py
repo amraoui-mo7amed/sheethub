@@ -9,7 +9,7 @@ class MailJet:
         self.from_email = config('DEFAULT_FROM_EMAIL')
         self.from_name = config('DEFAULT_FROM_NAME')
         self.account_activation_templateID = int(config('ACCOUNT_ACTIVATION_TEMPLATEID'))
-    def sendMessage(self, templateID: int, subject: str ,recipiant_email : str, variabels: dict):
+    def sendMessage(self, templateID: int, subject: str ,recipiant_email : str ,recipiant_name : str, variabels: dict):
         data = {
         'Messages': [
                         {
@@ -20,7 +20,7 @@ class MailJet:
                                 "To": [
                                         {
                                                 "Email": recipiant_email,
-                                                "Name": "passenger 1"
+                                                "Name": recipiant_name
                                         }
                                 ],
                                 "TemplateID": templateID,

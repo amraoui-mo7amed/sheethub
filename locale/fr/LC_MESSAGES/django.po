@@ -1,0 +1,1313 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-06 07:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: dashboard/context_processors/menu.py:8
+#: dashboard/templates/dashboard/index.html:9
+#: dashboard/templates/dashboard/index.html:59
+#: frontend/templates/frontend/index.html:86
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: dashboard/context_processors/menu.py:14
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: dashboard/context_processors/menu.py:20
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+#: dashboard/context_processors/menu.py:26
+msgid "SMTP Server"
+msgstr "Serveur SMTP"
+
+#: dashboard/context_processors/menu.py:32 dashboard/models.py:16
+#: dashboard/models.py:17
+msgid "Waitlist"
+msgstr "Liste d'attente"
+
+#: dashboard/mixins.py:41
+msgid "You do not have the required role to access this page."
+msgstr "Vous n'avez pas le rôle requis pour accéder à cette page."
+
+#: dashboard/mixins.py:42
+msgid "You do not have any of the required roles to access this page."
+msgstr "Vous n'avez aucun des rôles requis pour accéder à cette page."
+
+#: dashboard/templates/dashboard/home.html:27
+msgid "Total Users"
+msgstr "Total des utilisateurs"
+
+#: dashboard/templates/dashboard/home.html:42
+msgid "Total Sellers"
+msgstr "Total des vendeurs"
+
+#: dashboard/templates/dashboard/home.html:57
+msgid "Total Products"
+msgstr "Total des produits"
+
+#: dashboard/templates/dashboard/home.html:72
+msgid "Delivered Orders"
+msgstr "Commandes livrées"
+
+#: dashboard/templates/dashboard/home.html:87
+msgid "Top Sellers"
+msgstr "Meilleurs Vendeurs"
+
+#: dashboard/templates/dashboard/home.html:89
+msgid "View All"
+msgstr "Voir Tout"
+
+#: dashboard/templates/dashboard/home.html:283
+msgid "Sellers Per Day"
+msgstr "Vendeurs Par Jour"
+
+#: dashboard/templates/dashboard/home.html:295
+msgid "Deliveries Per Day"
+msgstr "Livraisons Par Jour"
+
+#: dashboard/templates/dashboard/index.html:29
+msgid "OMS that saves you time"
+msgstr "OMS qui vous fait gagner du temps"
+
+#: dashboard/templates/dashboard/index.html:41
+msgid "Website Settings"
+msgstr "Paramètres du Site Web"
+
+#: dashboard/templates/dashboard/index.html:71
+#: dashboard/templates/dashboard/index.html:150
+msgid "User Profile"
+msgstr "Profil Utilisateur"
+
+#: dashboard/templates/dashboard/index.html:87
+msgid "Notifications"
+msgstr "Notifications"
+
+#: dashboard/templates/dashboard/index.html:89
+msgid "Mark all as read"
+msgstr "Tout marquer comme lu"
+
+#: dashboard/templates/dashboard/index.html:98
+msgid "New booking"
+msgstr "Nouvelle réservation"
+
+#: dashboard/templates/dashboard/index.html:98
+msgid "received for Sahara Expedition"
+msgstr "reçue pour l'expédition Sahara"
+
+#: dashboard/templates/dashboard/index.html:101
+msgid "10 minutes ago"
+msgstr "il y a 10 minutes"
+
+#: dashboard/templates/dashboard/index.html:111
+msgid "New review"
+msgstr "Nouvel avis"
+
+#: dashboard/templates/dashboard/index.html:111
+msgid "Amazing desert experience!"
+msgstr "Expérience incroyable dans le désert !"
+
+#: dashboard/templates/dashboard/index.html:114
+msgid "1 hour ago"
+msgstr "il y a 1 heure"
+
+#: dashboard/templates/dashboard/index.html:124
+msgid "New inquiry"
+msgstr "Nouvelle demande"
+
+#: dashboard/templates/dashboard/index.html:124
+msgid "from potential client"
+msgstr "d'un client potentiel"
+
+#: dashboard/templates/dashboard/index.html:127
+msgid "3 hours ago"
+msgstr "il y a 3 heures"
+
+#: dashboard/templates/dashboard/index.html:137
+msgid "New user"
+msgstr "Nouvel utilisateur"
+
+#: dashboard/templates/dashboard/index.html:137
+msgid "registered: Michael Brown"
+msgstr "enregistré : Michael Brown"
+
+#: dashboard/templates/dashboard/index.html:140
+msgid "1 day ago"
+msgstr "il y a 1 jour"
+
+#: dashboard/templates/dashboard/index.html:156
+msgid "User "
+msgstr "Utilisateur"
+
+#: dashboard/templates/dashboard/index.html:168
+msgid "My Profile"
+msgstr "Mon Profil"
+
+#: dashboard/templates/dashboard/index.html:174
+msgid "Settings"
+msgstr "Paramètres"
+
+#: dashboard/templates/dashboard/index.html:181
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: dashboard/templates/smtp/config.html:20
+msgid "SMTP Servers"
+msgstr "Serveurs SMTP"
+
+#: dashboard/templates/smtp/config.html:74
+msgid "No SMTP servers for the moment, add some and refresh the page"
+msgstr "Aucun serveur SMTP pour le moment, ajoutez-en et actualisez la page"
+
+#: dashboard/templates/smtp/config.html:89
+msgid "SMTP Server Configuration"
+msgstr "Configuration du serveur SMTP"
+
+#: dashboard/templates/smtp/config.html:94
+#: frontend/templates/frontend/index.html:471
+#: frontend/templates/frontend/index.html:499
+msgid "Close"
+msgstr "Fermer"
+
+#: dashboard/templates/smtp/config.html:112
+msgid "SMTP Host"
+msgstr "Hôte SMTP"
+
+#: dashboard/templates/smtp/config.html:120
+msgid "e.g., smtp.gmail.com"
+msgstr "par ex., smtp.gmail.com"
+
+#: dashboard/templates/smtp/config.html:127
+msgid "Port"
+msgstr "Port"
+
+#: dashboard/templates/smtp/config.html:137
+msgid "Common ports: 587 (TLS), 465 (SSL)"
+msgstr "Ports communs : 587 (TLS), 465 (SSL)"
+
+#: dashboard/templates/smtp/config.html:144
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: dashboard/templates/smtp/config.html:158
+#: user_auth/templates/user_auth/login.html:65
+#: user_auth/templates/user_auth/signup.html:110
+msgid "Password"
+msgstr "Mot de passe"
+
+#: dashboard/templates/smtp/config.html:169
+#: user_auth/templates/user_auth/login.html:69
+msgid "Toggle password visibility"
+msgstr "Basculer la visibilité du mot de passe"
+
+#: dashboard/templates/smtp/config.html:173
+msgid "For Gmail, use an App Password"
+msgstr "Pour Gmail, utilisez un mot de passe d'application"
+
+#: dashboard/templates/smtp/config.html:180
+msgid "From Email"
+msgstr "Email de l'expéditeur"
+
+#: dashboard/templates/smtp/config.html:188
+msgid "This will be the sender's email address"
+msgstr "Ceci sera l'adresse email de l'expéditeur"
+
+#: dashboard/templates/smtp/config.html:195
+msgid "Security"
+msgstr "Sécurité"
+
+#: dashboard/templates/smtp/config.html:206
+msgid "Use TLS (recommended)"
+msgstr "Utiliser TLS (recommandé)"
+
+#: dashboard/templates/smtp/config.html:215
+msgid "Save"
+msgstr "Enregistrer"
+
+#: dashboard/templates/smtp/config.html:222
+msgid "Test Connection"
+msgstr "Tester la connexion"
+
+#: dashboard/templates/users/list.html:22
+msgid "Users List"
+msgstr "Liste des utilisateurs"
+
+#: dashboard/templates/users/list.html:36
+msgid "User Avatar"
+msgstr "Avatar de l'utilisateur"
+
+#: dashboard/templates/users/list.html:78
+msgid "No Users Found"
+msgstr "Aucun utilisateur trouvé"
+
+#: dashboard/templates/users/list.html:81
+msgid "There are no users to display at the moment."
+msgstr "Il n'y a aucun utilisateur à afficher pour le moment."
+
+#: dashboard/templates/users/profile.html:14
+msgid "Profile"
+msgstr "Profil"
+
+#: dashboard/templates/users/profile.html:29
+msgid "Profile Picture"
+msgstr "Photo de profil"
+
+#: dashboard/templates/users/profile.html:52
+msgid "Profile Information"
+msgstr "Informations sur le profil"
+
+#: dashboard/templates/users/profile.html:59
+#: user_auth/templates/user_auth/signup.html:80
+msgid "First Name"
+msgstr "Prénom"
+
+#: dashboard/templates/users/profile.html:65
+#: user_auth/templates/user_auth/signup.html:89
+msgid "Last Name"
+msgstr "Nom de famille"
+
+#: dashboard/templates/users/profile.html:71
+#: dashboard/templates/waitlist/list.html:22
+msgid "Email"
+msgstr "Email"
+
+#: dashboard/templates/users/profile.html:77
+msgid "Role"
+msgstr "Rôle"
+
+#: dashboard/templates/users/profile.html:88
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+#: dashboard/templates/users/profile.html:104
+msgid "Plan Details"
+msgstr "Détails du plan"
+
+#: dashboard/templates/users/profile.html:112
+msgid "Premium Plan"
+msgstr "Plan Premium"
+
+#: dashboard/templates/users/profile.html:116
+msgid "/month"
+msgstr "/mois"
+
+#: dashboard/templates/users/profile.html:129 subscription/models.py:35
+#: subscription/templates/subscription/list.html:160
+msgid "Max Products"
+msgstr "Nbre Max Produits"
+
+#: dashboard/templates/users/profile.html:144 subscription/models.py:29
+#: subscription/templates/subscription/list.html:153
+msgid "Max Orders"
+msgstr "Commandes Max"
+
+#: dashboard/templates/users/profile.html:159 subscription/models.py:59
+#: subscription/templates/subscription/list.html:215
+msgid "Advanced Analytics"
+msgstr "Analyses Avancées"
+
+#: dashboard/templates/users/profile.html:162
+#: dashboard/templates/users/profile.html:177
+msgid "Available"
+msgstr "Disponible"
+
+#: dashboard/templates/users/profile.html:174
+msgid "Import/Export Data"
+msgstr "Importer/Exporter des Données"
+
+#: dashboard/templates/users/profile.html:187
+msgid "Upgrade Plan"
+msgstr "Changer de Forfait"
+
+#: dashboard/templates/users/profile.html:190
+msgid "Downgrade Plan"
+msgstr "Rétrograder le Forfait"
+
+#: dashboard/templates/users/profile.html:202
+msgid "Billing Information"
+msgstr "Informations de Facturation"
+
+#: dashboard/templates/users/profile.html:209
+msgid "Card Number"
+msgstr "Numéro de Carte"
+
+#: dashboard/templates/users/profile.html:215
+msgid "Card Holder Name"
+msgstr "Nom du Titulaire de la Carte"
+
+#: dashboard/templates/users/profile.html:223
+msgid "Expiration Date"
+msgstr "Date d'Expiration"
+
+#: dashboard/templates/users/profile.html:230
+msgid "CVV"
+msgstr ""
+
+#: dashboard/templates/users/profile.html:236
+msgid "Billing Address"
+msgstr ""
+
+#: dashboard/templates/users/profile.html:244
+msgid "Update Billing"
+msgstr ""
+
+#: dashboard/templates/waitlist/list.html:10
+msgid "Waitlist Emails"
+msgstr ""
+
+#: dashboard/templates/waitlist/list.html:19
+msgid "Name"
+msgstr ""
+
+#: dashboard/templates/waitlist/list.html:25
+msgid "Date Created"
+msgstr ""
+
+#: dashboard/templates/waitlist/list.html:47
+msgid "No Emails found"
+msgstr ""
+
+#: dashboard/utils.py:100
+msgid "SMTP authentication failed. Please check your username and password."
+msgstr ""
+
+#: dashboard/utils.py:102
+msgid "Unable to connect to the SMTP server. Please check your host and port."
+msgstr ""
+
+#: dashboard/utils.py:104
+msgid "SMTP error: {}"
+msgstr ""
+
+#: dashboard/utils.py:106
+msgid "Connection error: {}"
+msgstr ""
+
+#: dashboard/views/generic.py:21
+msgid "You do not have permission to delete this item"
+msgstr ""
+
+#: dashboard/views/generic.py:27
+msgid "Item deleted successfully"
+msgstr ""
+
+#: dashboard/views/generic.py:32
+msgid "Item not found"
+msgstr ""
+
+#: dashboard/views/generic.py:37
+msgid "Invalid model"
+msgstr ""
+
+#: dashboard/views/smtp.py:31
+msgid "SMTP host is required"
+msgstr ""
+
+#: dashboard/views/smtp.py:33
+msgid "SMTP host is too long (max 255 characters)"
+msgstr ""
+
+#: dashboard/views/smtp.py:39
+msgid "Port is required"
+msgstr ""
+
+#: dashboard/views/smtp.py:41
+msgid "Port must be between 1 and 65535"
+msgstr ""
+
+#: dashboard/views/smtp.py:43
+msgid "Port must be a valid number"
+msgstr ""
+
+#: dashboard/views/smtp.py:47
+msgid "Username is required"
+msgstr "Le nom d'utilisateur est requis"
+
+#: dashboard/views/smtp.py:49
+msgid "Username is too long (max 255 characters)"
+msgstr "Le nom d'utilisateur est trop long (max 255 caractères)"
+
+#: dashboard/views/smtp.py:53 user_auth/views/auth.py:46
+msgid "Password is required"
+msgstr "Le mot de passe est requis"
+
+#: dashboard/views/smtp.py:57 frontend/views.py:23
+msgid "Email is required"
+msgstr "L'email est requis"
+
+#: dashboard/views/smtp.py:62
+msgid "Enter a valid email address"
+msgstr "Entrez une adresse email valide"
+
+#: dashboard/views/smtp.py:85
+msgid "SMTP configuration created successfully"
+msgstr "Configuration SMTP créée avec succès"
+
+#: frontend/templates/components/action_buttons.html:7
+msgid "View"
+msgstr "Voir"
+
+#: frontend/templates/components/action_buttons.html:15
+msgid "Edit"
+msgstr "Éditer"
+
+#: frontend/templates/components/action_buttons.html:25
+msgid "Delete"
+msgstr "Supprimer"
+
+#: frontend/templates/components/custom_select.html:29
+msgid "إبحث"
+msgstr "إبحث"
+
+#: frontend/templates/components/custom_select.html:32
+msgid "Search..."
+msgstr "Chercher..."
+
+#: frontend/templates/components/image_upload.html:13
+msgid "Preview"
+msgstr "Aperçu"
+
+#: frontend/templates/components/image_upload.html:18
+msgid "Drop your image here or click to browse"
+msgstr "Déposez votre image ici ou cliquez pour parcourir"
+
+#: frontend/templates/components/image_upload.html:19
+msgid "Maximum file size:"
+msgstr "Taille maximale du fichier :"
+
+#: frontend/templates/frontend/index.html:17
+msgid "SheetHub |"
+msgstr "SheetHub |"
+
+#: frontend/templates/frontend/index.html:19
+msgid "Smarter E-Commerce Order Management"
+msgstr "Gestion des commandes e-commerce plus intelligente"
+
+#: frontend/templates/frontend/index.html:71
+msgid "Features"
+msgstr "Fonctionnalités"
+
+#: frontend/templates/frontend/index.html:74
+msgid "How It Works"
+msgstr "Comment ça marche"
+
+#: frontend/templates/frontend/index.html:77
+msgid "Pricing"
+msgstr "Tarification"
+
+#: frontend/templates/frontend/index.html:80
+#: frontend/templates/frontend/terms.html:59
+msgid "Contact"
+msgstr "Contact"
+
+#: frontend/templates/frontend/index.html:88
+#: frontend/templates/frontend/index.html:295
+msgid "Get Started"
+msgstr "Commencer"
+
+#: frontend/templates/frontend/index.html:106
+msgid "Order Management That Actually Saves You Time"
+msgstr "Gestion des Commandes Qui Vous Fait Gagner du Temps"
+
+#: frontend/templates/frontend/index.html:109
+msgid ""
+"SheetHub gives you spreadsheet-like simplicity with powerful automation "
+"built for e-commerce sellers"
+msgstr ""
+"SheetHub vous offre une simplicité semblable à une feuille de calcul avec "
+"une automatisation puissante conçue pour les vendeurs de commerce "
+"électronique"
+
+#: frontend/templates/frontend/index.html:115
+#: frontend/templates/frontend/index.html:502
+msgid "Join Waitlist"
+msgstr "Rejoindre la Liste d'Attente"
+
+#: frontend/templates/frontend/index.html:117
+#: frontend/templates/frontend/index.html:311
+msgid "Contact us"
+msgstr "Contactez-nous"
+
+#: frontend/templates/frontend/index.html:134
+msgid "Why 1,000+ Sellers Switched from Spreadsheets"
+msgstr "Pourquoi 1,000+ Vendeurs Ont Changé de Feuilles de Calcul"
+
+#: frontend/templates/frontend/index.html:137
+msgid "The features you need to streamline your order management"
+msgstr ""
+"Les fonctionnalités dont vous avez besoin pour rationaliser votre gestion "
+"des commandes"
+
+#: frontend/templates/frontend/index.html:149
+msgid "Bulk Process Orders"
+msgstr "Traitement en Masse des Commandes"
+
+#: frontend/templates/frontend/index.html:152
+msgid ""
+"Save 5+ hours/week by updating 100+ orders at once with just a few clicks."
+msgstr ""
+"Économisez 5+ heures/semaine en mettant à jour 100+ commandes à la fois avec"
+" seulement quelques clics."
+
+#: frontend/templates/frontend/index.html:165
+msgid "Automatic Tracking"
+msgstr "Suivi Automatique"
+
+#: frontend/templates/frontend/index.html:168
+msgid ""
+"Real-time status updates without manual entry. Customers get notified "
+"automatically."
+msgstr ""
+"Mises à jour d'état en temps réel sans saisie manuelle. Les clients sont "
+"notifiés automatiquement."
+
+#: frontend/templates/frontend/index.html:181
+msgid "Smart Insights"
+msgstr "Perspicacité Intelligente"
+
+#: frontend/templates/frontend/index.html:184
+msgid ""
+"See what's selling and what's stuck in fulfillment. Make data-driven "
+"decisions."
+msgstr ""
+"Voyez ce qui se vend et ce qui est bloqué dans l'exécution. Prenez des "
+"décisions basées sur les données."
+
+#: frontend/templates/frontend/index.html:197
+msgid "From Chaos to Control in Minutes"
+msgstr "Du Chaos au Contrôle en Quelques Minutes"
+
+#: frontend/templates/frontend/index.html:200
+msgid "Get set up and start saving time today"
+msgstr "Commencez à tout configurer et économisez du temps dès aujourd'hui"
+
+#: frontend/templates/frontend/index.html:212
+msgid "Import Spreadsheets"
+msgstr "Importer des Feuilles de Calcul"
+
+#: frontend/templates/frontend/index.html:215
+msgid ""
+"Upload your existing spreadsheets and start managing your orders in minutes."
+msgstr ""
+"Téléchargez vos feuilles de calcul existantes et commencez à gérer vos "
+"commandes en quelques minutes."
+
+#: frontend/templates/frontend/index.html:227
+msgid "Manage Orders"
+msgstr "Gérer les Commandes"
+
+#: frontend/templates/frontend/index.html:230
+msgid "All your orders in one place with intuitive filters and bulk actions."
+msgstr ""
+"Toutes vos commandes en un seul endroit avec des filtres intuitifs et des "
+"actions groupées."
+
+#: frontend/templates/frontend/index.html:241
+msgid "Ship Faster"
+msgstr "Expédiez Plus Rapidement"
+
+#: frontend/templates/frontend/index.html:244
+msgid "Reduce fulfillment time and focus on growing your business."
+msgstr ""
+"Réduisez le délai de livraison et concentrez-vous sur le développement de "
+"votre entreprise."
+
+#: frontend/templates/frontend/index.html:256
+msgid "Simple, Transparent Pricing"
+msgstr "Tarification Simple et Transparente"
+
+#: frontend/templates/frontend/index.html:259
+msgid "No hidden fees. Cancel anytime."
+msgstr "Pas de frais cachés. Annulez à tout moment."
+
+#: frontend/templates/frontend/index.html:291
+msgid "Get Started For Free"
+msgstr "Commencez Gratuitement"
+
+#: frontend/templates/frontend/index.html:311
+msgid "Need more?"
+msgstr "Besoin de plus ?"
+
+#: frontend/templates/frontend/index.html:311
+msgid "for enterprise solutions."
+msgstr "pour des solutions entreprise."
+
+#: frontend/templates/frontend/index.html:324
+msgid "Get In Touch"
+msgstr "Contactez-Nous"
+
+#: frontend/templates/frontend/index.html:327
+msgid "Have questions or want to learn more? We'd love to hear from you!"
+msgstr ""
+"Des questions ou envie d'en savoir plus ? Nous serions ravis de vous "
+"entendre !"
+
+#: frontend/templates/frontend/index.html:337
+msgid "Contact Information"
+msgstr "Informations de Contact"
+
+#: frontend/templates/frontend/index.html:372
+msgid "Send us a message"
+msgstr "Envoyez-nous un message"
+
+#: frontend/templates/frontend/index.html:378
+msgid "Your Name"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:384
+#: frontend/templates/frontend/index.html:489
+#: user_auth/templates/user_auth/forgot_password.html:48
+#: user_auth/templates/user_auth/signup.html:98
+msgid "Email Address"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:390
+msgid "Subject"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:396
+msgid "Message"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:403
+msgid "Send Message"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:422
+msgid "All rights reserved"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:436
+msgid "English"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:439
+msgid "Français"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:466
+msgid "Join Our Waitlist"
+msgstr ""
+
+#: frontend/templates/frontend/index.html:476
+msgid ""
+"Be the first to know when we launch! Enter your details below to join our "
+"waitlist."
+msgstr ""
+
+#: frontend/templates/frontend/index.html:483
+msgid "Full Name"
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:6
+#: frontend/templates/frontend/terms.html:23
+msgid "Terms & Conditions"
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:26
+msgid "Liability Limitations"
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:27
+msgid ""
+"Galawave provides its services 'AS IS' without any express or implied "
+"warranties."
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:28
+msgid ""
+"Galawave, its founders, and team are not liable for any direct or indirect "
+"damages resulting from the use of the site or service disruptions."
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:32
+msgid "Third-Party Services"
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:33
+msgid ""
+"Galawave acts as an intermediary between organizers and users and is not "
+"responsible for the quality or execution of events, or any changes or "
+"cancellations made by organizers."
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:34
+msgid ""
+"Any disputes or disagreements must be resolved directly between the "
+"concerned parties without recourse to Galawave or its founders."
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:38
+msgid "Intellectual Property"
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:39
+msgid ""
+"All content, including logos, designs, and software, is the exclusive "
+"property of Galawave and may not be reused or copied without prior written "
+"permission."
+msgstr ""
+
+#: frontend/templates/frontend/terms.html:43
+msgid "Financial Transactions"
+msgstr "Transactions Financières"
+
+#: frontend/templates/frontend/terms.html:44
+msgid ""
+"Galawave bears no financial responsibility regarding payment transactions or"
+" refunds between users and organizers."
+msgstr ""
+"Galawave décline toute responsabilité financière concernant les transactions"
+" de paiement ou les remboursements entre les utilisateurs et les "
+"organisateurs."
+
+#: frontend/templates/frontend/terms.html:45
+msgid ""
+"The user is solely responsible for verifying ticket or service purchase "
+"terms before payment."
+msgstr ""
+"L'utilisateur est seul responsable de la vérification des conditions d'achat"
+" de ticket ou de service avant le paiement."
+
+#: frontend/templates/frontend/terms.html:49
+msgid "Terms Modification"
+msgstr "Modification des Conditions"
+
+#: frontend/templates/frontend/terms.html:50
+msgid ""
+"Galawave management reserves the right to modify or update these terms at "
+"any time without prior notice. Continued use of the site indicates your full"
+" acceptance of the updated terms."
+msgstr ""
+"La direction de Galawave se réserve le droit de modifier ou de mettre à jour"
+" ces conditions à tout moment sans préavis. L'utilisation continue du site "
+"indique votre acceptation pleine et entière des conditions mises à jour."
+
+#: frontend/templates/frontend/terms.html:54
+msgid "Applicable Law"
+msgstr "Loi Applicable"
+
+#: frontend/templates/frontend/terms.html:55
+msgid ""
+"These terms are subject to the laws of the People's Democratic Republic of "
+"Algeria, and Algerian courts shall have jurisdiction over any disputes."
+msgstr ""
+"Ces conditions sont soumises aux lois de la République Démocratique "
+"Populaire d'Algérie, et les tribunaux algériens auront compétence sur tout "
+"litige."
+
+#: frontend/templates/frontend/terms.html:60
+msgid "For any inquiries or complaints, please contact via email:"
+msgstr "Pour toute demande ou réclamation, veuillez contacter par email:"
+
+#: frontend/templates/frontend/terms.html:64
+msgid "Last updated:"
+msgstr "Dernière mise à jour:"
+
+#: frontend/views.py:21
+msgid "Name and email are required"
+msgstr "Le nom et l'email sont requis"
+
+#: frontend/views.py:25
+msgid "Name is required"
+msgstr "Le nom est requis"
+
+#: frontend/views.py:28
+msgid "Invalid email"
+msgstr "Email invalide"
+
+#: frontend/views.py:38
+msgid "Thank you for joining our waitlist"
+msgstr "Merci de vous être inscrit sur notre liste d'attente"
+
+#: frontend/views.py:49 subscription/views.py:71
+msgid "Invalid request method"
+msgstr "Méthode de requête invalide"
+
+#: subscription/models.py:31 subscription/templates/subscription/list.html:44
+msgid "orders per month"
+msgstr "commandes par mois"
+
+#: subscription/models.py:37 subscription/templates/subscription/list.html:48
+msgid "products"
+msgstr "produits"
+
+#: subscription/models.py:41 subscription/templates/subscription/list.html:182
+msgid "Data Export"
+msgstr "Exportation de données"
+
+#: subscription/models.py:43 subscription/templates/subscription/list.html:57
+msgid "Data export"
+msgstr "Exportation de données"
+
+#: subscription/models.py:47
+msgid "Data Import"
+msgstr "Importation de données"
+
+#: subscription/models.py:49 subscription/templates/subscription/list.html:66
+msgid "Data import"
+msgstr "Importation de données"
+
+#: subscription/models.py:53 subscription/templates/subscription/list.html:193
+msgid "Email Support"
+msgstr ""
+
+#: subscription/models.py:55 subscription/templates/subscription/list.html:74
+msgid "Email support"
+msgstr ""
+
+#: subscription/models.py:61 subscription/templates/subscription/list.html:82
+msgid "Advanced analytics"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:17
+msgid "Subscription Plans"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:99
+msgid "No plans found"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:117
+msgid "Create New Plan"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:136
+msgid "Plan Name"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:139
+msgid "Unique name for the plan"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:145
+msgid "Monthly Price (USD)"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:172
+msgid "Plan Features"
+msgstr ""
+
+#: subscription/templates/subscription/list.html:204
+msgid "Import Data"
+msgstr "Importer des données"
+
+#: subscription/templates/subscription/list.html:227
+msgid "Cancel"
+msgstr "Annuler"
+
+#: subscription/templates/subscription/list.html:230
+msgid "Create Plan"
+msgstr "Créer un plan"
+
+#: subscription/views.py:31
+msgid "Plan name is required"
+msgstr "Le nom du plan est requis"
+
+#: subscription/views.py:33
+msgid "Name must be 20 characters or less"
+msgstr "Le nom doit comporter 20 caractères ou moins"
+
+#: subscription/views.py:38
+msgid "Invalid price format"
+msgstr "Format de prix invalide"
+
+#: subscription/views.py:43
+msgid "Max orders must be at least 1"
+msgstr "Le nombre maximum de commandes doit être d'au moins 1"
+
+#: subscription/views.py:45
+msgid "Invalid max orders value"
+msgstr "Valeur maximale de commandes invalide"
+
+#: subscription/views.py:50
+msgid "Max products must be at least 1"
+msgstr "Le nombre maximum de produits doit être d'au moins 1"
+
+#: subscription/views.py:52
+msgid "Invalid max products value"
+msgstr "Valeur maximale de produits invalide"
+
+#: subscription/views.py:73
+msgid "Permission denied"
+msgstr "Permission refusée"
+
+#: user_auth/models.py:11
+msgid "The Email field must be set"
+msgstr "Le champ Email doit être renseigné"
+
+#: user_auth/models.py:24
+msgid "Superuser must have is_staff=True."
+msgstr "Le superutilisateur doit avoir is_staff=True."
+
+#: user_auth/models.py:26
+msgid "Superuser must have is_superuser=True."
+msgstr "Le superutilisateur doit avoir is_superuser=True."
+
+#: user_auth/models.py:64
+msgid "Admin"
+msgstr "Admin"
+
+#: user_auth/models.py:65
+msgid "Seller"
+msgstr "Vendeur"
+
+#: user_auth/models.py:72
+msgid "user"
+msgstr "utilisateur"
+
+#: user_auth/models.py:76
+msgid "shop code"
+msgstr "code boutique"
+
+#: user_auth/models.py:84
+msgid "role"
+msgstr "rôle"
+
+#: user_auth/models.py:90
+msgid "max orders"
+msgstr "commandes max"
+
+#: user_auth/models.py:91
+msgid "available orders"
+msgstr "commandes disponibles"
+
+#: user_auth/models.py:92
+msgid "max products"
+msgstr "produits max"
+
+#: user_auth/models.py:93
+msgid "available products"
+msgstr "produits disponibles"
+
+#: user_auth/models.py:96
+msgid "user profile"
+msgstr "profil utilisateur"
+
+#: user_auth/models.py:97
+msgid "user profiles"
+msgstr "profils utilisateurs"
+
+#: user_auth/templates/user_auth/email_confirmation.html:5
+msgid "Email Confirmation"
+msgstr "Confirmation d'Email"
+
+#: user_auth/templates/user_auth/email_confirmation.html:80
+msgid "Email Confirmed!"
+msgstr "Email Confirmé!"
+
+#: user_auth/templates/user_auth/email_confirmation.html:83
+msgid "Log In to Your Account"
+msgstr "Connectez-vous à Votre Compte"
+
+#: user_auth/templates/user_auth/email_confirmation.html:89
+msgid "Oops! Something went wrong"
+msgstr "Oops! Quelque chose s'est mal passé"
+
+#: user_auth/templates/user_auth/email_confirmation.html:92
+msgid "Try Signing Up Again"
+msgstr "Essayez de vous Inscrire à Nouveau"
+
+#: user_auth/templates/user_auth/forgot_password.html:9
+#: user_auth/templates/user_auth/forgot_password.html:36
+msgid "Forgot Password"
+msgstr "Mot de Passe Oublié"
+
+#: user_auth/templates/user_auth/forgot_password.html:25
+#: user_auth/templates/user_auth/reset_password_confirm.html:6
+#: user_auth/templates/user_auth/reset_password_confirm.html:19
+#: user_auth/views/password_reset.py:54
+msgid "Reset Your Password"
+msgstr "Réinitialisez Votre Mot de Passe"
+
+#: user_auth/templates/user_auth/forgot_password.html:28
+msgid ""
+"Enter your email address and we'll send you a link to reset your password "
+"and get back to planning your next desert adventure."
+msgstr ""
+"Entrez votre adresse e-mail et nous vous enverrons un lien pour "
+"réinitialiser votre mot de passe et revenir à la planification de votre "
+"prochaine aventure dans le désert."
+
+#: user_auth/templates/user_auth/forgot_password.html:40
+msgid ""
+"Enter the email address associated with your account and we'll send you a "
+"link to reset your password."
+msgstr ""
+"Entrez l'adresse e-mail associée à votre compte et nous vous enverrons un "
+"lien pour réinitialiser votre mot de passe."
+
+#: user_auth/templates/user_auth/forgot_password.html:54
+msgid "Send Reset Link"
+msgstr "Envoyer le Lien de Réinitialisation"
+
+#: user_auth/templates/user_auth/forgot_password.html:59
+msgid "Remember your password?"
+msgstr "Vous souvenez-vous de votre mot de passe?"
+
+#: user_auth/templates/user_auth/forgot_password.html:59
+msgid "Sign in"
+msgstr "Se Connecter"
+
+#: user_auth/templates/user_auth/login.html:6
+msgid "Login"
+msgstr "Connexion"
+
+#: user_auth/templates/user_auth/login.html:34
+#: user_auth/templates/user_auth/signup.html:34
+msgid "Welcome to"
+msgstr "Bienvenue à"
+
+#: user_auth/templates/user_auth/login.html:40
+msgid "Signin to get a full access to your dashboard"
+msgstr "Connectez-vous pour avoir un accès complet à votre tableau de bord"
+
+#: user_auth/templates/user_auth/login.html:56
+msgid "Email Adress"
+msgstr "Adresse Électronique"
+
+#: user_auth/templates/user_auth/login.html:78
+msgid "Forgot password?"
+msgstr "Mot de passe oublié?"
+
+#: user_auth/templates/user_auth/login.html:83
+msgid "Sign In"
+msgstr "Se Connecter"
+
+#: user_auth/templates/user_auth/login.html:88
+msgid "Don't have an account?"
+msgstr "Vous n'avez pas de compte?"
+
+#: user_auth/templates/user_auth/login.html:88
+msgid "Sign up"
+msgstr "S'inscrire"
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:20
+msgid "Please enter your new password below."
+msgstr "Veuillez entrer votre nouveau mot de passe ci-dessous."
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:28
+msgid "New Password"
+msgstr "Nouveau Mot de Passe"
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:31
+msgid "Enter your new password"
+msgstr "Entrez votre nouveau mot de passe"
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:35
+msgid "Confirm New Password"
+msgstr "Confirmer le Nouveau Mot de Passe"
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:38
+msgid "Confirm your new password"
+msgstr "Confirmez votre nouveau mot de passe"
+
+#: user_auth/templates/user_auth/reset_password_confirm.html:43
+#: user_auth/views/password_reset.py:56
+msgid "Reset Password"
+msgstr "Réinitialiser le mot de passe"
+
+#: user_auth/templates/user_auth/signup.html:6
+#: user_auth/templates/user_auth/signup.html:139
+msgid "Sign Up"
+msgstr "S'inscrire"
+
+#: user_auth/templates/user_auth/signup.html:40
+msgid "Signup to enjoy the amazing features to grow your business "
+msgstr ""
+"Inscrivez-vous pour profiter des fonctionnalités incroyables et développer "
+"votre entreprise"
+
+#: user_auth/templates/user_auth/signup.html:49
+msgid "Powerful business insights with live reports"
+msgstr "Des perspectives d'entreprise puissantes avec des rapports en direct"
+
+#: user_auth/templates/user_auth/signup.html:53
+msgid "Seamless order processing & fulfillment"
+msgstr "Traitement et exécution des commandes fluides"
+
+#: user_auth/templates/user_auth/signup.html:57
+msgid "Smart stock tracking with real-time alerts"
+msgstr "Suivi intelligent des stocks avec des alertes en temps réel"
+
+#: user_auth/templates/user_auth/signup.html:63
+msgid "Create Account"
+msgstr "Créer un compte"
+
+#: user_auth/templates/user_auth/signup.html:125
+msgid "Confirm Password"
+msgstr "Confirmer le mot de passe"
+
+#: user_auth/templates/user_auth/signup.html:142
+msgid "Already have an account?"
+msgstr "Vous avez déjà un compte?"
+
+#: user_auth/templates/user_auth/signup.html:144
+msgid "Log In"
+msgstr "Se connecter"
+
+#: user_auth/views/auth.py:32
+msgid "First and last name are required"
+msgstr "Le prénom et le nom sont requis"
+
+#: user_auth/views/auth.py:34
+msgid "Names must be at least 2 characters long"
+msgstr "Les noms doivent comporter au moins 2 caractères"
+
+#: user_auth/views/auth.py:40
+msgid "This email is already registered"
+msgstr "Cet email est déjà enregistré"
+
+#: user_auth/views/auth.py:42 user_auth/views/auth.py:115
+msgid "Please enter a valid email address"
+msgstr "Veuillez entrer une adresse email valide"
+
+#: user_auth/views/auth.py:48
+msgid "Password must be at least 8 characters long"
+msgstr "Le mot de passe doit comporter au moins 8 caractères"
+
+#: user_auth/views/auth.py:50
+msgid "Passwords do not match"
+msgstr "Les mots de passe ne correspondent pas"
+
+#: user_auth/views/auth.py:71
+msgid "Sheethub Account activation"
+msgstr "Activation du compte Sheethub"
+
+#: user_auth/views/auth.py:75
+msgid "Hello"
+msgstr "Bonjour"
+
+#: user_auth/views/auth.py:76
+msgid "Welcome to Sheethub!"
+msgstr "Bienvenue sur Sheethub !"
+
+#: user_auth/views/auth.py:77
+msgid "Please confirm your email address"
+msgstr "Veuillez confirmer votre adresse e-mail"
+
+#: user_auth/views/auth.py:78
+msgid "Sheethub Team"
+msgstr "Équipe Sheethub"
+
+#: user_auth/views/auth.py:79
+msgid "If you didn't create an account, please ignore this email."
+msgstr "Si vous n'avez pas créé de compte, veuillez ignorer cet e-mail."
+
+#: user_auth/views/auth.py:80
+msgid "Activate Account"
+msgstr "Activer le compte"
+
+#: user_auth/views/auth.py:81
+msgid ""
+"Thank you for signing up! Please click the button below to activate your "
+"account:"
+msgstr ""
+"Merci de vous être inscrit ! Veuillez cliquer sur le bouton ci-dessous pour "
+"activer votre compte :"
+
+#: user_auth/views/auth.py:90
+msgid ""
+"E-mail activation link has been sent successfully. Please activate your "
+"account."
+msgstr ""
+"Le lien d'activation par e-mail a été envoyé avec succès. Veuillez activer "
+"votre compte."
+
+#: user_auth/views/auth.py:93
+msgid "E-mail activation link could not be sent. Please try again."
+msgstr ""
+"Le lien d'activation par e-mail n'a pas pu être envoyé. Veuillez réessayer."
+
+#: user_auth/views/auth.py:118
+msgid "All fields are required"
+msgstr "Tous les champs sont obligatoires"
+
+#: user_auth/views/auth.py:120
+msgid "Password must be at least 4 characters long"
+msgstr "Le mot de passe doit comporter au moins 4 caractères"
+
+#: user_auth/views/auth.py:132
+msgid ""
+"Your account is not active. Please check your email for the activation link."
+msgstr ""
+"Votre compte n'est pas actif. Veuillez vérifier votre e-mail pour le lien "
+"d'activation."
+
+#: user_auth/views/auth.py:134
+msgid "Invalid email address or password."
+msgstr "Adresse e-mail ou mot de passe invalide."
+
+#: user_auth/views/email.py:30
+msgid "The confirmation link has expired. Please request a new one."
+msgstr "Le lien de confirmation a expiré. Veuillez en demander un nouveau."
+
+#: user_auth/views/email.py:39
+msgid "Your email has been successfully confirmed! You can now log in."
+msgstr ""
+"Votre email a été confirmé avec succès ! Vous pouvez maintenant vous "
+"connecter."
+
+#: user_auth/views/email.py:45
+msgid "Invalid confirmation link. Please try again."
+msgstr "Lien de confirmation invalide. Veuillez réessayer."
+
+#: user_auth/views/password_reset.py:35
+msgid "Email is required."
+msgstr "L'email est requis."
+
+#: user_auth/views/password_reset.py:40
+msgid "Invalid email address."
+msgstr "Adresse email invalide."
+
+#: user_auth/views/password_reset.py:45
+msgid "E-mail address not found"
+msgstr "Adresse e-mail non trouvée"
+
+#: user_auth/views/password_reset.py:53
+msgid ""
+"Click the button below to reset your password. If you didn't request this, "
+"please ignore this email."
+msgstr ""
+"Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe. Si "
+"vous n'avez pas fait cette demande, veuillez ignorer cet email."
+
+#: user_auth/views/password_reset.py:55 user_auth/views/password_reset.py:61
+msgid "Password Reset Request"
+msgstr "Demande de réinitialisation de mot de passe"
+
+#: user_auth/views/password_reset.py:67
+msgid "Password reset email sent successfully."
+msgstr "Email de réinitialisation de mot de passe envoyé avec succès."
+
+#: user_auth/views/password_reset.py:91 user_auth/views/password_reset.py:127
+msgid "Invalid or expired password reset link."
+msgstr "Lien de réinitialisation de mot de passe invalide ou expiré."
+
+#: user_auth/views/password_reset.py:107
+msgid "Please fill in all fields."
+msgstr ""
+
+#: user_auth/views/password_reset.py:109
+msgid "Passwords don't match."
+msgstr ""
+
+#: user_auth/views/password_reset.py:111
+msgid "Password must be at least 8 characters long."
+msgstr ""

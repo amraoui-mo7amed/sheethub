@@ -71,9 +71,17 @@ def signup(request):
                     subject=str(_("Sheethub Account activation")),
                     variabels={
                         "activation_link": activation_link,
-                        "first_name": first_name
+                        "first_name": first_name,
+                        "greetings": str(_("Hello")),
+                        "title": str(_("Welcome to Sheethub!")),
+                        "subject": str(_("Please confirm your email address")),
+                        "sender": str(_("Sheethub Team")),
+                        "warning": str(_("If you didn't create an account, please ignore this email.")),
+                        "confirm_button_text": str(_("Activate Account")),
+                        "text": str(_("Thank you for signing up! Please click the button below to activate your account:")),
                     },
-                    recipiant_email=email
+                    recipiant_email=email,
+                    recipiant_name=first_name
                 )
 
                 if success:
