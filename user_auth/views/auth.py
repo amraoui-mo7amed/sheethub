@@ -28,11 +28,13 @@ def signup(request):
         password2 = request.POST.get('password2')
         # Get the geoLocations 
         try:
-            ip = gl.get_client_ip(request)
+            ip = gl.get_client_ip()
             geolocation = gl.get_geolocation(ip)
             country = geolocation.get('country')
         except Exception as e:
             country = None
+        
+        print(country)
         # Validate names
         if not first_name or not last_name:
             errors.append(_('First and last name are required'))
