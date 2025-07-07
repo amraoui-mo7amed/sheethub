@@ -50,11 +50,9 @@
         <!-- Top Navigation -->
         <div class="top-nav">
             <div class="d-flex align-items-center">
-                {% if request.user.profile.role == "admin" %}
-                    <div class="menu-toggle" id="menuToggle">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                {% endif %}
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
                 <div class="page-title">
                     <h3 class="text-truncate fw-bold mb-0">
                         {% block PageTitle %}
