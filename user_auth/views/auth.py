@@ -65,9 +65,8 @@ def signup(request):
                     password=password1,
                     first_name=first_name,
                     last_name=last_name,
-                    country=country
                 )
-                profile = UserProfile.objects.create(user=user, role='seller')
+                profile = UserProfile.objects.create(user=user, role='seller', country=country)
                 user.profile = profile
                 user.save()
 

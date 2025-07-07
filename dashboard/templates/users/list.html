@@ -23,7 +23,6 @@
                         </h5>
                         {% comment %} <a href="#" class="view-all">{% trans "View All" %}</a> {% endcomment %}
                     </div>
-
                     <div class="users-list p-3">
                         {% if objects %}
                             <div class="row g-3">
@@ -54,15 +53,37 @@
                                                             {% endif %}
                                                         </small>
                                                     </div>
-                                                    <span class="user-role d-block">
-                                                        {{ user.profile.get_role_display }}
-                                                    </span>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="user-role d-block mb-0">
+                                                            {{ user.profile.get_role_display }}
+                                                        </span>
+                                                        <div class="devider">
+                                                            |
+                                                        </div>
+                                                        <span class="user-role d-block mb-0">
+                                                            {{ user.profile.country }}
+                                                        </span>
+                                                        <div class="devider">
+                                                            |
+                                                        </div>
+                                                        {% if user.profile.is_beta %}
+                                                            <span class="bg-success rounded text-light px-2 py-0">
+                                                                <small class="fas fa-b"></small>
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="bg-danger rounded text-light px-2 py-0">
+                                                                <small class="fas fa-b"></small>
+                                                            </span>
+                                                        {% endif %}
+
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="user-actions mt-2 d-flex gap-2 justify-content-end w-100">
                                                 {% url 'dash:user_delete' user.pk as delete_url %}
                                                 {% url "dash:user_profile" user.pk as view_url %}
                                                 {% include "components/action_buttons.html" with view_url=view_url delete_url=delete_url %}
+
                                             </div>
                                         </div>
                                     </div>
