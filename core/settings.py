@@ -229,3 +229,8 @@ CSRF_COOKIE_SECURE = False
 # TinyMCE
 TINYMCE_JS_URL = STATIC_URL + "tinymce/tinymce.min.js"  # Correct way to define the URL
 TINYMCE_COMPRESSOR = False
+
+
+# Trust the proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
