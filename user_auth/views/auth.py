@@ -28,7 +28,7 @@ def signup(request):
         password2 = request.POST.get('password2')
         # Get the geoLocations 
         try:
-            ip = gl.get_client_ip()
+            ip = gl.get_client_ip(request)
             geolocation = gl.get_geolocation(ip)
             country = geolocation.get('country')
         except Exception as e:
