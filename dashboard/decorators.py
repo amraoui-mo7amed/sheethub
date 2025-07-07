@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
 from functools import wraps
 from django.core.exceptions import PermissionDenied
-
+from django.shortcuts import redirect
 
 def admin_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
@@ -36,3 +35,13 @@ def role_required(allowed_roles=None):
     return decorator
 
 
+def user_is_self(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        user_pk = kwargs.get("pk")
+        
+        if not user_pk or int(user_pk) != request.user.pk:
+            raise PermissionDenied("You are not allowed to access this resource.")
+
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view

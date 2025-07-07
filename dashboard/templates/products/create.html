@@ -1,0 +1,273 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+{% load filters %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="{% static 'css/image_upload.css' %}?v={% now 'U' %}" />
+{% endblock extra_css %}
+
+{% block dashContent %}
+    <div class="container-fluid">
+        <form action="{% url 'dash:product_create' %}"
+              method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row g-2">
+
+                <!-- Product Settings -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Product Settings" %}
+                            </h5>
+                        </div>
+                        <div class="card-body d-flex flex-column gap-3">
+                            <!-- Additional Images -->
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="additionalImagesToggle"
+                                       name="allow_additional_images"
+                                       checked />
+                                <label class="form-check-label" for="additionalImagesToggle">
+                                    {% trans "Allow Additional Images" %}
+                                </label>
+                            </div>
+
+                            <!-- Show Product Publicly -->
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="publicToggle"
+                                       name="is_public" />
+                                <label class="form-check-label" for="publicToggle">
+                                    {% trans "Show Product Publicly" %}
+                                </label>
+                            </div>
+
+                            <!-- Mark as Featured -->
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="featuredToggle"
+                                       name="is_featured" />
+                                <label class="form-check-label" for="featuredToggle">
+                                    {% trans "Mark as Featured" %}
+                                </label>
+                            </div>
+
+                            <!-- In Stock -->
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="stockToggle"
+                                       name="in_stock"
+                                       checked />
+                                <label class="form-check-label" for="stockToggle">
+                                    {% trans "In Stock" %}
+                                </label>
+                            </div>
+
+                            <!-- Facebook Pixel -->
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="enablePixelSwitch"
+                                       name="enable_pixel"
+                                       {% if shop.facebook_pixel_id %}checked{% endif %} />
+                                <label class="form-check-label" for="enablePixelSwitch">
+                                    {% trans "Enable Facebook Pixel Tracking" %}
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Main Product Image -->
+                <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="card pb-3">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Main Product Image" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {% include "components/image_upload.html" with input_name="default_image" %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TODO: Product Details, Submit Button, etc. -->
+            <!-- Example: -->
+            <!-- <button type="submit" class="btn btn-primary mt-3">{% trans 'Save Product' %}</button> -->
+            <div class="row g-2 mt-2">
+                <div class="col-lg-8 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Product Details" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Product Name -->
+                                <div class="col-md-6">
+                                    <label for="productName" class="form-label">
+                                        {% trans "Product Name" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="productName"
+                                           name="name"
+                                           placeholder="{% trans 'e.g. Handmade Bracelet' %}"
+                                           required />
+                                </div>
+
+                                <!-- Price -->
+                                <div class="col-md-6">
+                                    <label for="productPrice" class="form-label">
+                                        {% trans "Price (DZD)" %}
+                                    </label>
+                                    <input type="number"
+                                           class="form-control"
+                                           id="productPrice"
+                                           name="price"
+                                           min="0"
+                                           step="0.01"
+                                           placeholder="1000"
+                                           required />
+                                </div>
+
+                                <!-- Stock -->
+                                <div class="col-md-6">
+                                    <label for="productStock" class="form-label">
+                                        {% trans "Stock Quantity" %}
+                                    </label>
+                                    <input type="number"
+                                           class="form-control"
+                                           id="productStock"
+                                           name="stock"
+                                           min="0"
+                                           placeholder="50" />
+                                </div>
+                                <!-- Facebook Pixel ID -->
+                                <div class="col-md-6" id="facebookPixelField">
+                                    <label for="facebookPixelId" class="form-label">
+                                        {% trans "Facebook Pixel ID" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="facebookPixelId"
+                                           name="facebook_pixel_id"
+                                           placeholder="123456789012345"
+                                           value="{{ shop.facebook_pixel_id }}" />
+                                </div>
+                                <!-- Description -->
+                                <div class="col-12">
+                                    <label for="productDescription" class="form-label">
+                                        {% trans "Product Description" %}
+                                    </label>
+                                    <textarea class="form-control"
+                                              id="productDescription"
+                                              name="description"
+                                              rows="4"
+                                              placeholder="{% trans 'Describe your product...' %}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Landing Page Settings -->
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Landing Page Settings" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+
+                                <!-- Language -->
+                                <div class="col-12">
+                                    <label for="landingLang" class="form-label">
+                                        {% trans "Language" %}
+                                    </label>
+                                    <select class="form-select" id="landingLang" name="landing_language">
+                                        <option value="ar" {% if shop.landing_language == 'ar' %}selected{% endif %}>
+                                            {% trans "Arabic" %}
+                                        </option>
+                                        <option value="en" {% if shop.landing_language == 'en' %}selected{% endif %}>
+                                            {% trans "English" %}
+                                        </option>
+                                        <option value="fr" {% if shop.landing_language == 'fr' %}selected{% endif %}>
+                                            {% trans "French" %}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Direction -->
+                                <div class="col-12">
+                                    <label for="layoutDirection" class="form-label">
+                                        {% trans "Product Layout Direction" %}
+                                    </label>
+                                    <select class="form-select" id="layoutDirection" name="layout_direction">
+                                        <option value="horizontal"
+                                                {% if shop.layout_direction == 'horizontal' %}selected{% endif %}>
+                                            {% trans "Horizontal" %}
+                                        </option>
+                                        <option value="vertical"
+                                                {% if shop.layout_direction == 'vertical' %}selected{% endif %}>
+                                            {% trans "Vertical" %}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Enable Feedbacks -->
+                                <div class="col-12">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="enableFeedbacks"
+                                               name="enable_feedbacks"
+                                               {% if shop.enable_feedbacks %}checked{% endif %} />
+                                        <label class="form-check-label" for="enableFeedbacks">
+                                            {% trans "Enable Product Feedbacks" %}
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Enable Related Products (Same Category) -->
+                                <div class="col-12">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               id="enableCategoryVariants"
+                                               name="enable_related_products"
+                                               {% if shop.enable_related_products %}checked{% endif %} />
+                                        <label class="form-check-label" for="enableCategoryVariants">
+                                            {% trans "Related Products" %}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+{% endblock dashContent %}
+
+{% block extra_js %}
+    <script src="{% static 'js/image_upload.js' %}?v={% now 'U' %}"></script>
+{% endblock extra_js %}

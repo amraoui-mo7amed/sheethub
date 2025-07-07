@@ -1,17 +1,12 @@
 from django import template
 import hashlib
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
 @register.filter
 def md5(value):
     return hashlib.md5(value.encode('utf-8')).hexdigest()
-
-import hashlib
-from django import template
-from django.utils.safestring import mark_safe
-
-register = template.Library()
 
 @register.filter
 def gravatar(email, size=80):

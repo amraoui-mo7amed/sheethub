@@ -36,11 +36,13 @@
             {% include "menu/list.html" with menu_items=menu_items %}
 
         </div>
-        <div class="sidebar-footer d-flex flex-column justify-content-center">
-            <a href="#" class="btn btn-md btn-primary-custom w-100 mb-2">
-                {% trans "Website Settings" %}
-            </a>
-        </div>
+        {% if request.user.role == "admin" %}
+            <div class="sidebar-footer d-flex flex-column justify-content-center">
+                <a href="#" class="btn btn-md btn-primary-custom w-100 mb-2">
+                    {% trans "Website Settings" %}
+                </a>
+            </div>
+        {% endif %}
     </div>
 
     <!-- Main Content -->
@@ -62,13 +64,20 @@
                 </div>
             </div>
             <div class="user-menu">
-                <div class="notification" id="notificationBtn">
+                <div class="notification"
+                     id="notificationBtn"
+                     data-target-url="{% url "dash:notifications" %}">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    {% comment %} <span class="notification-badge">3</span> {% endcomment %}
                 </div>
                 <div class="user-profile" id="accountBtn">
-                    <img src="{{ request.user.email|gravatar:120 }}"
-                         alt="{% trans 'User Profile' %}" />
+                    {% if request.user.profile.image %}
+                        <img src="{{ request.user.profile.image.url }}"
+                             alt="{% trans 'User Profile' %}" />
+                    {% else %}
+                        <img src="{{ request.user.email|gravatar:120 }}"
+                             alt="{% trans 'User Profile' %}" />
+                    {% endif %}
                     <div>
                         <div class="user-name">
                             {% if request.user.profile.role == "admin" %}
@@ -86,7 +95,8 @@
                     <h5>
                         {% trans "Notifications" %}
                     </h5>
-                    <span class="mark-all-read">{% trans "Mark all as read" %}</span>
+                    <span class="mark-all-read"
+                          data-target-url="{% url "dash:mark_all_read" %}">{% trans "Mark all as read" %}</span>
                 </div>
                 <div class="notification-list">
                     <div class="notification-item notification-unread">
@@ -146,8 +156,13 @@
             <!-- Account Popup -->
             <div class="account-popup" id="accountPopup">
                 <div class="account-header">
-                    <img src="{{ request.user.email|gravatar:120 }}"
-                         alt="{% trans 'User Profile' %}" />
+                    {% if request.user.profile.image %}
+                        <img src="{{ request.user.profile.image.url }}"
+                             alt="{% trans 'User Profile' %}" />
+                    {% else %}
+                        <img src="{{ request.user.email|gravatar:120 }}"
+                             alt="{% trans 'User Profile' %}" />
+                    {% endif %}
                     <div>
                         <div class="account-name text-truncate">
                             {% if request.user.first_name and request.user.last_name %}

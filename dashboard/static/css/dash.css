@@ -217,6 +217,8 @@ i{
 .notification-text {
     font-size: 0.85rem;
     margin-bottom: 3px;
+    display: flex;
+    flex-direction: column;
 }
 
 .notification-time {
@@ -564,6 +566,58 @@ html[lang="ar"] .logout-btn i {
 /* Stats Cards RTL Adjustments */
 html[lang="ar"] .stats-card {
     border-right: none;
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    padding: 12px 20px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.toast.success {
+    background-color: #28a745;
+}
+
+.toast.error {
+    background-color: #dc3545;
+}
+
+.toast.info {
+    background-color: #17a2b8;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* RTL Support for Toasts */
+html[lang="ar"] .toast {
+    direction: rtl;
+    text-align: right;
 }
 
 /* Booking Items RTL Adjustments */

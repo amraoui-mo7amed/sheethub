@@ -7,6 +7,55 @@
     --gray: #6b7280;
     --light-gray: #e5e7eb;
 }
+/* Backgrounds */
+.bg-primary { background-color: var(--primary) !important; }
+.bg-primary-dark { background-color: var(--primary-dark) !important; }
+.bg-secondary { background-color: var(--secondary) !important; }
+.bg-accent { background-color: var(--accent) !important; }
+.bg-dark { background-color: var(--dark) !important; }
+.bg-gray { background-color: var(--gray) !important; }
+.bg-light-gray { background-color: var(--light-gray) !important; }
+
+/* Text Colors */
+.text-primary { color: var(--primary) !important; }
+.text-primary-dark { color: var(--primary-dark) !important; }
+.text-secondary { color: var(--secondary) !important; }
+.text-accent { color: var(--accent) !important; }
+.text-dark { color: var(--dark) !important; }
+.text-gray { color: var(--gray) !important; }
+.text-light-gray { color: var(--light-gray) !important; }
+
+/* Borders */
+.border-primary { border-color: var(--primary) !important; }
+.border-primary-dark { border-color: var(--primary-dark) !important; }
+.border-secondary { border-color: var(--secondary) !important; }
+.border-accent { border-color: var(--accent) !important; }
+.border-dark { border-color: var(--dark) !important; }
+.border-gray { border-color: var(--gray) !important; }
+.border-light-gray { border-color: var(--light-gray) !important; }
+
+/* Buttons (Optional) */
+.btn-primary {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-accent {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+}
+.btn-accent:hover {
+    background-color: #0f9f79;
+}
+
+/* Utility for border, text, bg hover if needed */
+.hover-bg-primary:hover { background-color: var(--primary) !important; }
+.hover-text-primary:hover { color: var(--primary) !important; }
 
 body {
     font-family: 'Inter', sans-serif;

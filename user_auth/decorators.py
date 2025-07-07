@@ -14,7 +14,7 @@ def redirect_user(view_func):
             # Create a default profile if it doesn't exist
             from user_auth.models import UserProfile
             UserProfile.objects.create(user=request.user, role='seller')
-            return redirect('dash:user_profile', pk=request.user.pk)
+            return redirect('dash:home')
             
         # Redirect based on role
         if request.user.profile.role == 'admin':

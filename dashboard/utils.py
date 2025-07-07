@@ -8,28 +8,28 @@ from socket import gaierror
 import socket
 from django.utils.translation import gettext_lazy as _
 
-# def create_user_notification(user, message):
-#     """
-#     Create a notification for a single user
+userModel = get_user_model()
+
+
+def create_user_notification(user, title: str, message: str ):
+    """
+    Create a notification for a single user
     
-#     Args:
-#         user: User instance or user ID
-#         message: Notification message content
-#         notification_type: One of Notification.NOTIFICATION_TYPES
-#         event: Optional related Event instance
+    Args:
+        user: User instance or user ID
+        message: Notification message content
+        notification_type: One of Notification.NOTIFICATION_TYPES
+        event: Optional related Event instance
     
-#     Returns:
-#         Notification object
-#     """
-#     User = get_user_model()
+    Returns:
+        Notification object
+    """
     
-#     if isinstance(user, int):
-#         user = User.objects.get(pk=user)
-    
-#     return models.Notification.objects.create(
-#         user=user,
-#         message=message,
-#     )
+    return models.Notification.objects.create(
+        user=user,
+        title=title,
+        message=message,
+    )
 
 def translate(text: str):
     MISTRALAI_API_KEY = config('MISTRAL_API_KEY')
@@ -110,3 +110,4 @@ def test_smtp_connection(host, port, username, password, use_tls):
                 server.quit()
         except Exception:
             pass
+

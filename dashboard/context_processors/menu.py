@@ -8,7 +8,7 @@ menu_items = [
         "name": _("Dashboard"),
         "url": "dash:home",
         "icon": "fas fa-home",
-        "roles": ["admin"]
+        "roles": ["admin", "seller"]
     },
     {
         "name": _("Users"),
@@ -22,7 +22,7 @@ menu_items = [
         "icon" : "fas fa-credit-card",
         "roles": ["admin"]
     },
-        {
+    {
         "name" : _('SMTP Server'),
         "url" : "dash:smtp_config",
         "icon" : "fas fa-envelope",
@@ -33,6 +33,13 @@ menu_items = [
         "url" : "dash:waitlist",
         "icon" : "fas fa-user-clock",
         "roles": ["admin"]
+    },
+    # Seller Menu 
+    {
+        "name" : _('Products'),
+        "url" : "dash:products_list",
+        "icon" : "fas fa-box",
+        "roles": ["seller"]
     },
 
 ]

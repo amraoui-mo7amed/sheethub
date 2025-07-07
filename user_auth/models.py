@@ -87,10 +87,11 @@ class UserProfile(models.Model):
         default='seller'
     )
 
-    max_orders = models.IntegerField(_('max orders'), default=1)
-    available_orders = models.IntegerField(_('available orders'), default=1)
-    max_products = models.IntegerField(_('max products'), default=1)
-    available_products = models.IntegerField(_('available products'), default=1)
+    image = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+    max_orders = models.IntegerField(_('max orders'), default=30)
+    max_products = models.IntegerField(_('max products'), default=10)
+    country = models.CharField(_('country'), max_length=100, blank=True, null=True)
+    is_beta = models.BooleanField(_('is beta'), default=True)
 
     class Meta:
         verbose_name = _('user profile')

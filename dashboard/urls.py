@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dash, users, waitlist, smtp
+from .views import dash, users, waitlist, smtp, notifications, products
 
 app_name = 'dash'  # Changed from 'dashboard' to match the namespace in the template
 
@@ -8,7 +8,14 @@ urlpatterns = [
     # Users 
     path('users/', users.list.as_view(), name='users_list'),
     path('users/profile/<int:pk>', users.userProfile, name='user_profile'),
+    path('users/profile/edit', users.profileEdit, name='user_profile_edit'),
     path('users/delete/<int:pk>', users.Delete, name='user_delete'),
+    # Notifications 
+    path("notifications/", notifications.get_notifications , name="notifications"),
+    path("notifications/mark-all-read/", notifications.set_read , name="mark_all_read"),
+    # Products 
+    path('products/', products.list, name='products_list'),
+    path('products/create/', products.create, name='product_create'),
     # Waitlist
     path('waitlist/', waitlist.List.as_view(), name='waitlist'),
     # SMTP Server

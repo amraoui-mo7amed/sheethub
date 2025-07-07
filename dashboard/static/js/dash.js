@@ -15,10 +15,17 @@ const accountPopup = document.getElementById('accountPopup');
 const popupOverlay = document.getElementById('popupOverlay');
 
 notificationBtn.addEventListener('click', function (e) {
-    e.stopPropagation();
+       e.stopPropagation();
+    // Toggle the notification popup
+    const isShowing = !notificationPopup.classList.contains('show');
     notificationPopup.classList.toggle('show');
     accountPopup.classList.remove('show');
-    popupOverlay.style.display = notificationPopup.classList.contains('show') ? 'block' : 'none';
+    popupOverlay.style.display = isShowing ? 'block' : 'none';
+    
+    // If showing notifications, fetch the latest ones
+    if (isShowing) {
+        fetchNotifications();
+    }
 });
 
 accountBtn.addEventListener('click', function (e) {
@@ -27,6 +34,185 @@ accountBtn.addEventListener('click', function (e) {
     notificationPopup.classList.remove('show');
     popupOverlay.style.display = accountPopup.classList.contains('show') ? 'block' : 'none';
 });
+
+// Function to fetch notifications from the server
+function fetchNotifications() {
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationList = document.querySelector('.notification-list');
+    const notificationBadge = document.querySelector('.notification-badge');
+    
+    if (!notificationBtn || !notificationList) return;
+    
+    const url = notificationBtn.getAttribute('data-target-url');
+    
+    fetch(url, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Clear existing notifications
+        notificationList.innerHTML = '';
+        
+        if (data.error) {
+            // Handle case where no notifications are found
+            notificationList.innerHTML = `
+                <div class="text-center p-4 text-muted">
+                    ${data.error}
+                </div>
+            `;
+            if (notificationBadge) {
+                notificationBadge.style.display = 'none';
+            }
+            return;
+        }
+        
+        if (data.notifications && data.notifications.length > 0) {
+                // Update notification badge count (unread notifications)
+                const unreadCount = data.notifications.filter(n => !n.is_read).length;
+                const notificationBadge = notificationBtn.querySelector('.notification-badge') || 
+                                       document.createElement('span');
+                
+                if (!notificationBadge.classList.contains('notification-badge')) {
+                    notificationBadge.className = 'notification-badge';
+                    notificationBtn.appendChild(notificationBadge);
+                }
+                
+                notificationBadge.textContent = unreadCount > 0 ? unreadCount : '';
+                notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
+                
+                // Add each notification to the list
+                data.notifications.forEach(notification => {
+                    const notificationItem = document.createElement('div');
+                    notificationItem.className = `notification-item ${!notification.is_read ? 'notification-unread' : ''}`;
+                    notificationItem.innerHTML = `
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>${notification.title}</strong> ${notification.message}
+                            </div>
+                        </div>
+                    `;
+                    notificationList.appendChild(notificationItem);
+                });
+            } else {
+                // Show message when there are no notifications
+                if (notificationBadge) {
+                    notificationBadge.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+        });
+}
+
+// Handle mark all as read button click
+document.addEventListener('click', function(e) {
+    const markAllReadBtn = e.target.closest('.mark-all-read');
+    if (!markAllReadBtn) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const url = markAllReadBtn.getAttribute('data-target-url');
+    const notificationBtn = document.getElementById('notificationBtn');
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({})
+    })
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to mark notifications as read');
+        }
+        return data;
+    })
+    .then(data => {
+        // Update UI to show all notifications as read
+        const unreadItems = document.querySelectorAll('.notification-unread');
+        unreadItems.forEach(item => {
+            item.classList.remove('notification-unread');
+        });
+        
+        // Update badge count to 0
+        const notificationBadge = notificationBtn ? notificationBtn.querySelector('.notification-badge') : null;
+        if (notificationBadge) {
+            notificationBadge.style.display = 'none';
+            notificationBadge.textContent = '';
+        }
+        
+        // Show success message from backend
+        showToast(data.message || 'Notifications updated', 'success');
+    })
+    .catch(error => {
+        console.error('Error marking notifications as read:', error);
+        showToast(error.message || 'Failed to update notifications', 'error');
+    });
+});
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Helper function to show toast messages
+function showToast(message, type = 'info') {
+    // Check if toast container exists, if not create it
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.position = 'fixed';
+        toastContainer.style.top = '20px';
+        toastContainer.style.right = '20px';
+        toastContainer.style.zIndex = '9999';
+        document.body.appendChild(toastContainer);
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    
+    // Add toast to container and set timeout to remove it
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+        // Remove container if it's empty
+        if (toastContainer.children.length === 0) {
+            toastContainer.remove();
+        }
+    }, 3000);
+}
 
 // Close popups when clicking outside
 document.addEventListener('click', function (e) {
@@ -69,11 +255,70 @@ const markAllRead = document.querySelector('.mark-all-read');
 const unreadNotifications = document.querySelectorAll('.notification-unread');
 const notificationBadge = document.querySelector('.notification-badge');
 
-markAllRead.addEventListener('click', function () {
-    unreadNotifications.forEach(notification => {
-        notification.classList.remove('notification-unread');
+markAllRead.addEventListener('click', async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const url = markAllRead.getAttribute('data-target-url');
+    
+    // Show loading popup
+    Swal.fire({
+        title: 'Processing...',
+        text: 'Please wait while we update your notifications',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
     });
-    notificationBadge.textContent = '0';
+    
+    try {
+        // Make the API call
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin'
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to update notifications');
+        }
+        
+        // Update UI
+        unreadNotifications.forEach(notification => {
+            notification.classList.remove('notification-unread');
+        });
+        
+        if (notificationBadge) {
+            notificationBadge.style.display = 'none';
+        }
+        
+        // Show success popup
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: data.message || 'Notifications marked as read',
+            confirmButtonText: 'OK',
+            timer: 3000,
+            timerProgressBar: true
+        });
+        
+    } catch (error) {
+        console.error('Error marking notifications as read:', error);
+        
+        // Show error popup
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'An error occurred while updating notifications',
+            confirmButtonText: 'OK'
+        });
+    }
 });
 
 

@@ -1,0 +1,86 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+{% load filters %}
+
+{% block extra_css %}
+ 
+    <link rel="stylesheet"
+          href="{% static 'css/action_buttons.css' %}?v={% now 'U' %}" />
+{% endblock extra_css %}
+
+{% block dashContent %}
+        {# Recent Users Row #}
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="booking-card">
+                    <div class="card-header">
+                        <h5>
+                            {% trans "Products List" %}
+                        </h5>
+                        <a href="{% url 'dash:product_create' %}" class="btn btn-primary" title="{% trans "Add New Product" %}">
+                            <fas class="fas fa-plus"></fas>
+                        </a>
+                    </div>
+                    <div class="users-list p-3">
+                        {% if products %}
+                            <div class="row g-3">
+                                {% for product in products %}
+                                    <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="user-item">
+                                            <div class="user-meta d-flex align-items-start">
+                                                <div class="user-avatar position-relative">
+                                                    <img src="{{ user.email|gravatar:120 }}" alt="{% trans 'User Avatar' %}" />
+                                                </div>
+                                                <div class="user-info ms-3">
+                                                    <h6 class="user-name  text-truncate mb-1">
+                                                        {{ user.first_name }} {{ user.last_name }}
+                                                    </h6>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <small class="user-email text-muted text-truncate">
+                                                            {{ user.email }}
+                                                        </small>
+                                                        <small>
+                                                            {% if user.auth.email_confirmed %}
+                                                                <span class="badge bg-success">
+                                                                    <i class="fas fa-check"></i>
+                                                                </span>
+                                                            {% else %}
+                                                                <span class="badge bg-danger">
+                                                                    <i class="fas fa-times"></i>
+                                                                </span>
+                                                            {% endif %}
+                                                        </small>
+                                                    </div>
+                                                    <span class="user-role d-block">
+                                                        {{ user.profile.get_role_display }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="user-actions mt-2 d-flex gap-2 justify-content-end w-100">
+                                                {% url 'dash:user_delete' user.pk as delete_url %}
+                                                {% url "dash:user_profile" user.pk as view_url %}
+                                                {% include "components/action_buttons.html" with view_url=view_url delete_url=delete_url %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-state text-center py-5">
+                                <div class="empty-state-icon mb-3">
+                                    <i class="fas fa-box fs-1"></i>
+                                </div>
+                                <h6>
+                                    {% trans "No Products Found" %}
+                                </h6>
+                                <p class="text-muted text-truncate">
+                                    {% trans "There are no products to display at the moment." %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock dashContent %}

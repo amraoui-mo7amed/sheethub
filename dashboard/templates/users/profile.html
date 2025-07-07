@@ -15,244 +15,255 @@
 {% endblock PageTitle %}
 
 {% block dashContent %}
-    <form class='form'>
-        <div class="profile-container container-fluid">
-            <div class="row g-4">
-                <div class="col-lg-12">
-                    <!-- Profile Card  -->
-                    <div class="row g-4">
-                        <form action="#" class="form">
-                            <div class="col-lg-3 col-md-6 col-sm-12">
-                                <div class="card profile-card shadow-sm">
-                                    <div class="card-header">
-                                        <h5 class="mb-0">
-                                            {% trans "Profile Picture" %}
-                                        </h5>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="avatar-wrapper mb-3">
-                                            {% if user.profile.profile_pic %}
-                                                {% include "components/image_upload.html" with image_url=user.profile.profile_pic.url %}
-
-                                            {% else %}
-                                                {% include "components/image_upload.html" with image_url=user.email|gravatar:360 %}
-
-                                            {% endif %}
-                                        </div>
-                                        <h4 class="mb-1">
-                                            {{ user.get_full_name }}
-                                        </h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-9 col-md-6 col-sm-12">
-                                <div class="card details-card shadow-sm mb-4">
-                                    <div class="card-header bg-white">
-                                        <h5 class="mb-0">
-                                            {% trans "Profile Information" %}
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    {% trans "First Name" %}
-                                                </label>
-                                                <input type="text" class="form-control" value="{{ user.first_name }}" />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    {% trans "Last Name" %}
-                                                </label>
-                                                <input type="text" class="form-control" value="{{ user.last_name }}" />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    {% trans "Email" %}
-                                                </label>
-                                                <input type="email" class="form-control" value="{{ user.email }}" disabled />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label" for="role">
-                                                    {% trans "Role" %}
-                                                </label>
-                                                <input type="text"
-                                                       name="role"
-                                                       id="role"
-                                                       class="form-control"
-                                                       value="{{ user.profile.get_role_display }}"
-                                                       disabled />
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn">
-                                                    {% trans "Save Changes" %}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+    <div class="profile-container container-fluid">
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <!-- Profile Card  -->
+                <div class="container-fluid">
+                    {% include "components/errorList.html" %}
                 </div>
-                {% if user.profile.role == 'seller' %}
-                    <!-- Plan Details -->
-                    <div class="col-lg-6">
-                        <div class="card plan-card shadow-sm">
-                            <div class="card-header bg-white">
-                                <h5 class="mb-0">
-                                    {% trans "Plan Details" %}
-                                </h5>
+                <form action="{% url 'dash:user_profile_edit' %}"
+                      method="post"
+                      class="form"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-2">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="card profile-card shadow-sm">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        {% trans "Profile Picture" %}
+                                    </h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="avatar-wrapper mb-3">
+                                        {% if user.profile.image %}
+                                            {% include "components/image_upload.html" with image_url=user.profile.image.url %}
+
+                                        {% else %}
+                                            {% include "components/image_upload.html" with image_url=user.email|gravatar:360 %}
+
+                                        {% endif %}
+                                    </div>
+                                    <h4 class="mb-0 text-truncate" title="{{ user.get_full_name }}">
+                                        {{ user.get_full_name }}
+                                    </h4>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <div class="plan-details">
-                                    <div class="plan-header mb-4">
-                                        <h4 class="plan-name">
-                                            <i class="fas fa-crown text-warning me-2"></i>
-                                            {% trans "Premium Plan" %}
-                                        </h4>
-                                        <div class="plan-price">
-                                            <span class="price">$19.99</span>
-                                            <span class="period text-muted">{% trans "/month" %}</span>
+                        </div>
+                        <div class="col-lg-9 col-md-6 col-sm-12">
+                            <div class="card details-card shadow-sm mb-4">
+                                <div class="card-header bg-white">
+                                    <h5 class="mb-0">
+                                        {% trans "Profile Information" %}
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                {% trans "First Name" %}
+                                            </label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="first_name"
+                                                   value="{{ user.first_name }}" />
                                         </div>
-                                    </div>
-
-                                    <div class="plan-limits mb-4">
-                                        <div class="row g-3">
-                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <div class="limit-item bg-light p-2 rounded d-flex">
-                                                    <div class="limit-label">
-                                                        <i class="fas fa-box me-2 text-accent"></i>
-                                                    </div>
-                                                    <div class="limit-value d-flex flex-column">
-                                                        <span class="fw-bold">
-                                                            {% trans "Max Products" %}
-                                                        </span>
-                                                        <small class="text-muted">
-                                                            500
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <div class="limit-item">
-                                                    <div class="limit-label">
-                                                        <i class="fas fa-shopping-cart me-2"></i>
-                                                    </div>
-                                                    <div class="limit-value d-flex flex-column">
-                                                        <span class="fw-bold">
-                                                            {% trans "Max Orders" %}
-                                                        </span>
-                                                        <small class="text-muted">
-                                                            500
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <div class="limit-item">
-                                                    <div class="limit-label">
-                                                        <i class="fas fa-chart-line me-2"></i>
-                                                    </div>
-                                                    <div class="limit-value d-flex flex-column">
-                                                        <span class="fw-bold">
-                                                            {% trans "Advanced Analytics" %}
-                                                        </span>
-                                                        <small class="text-muted">
-                                                            {% trans "Available" %}
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                                <div class="limit-item">
-                                                    <div class="limit-label">
-                                                        <i class="fas fa-file-import me-2"></i>
-                                                    </div>
-                                                    <div class="limit-value d-flex flex-column">
-                                                        <span class="fw-bold">
-                                                            {% trans "Import/Export Data" %}
-                                                        </span>
-                                                        <small class="text-muted">
-                                                            {% trans "Available" %}
-                                                        </small>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                {% trans "Last Name" %}
+                                            </label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   name="last_name"
+                                                   value="{{ user.last_name }}" />
                                         </div>
-                                    </div>
-
-                                    <div class="d-block mt-auto">
-                                        <button class="btn btn-primary">
-                                            {% trans "Upgrade Plan" %}
-                                        </button>
-                                        <button class="btn btn-outline-danger">
-                                            {% trans "Downgrade Plan" %}
-                                        </button>
+                                        <div class="col-md-6">
+                                            <label class="form-label">
+                                                {% trans "Email" %}
+                                            </label>
+                                            <input type="email" class="form-control" value="{{ user.email }}" disabled />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label" for="role">
+                                                {% trans "Role" %}
+                                            </label>
+                                            <input type="text"
+                                                   name="role"
+                                                   id="role"
+                                                   class="form-control"
+                                                   value="{{ user.profile.get_role_display }}"
+                                                   disabled />
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn">
+                                                {% trans "Save Changes" %}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Billing Section -->
-                    <div class="col-lg-6">
-                        <div class="card details-card shadow-sm">
-                            <div class="card-header bg-white">
-                                <h5 class="mb-0">
-                                    {% trans "Billing Information" %}
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">
-                                            {% trans "Card Number" %}
-                                        </label>
-                                        <input type="text" class="form-control" placeholder="4242 4242 4242 4242" />
+                </form>
+            </div>
+            {% if user.profile.role == 'seller' %}
+                <!-- Plan Details -->
+                <div class="col-lg-6">
+                    <div class="card plan-card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                {% trans "Plan Details" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="plan-details">
+                                <div class="plan-header mb-4">
+                                    <h4 class="plan-name">
+                                        <i class="fas fa-crown text-warning me-2"></i>
+                                        {% trans "Premium Plan" %}
+                                    </h4>
+                                    <div class="plan-price">
+                                        <span class="price">$19.99</span>
+                                        <span class="period text-muted">{% trans "/month" %}</span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">
-                                            {% trans "Card Holder Name" %}
-                                        </label>
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="{{ user.get_full_name }}" />
+                                </div>
+
+                                <div class="plan-limits mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="limit-item bg-light p-2 rounded d-flex">
+                                                <div class="limit-label">
+                                                    <i class="fas fa-box me-2 text-accent"></i>
+                                                </div>
+                                                <div class="limit-value d-flex flex-column">
+                                                    <span class="fw-bold">
+                                                        {% trans "Max Products" %}
+                                                    </span>
+                                                    <small class="text-muted">
+                                                        500
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="limit-item">
+                                                <div class="limit-label">
+                                                    <i class="fas fa-shopping-cart me-2"></i>
+                                                </div>
+                                                <div class="limit-value d-flex flex-column">
+                                                    <span class="fw-bold">
+                                                        {% trans "Max Orders" %}
+                                                    </span>
+                                                    <small class="text-muted">
+                                                        500
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="limit-item">
+                                                <div class="limit-label">
+                                                    <i class="fas fa-chart-line me-2"></i>
+                                                </div>
+                                                <div class="limit-value d-flex flex-column">
+                                                    <span class="fw-bold">
+                                                        {% trans "Advanced Analytics" %}
+                                                    </span>
+                                                    <small class="text-muted">
+                                                        {% trans "Available" %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="limit-item">
+                                                <div class="limit-label">
+                                                    <i class="fas fa-file-import me-2"></i>
+                                                </div>
+                                                <div class="limit-value d-flex flex-column">
+                                                    <span class="fw-bold">
+                                                        {% trans "Import/Export Data" %}
+                                                    </span>
+                                                    <small class="text-muted">
+                                                        {% trans "Available" %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label" for="expiration_date">
-                                            {% trans "Expiration Date" %}
-                                        </label>
-                                        <input class="form-control" name="expiration_date" />
-                                    </input />
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">
-                                        {% trans "CVV" %}
-                                    </label>
-                                    <input type="text" class="form-control" placeholder="123" />
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">
-                                        {% trans "Billing Address" %}
-                                    </label>
-                                    <textarea class="form-control"
-                                              rows="2"
-                                              placeholder="123 Main St, City, Country"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn">
-                                        {% trans "Update Billing" %}
+
+                                <div class="d-block mt-auto">
+                                    <button class="btn btn-primary">
+                                        {% trans "Upgrade Plan" %}
+                                    </button>
+                                    <button class="btn btn-outline-danger">
+                                        {% trans "Downgrade Plan" %}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% endif %}
-            </div>
+                </div>
+                <!-- Billing Section -->
+                <div class="col-lg-6">
+                    <div class="card details-card shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">
+                                {% trans "Billing Information" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {% trans "Card Number" %}
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="4242 4242 4242 4242" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {% trans "Card Holder Name" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder="{{ user.get_full_name }}" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label" for="expiration_date">
+                                        {% trans "Expiration Date" %}
+                                    </label>
+                                    <input class="form-control" name="expiration_date" />
+                                </input />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    {% trans "CVV" %}
+                                </label>
+                                <input type="text" class="form-control" placeholder="123" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">
+                                    {% trans "Billing Address" %}
+                                </label>
+                                <textarea class="form-control"
+                                          rows="2"
+                                          placeholder="123 Main St, City, Country"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn">
+                                    {% trans "Update Billing" %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
+</div>
 
-</form>
 {% endblock dashContent %}
 
 {% block extra_js %}

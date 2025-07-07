@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
 from django.db import transaction
-
+import geolocation as gl
 from user_auth.models import UserAuth, UserProfile
 from user_auth.decorators import redirect_user
 from user_auth.utils import generate_confirmation_link
@@ -26,7 +26,13 @@ def signup(request):
         email = request.POST.get('email', '').strip().lower()
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
-
+        # Get the geoLocations 
+        try:
+            ip = gl.get_client_ip(request)
+            geolocation = gl.get_geolocation(ip)
+            country = geolocation.get('country')
+        except Exception as e:
+            country = None
         # Validate names
         if not first_name or not last_name:
             errors.append(_('First and last name are required'))
@@ -59,6 +65,7 @@ def signup(request):
                     password=password1,
                     first_name=first_name,
                     last_name=last_name,
+                    country=country
                 )
                 profile = UserProfile.objects.create(user=user, role='seller')
                 user.profile = profile
@@ -108,7 +115,6 @@ def signin(request):
         errors = []
         email = request.POST.get('email', '').strip()
         password = request.POST.get('password', '').strip()
-
         try:
             validate_email(email)
         except ValidationError:
