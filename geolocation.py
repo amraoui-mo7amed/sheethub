@@ -19,7 +19,7 @@ def get_client_ip(request):
 
 def get_geolocation(ip):
     try:
-        response = requests.get(f'https://api.ipinfo.io/lite//{ip}?token={config("IPinfo_Token")}')
+        response = requests.get(f'https://api.ipinfo.io/lite/{ip}?token={config("IPinfo_Token")}')
         return response.json()
     except requests.RequestException:
         return {}
