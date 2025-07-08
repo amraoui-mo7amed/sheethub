@@ -11,7 +11,7 @@
         </div>
         <div class="col-lg-12 col-md-12 p-2">
             <div class="product-info">
-                <h5 class="product-name text-truncate fw-bold">
+                <h5 class="product-name text-truncate fw-bold {% if product.landing_page.landing_language == "ar" %}text-end{% endif %}">
                     {{ product.name }}
                 </h5>
                 <div class="d-flex align-items-center justify-content-between">

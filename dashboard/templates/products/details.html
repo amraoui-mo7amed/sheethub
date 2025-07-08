@@ -42,10 +42,10 @@
                     {# Product Details #}
                     <div class="col-lg-8 col-md-12">
                         <div class="card-details">
-                            <h5 class="fw-bold text-truncate mb-2 text-primary">
+                            <h5 class="fw-bold text-truncate mb-2 text-primary {% if product.landing_page.landing_language == "ar" %}text-end{% endif %}">
                                 {{ product.name }}
                             </h5>
-                            <p class="text-muted">
+                            <p class="text-muted {% if product.landing_page.landing_language == "ar" %}text-end{% endif %}">
                                 {{ product.description|slice:":200" }}
                             </p>
                             <div class="product-meta d-flex flex-column">
