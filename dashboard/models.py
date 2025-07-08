@@ -48,21 +48,30 @@ class Notification(models.Model):
         verbose_name_plural = _("Notifications")
         ordering = ["-created_at"]
 
-class Product(models.Model):  # Fixed: models.Model not models.model
-    user = models.ForeignKey(userModel, on_delete=models.CASCADE,related_name=_("products"), blank=True,null=True)
+class Product(models.Model):
+    user = models.ForeignKey(userModel, on_delete=models.CASCADE, related_name=_("products"), blank=True, null=True)
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    stock = models.PositiveBigIntegerField()
+    description = models.TextField(blank=True)
+    stock = models.PositiveBigIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/')
-    created_at = models.DateTimeField(auto_now_add=True)
     
+    # NEW FIELDS
+    is_public = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False)
+    in_stock = models.BooleanField(default=True)
+    allow_additional_images = models.BooleanField(default=False)
+    enable_pixel = models.BooleanField(default=False)
+    facebook_pixel_id = models.CharField(max_length=32, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.name
 
     @property
     def preview_images_list(self):
-        return self.preview_images.all()[:4]  # Returns up to 4 preview images
+        return self.preview_images.all()[:4]
 
 class ProductImage(models.Model):
     product = models.ForeignKey(
@@ -78,3 +87,23 @@ class ProductImage(models.Model):
     
     def __str__(self):
         return f"Preview for {self.product.name}"
+
+class LandingPageConfig(models.Model):
+    LANGUAGE_CHOICES = [
+        ('ar', 'Arabic'),
+        ('en', 'English'),
+        ('fr', 'French'),
+    ]
+    DIRECTION_CHOICES = [
+        ('horizontal', 'Horizontal'),
+        ('vertical', 'Vertical'),
+    ]
+
+    product = models.OneToOneField("Product", on_delete=models.CASCADE, related_name="landing_page")
+    landing_language = models.CharField(max_length=10, choices=LANGUAGE_CHOICES, default='ar')
+    layout_direction = models.CharField(max_length=10, choices=DIRECTION_CHOICES, default='horizontal')
+    enable_feedbacks = models.BooleanField(default=True)
+    enable_related_products = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Landing config for {self.product.name}"

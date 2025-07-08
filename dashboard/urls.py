@@ -16,6 +16,8 @@ urlpatterns = [
     # Products 
     path('products/', products.list, name='products_list'),
     path('products/create/', products.create, name='product_create'),
+    path('products/delete/<int:pk>', products.Delete, name='product_delete'),
+    path('products/details/<int:pk>', products.productDetails, name='product_details'),
     # Waitlist
     path('waitlist/', waitlist.List.as_view(), name='waitlist'),
     # SMTP Server

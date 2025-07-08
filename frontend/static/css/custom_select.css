@@ -26,7 +26,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    max-height: 300px;
+    max-height: 180px;
     overflow-y: auto;
     border: 1px solid #ddd;
     border-top: none;
@@ -47,12 +47,12 @@
 }
 
 .select-option:hover {
-    background-color: var(--highlight);
+    background-color: var(--bs-primary);
     color: #fff;
 }
 
 .select-option.selected {
-    background-color: var(--accent);
+    background-color: var(--bs-primary);
     font-weight: bold;
     color: #fff;
 }

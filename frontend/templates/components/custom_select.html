@@ -1,7 +1,5 @@
 {% load i18n %}
 
-{% get_current_language as current_language %}
-
 {% with id=id|default:'' name=name|default:'' selected_label=selected_label selected=selected %}
     <div class="custom-select" {% if id %}id="{{ id }}"{% endif %}>
         <input type="hidden" name="{{ name }}" value="{{ selected|default:'' }}" />
@@ -25,13 +23,16 @@
         </div>
         <div class="select-options">
             <div class="search-box">
-                {% if current_language == 'ar' %}
+                {% if lang == 'ar' %}
                     <input type="text" placeholder="{% trans "إبحث" %}" class="select-search" />
-                {% else %}
+                {% elif lang == 'en' %}
                     <input type="text"
                            placeholder="{% trans 'Search...' %}"
                            class="select-search" />
-
+                {% elif lang == 'fr' %}
+                    <input type="text"
+                           placeholder="{% trans 'Rechercher...' %}"
+                           class="select-search" />
                 {% endif %}
             </div>
             {% for value, label in options %}

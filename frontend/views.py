@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
-from dashboard.models import WaitList
-
+from dashboard.models import WaitList, Product
+from utils import loadJSON
 
 def index(request):
     """
@@ -54,3 +54,32 @@ def terms(request):
     Render the terms and conditions page.
     """
     return render(request, 'frontend/terms.html')
+
+
+def product_landing(request,shop_code,pk):
+    product = get_object_or_404(Product, pk=pk, is_public=True)
+    landing = getattr(product, 'landing_page', None)
+    algeria = loadJSON('algeria.json')
+    unique_wilayas = {(entry["wilaya_code"], entry["wilaya_name"]) for entry in algeria}
+    sorted_wilayas = sorted(list(unique_wilayas), key=lambda x: x[0])
+
+    if not landing:
+        # Optional fallback or 404
+        return render(request, "products/landing_not_configured.html", {"product": product})
+
+    context = {
+        "product": product,
+        "landing": landing,
+        "wilayas": sorted_wilayas
+    }
+
+    return render(request, "products/landing_page.html", context)
+
+def getCommunes(request, province_id):
+    algeria = loadJSON('algeria.json')
+    print(province_id)
+    if province_id:
+        communes = [entry for entry in algeria if entry['wilaya_code'] == f"{int(province_id):02}"]
+    else:
+        communes = []
+    return JsonResponse(communes, safe=False)

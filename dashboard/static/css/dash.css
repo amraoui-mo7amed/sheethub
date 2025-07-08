@@ -74,7 +74,7 @@ i{
     padding: 30px;
     transition: all 0.3s ease;
     background-color: var(--bs-light);
-    height: 100vh;
+    height: 100%;
 }
 
 /* Top Navigation */

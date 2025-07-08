@@ -1,0 +1,104 @@
+{% extends 'dashboard/index.html' %}
+
+{% load static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="{% static 'css/action_buttons.css' %}?v={% now "U" %}" />
+{% endblock extra_css %}
+
+
+{% block dashContent %}
+    <div class="container-fluid">
+        {# Product Card #}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% trans "Product Overview" %}
+                </h5>
+            </div>
+            <div class="card-body ">
+
+                <div class="row g-2">
+                    {# Product Image #}
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card-image position-relative">
+                            <img src="{{ product.image.url }}"
+                                 alt="{{ product.name }}"
+                                 class="rounded w-100" />
+                            {# Stock #}
+                            <p class="badge text-muted mb-0 position-absolute start-0 top-0 m-1 {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %} text-secondary">
+                                {% if product.stock > 0 %}
+                                    {% trans "In Stock" %}
+                                {% else %}
+                                    {% trans "Out of Stock" %}
+                                {% endif %}
+                            </p>
+                        </div>
+                        {% if product.preview_images %}
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card-preview-images">
+                                    {% for image in product.preview_images.all %}
+                                        <div class="w-25 gap-2">
+                                            <img src="{{ image.image.url }}"
+                                                 alt="{{ product.name }}"
+                                                 class="rounded w-100" />
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {# Product Details #}
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card-details">
+                            <h5 class="fw-bold text-truncate mb-2">
+                                {{ product.name }}
+                            </h5>
+                            <p class="text-muted">
+                                {{ product.description|slice:":200" }}
+                            </p>
+                            <div class="product-meta d-flex flex-column">
+                                <p class="mb-2 fw-bold">
+                                    {% trans "Product Meta" %}
+                                </p>
+                                <div class="row g-2 ms-2">
+                                    <div class="col-lg-3 col-md-3">
+                                        <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
+                                            {{ product.price }} DZD
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <div class="badge {% if product.enable_pixel %}bg-accent{% else %}bg-danger{% endif %}">
+                                            {% trans "Pixel Tracking" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <div class="badge {% if product.is_public %}bg-accent{% else %}bg-danger{% endif %}">
+                                            {% trans "Published" %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-page d-flex flex-column justify-content-end">
+                                <div class="d-flex align-items-center">
+                                    <p class="fw-bold my-2">
+                                        {% trans "Product Page" %}
+                                    </p>
+                                    <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}" class="text-primary ms-2">
+                                        <i class="fas fa-external-link-alt fs-6"></i>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock dashContent %}
+
+{% block extra_js %}
+    <script src="{% static "js/action_buttons.js" %}?v={% now "U" %}"></script>
+{% endblock extra_js %}
