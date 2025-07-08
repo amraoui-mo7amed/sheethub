@@ -26,54 +26,167 @@
                             <img src="{{ product.image.url }}"
                                  alt="{{ product.name }}"
                                  class="rounded w-100" />
-                            {# Stock #}
-                            <p class="badge text-muted mb-0 position-absolute start-0 top-0 m-1 {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %} text-secondary">
-                                {% if product.stock > 0 %}
-                                    {% trans "In Stock" %}
-                                {% else %}
-                                    {% trans "Out of Stock" %}
-                                {% endif %}
-                            </p>
                         </div>
                         {% if product.preview_images %}
-                                <div class="card-preview-images mb-2 d-flex gap-1">
-                                    {% for image in product.preview_images.all %}
-                                        <div class="w-25">
-                                            <img src="{{ image.image.url }}"
-                                                 alt="{{ product.name }}"
-                                                 class="rounded w-100" />
-                                        </div>
-                                    {% endfor %}
-                                </div>
+                            <div class="card-preview-images mb-2 d-flex gap-1">
+                                {% for image in product.preview_images.all %}
+                                    <div class="w-25">
+                                        <img src="{{ image.image.url }}"
+                                             alt="{{ product.name }}"
+                                             class="rounded w-100" />
+                                    </div>
+                                {% endfor %}
+                            </div>
                         {% endif %}
                     </div>
                     {# Product Details #}
                     <div class="col-lg-8 col-md-12">
                         <div class="card-details">
-                            <h5 class="fw-bold text-truncate mb-2">
+                            <h5 class="fw-bold text-truncate mb-2 text-primary">
                                 {{ product.name }}
                             </h5>
                             <p class="text-muted">
                                 {{ product.description|slice:":200" }}
                             </p>
                             <div class="product-meta d-flex flex-column">
-                                <p class="mb-2 fw-bold">
-                                    {% trans "Product Meta" %}
-                                </p>
-                                <div class="row g-2 ms-2">
-                                    <div class="col-lg-3 col-md-3">
-                                        <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
-                                            {{ product.price }} DZD
-                                        </p>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-primary">
+                                            {% trans "Product Meta" %}
+                                        </h5>
                                     </div>
-                                    <div class="col-lg-3 col-md-3">
-                                        <div class="badge {% if product.enable_pixel %}bg-accent{% else %}bg-danger{% endif %}">
-                                            {% trans "Pixel Tracking" %}
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3">
-                                        <div class="badge {% if product.is_public %}bg-accent{% else %}bg-danger{% endif %}">
-                                            {% trans "Published" %}
+                                    <div class="card-body">
+                                        <div class="row g-2">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label for="price" class="form-label mb-0 fw-bold">
+                                                        {% trans "Product Price" %}
+                                                    </label>
+                                                    <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate"
+                                                       id="price">
+                                                        {{ product.price }} DZD
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label mb-0 fw-bold " for="meta_pixel">
+                                                        {% trans "Pixel Tracking" %}
+                                                    </label>
+                                                    <small class="badge {% if product.enable_pixel %}bg-accent{% else %}bg-danger{% endif %}"
+                                                           id="meta_pixel">
+                                                        {% if product.enable_pixel %}
+                                                            {% trans "Enabled" %}
+                                                        {% else %}
+                                                            {% trans "Disabled" %}
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label for="is_published" class="form-label fw-bold mb-0">
+                                                        {% trans "Product Page" %}
+                                                    </label>
+                                                    <small class="badge {% if product.is_public %}bg-accent{% else %}bg-danger{% endif %}"
+                                                           id="is_published">
+                                                        {% if product.is_public %}
+                                                            {% trans "Published" %}
+                                                        {% else %}
+                                                            {% trans "Unpublished" %}
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label for="stock" class="form-label fw-bold mb-0">
+                                                        {% trans "Product Stock" %}
+                                                    </label>
+                                                    <small class="badge {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}"
+                                                           id="stock">
+                                                        {% if product.stock > 0 %}
+                                                            {% trans "In Stock" %}
+                                                        {% else %}
+                                                            {% trans "Out of Stock" %}
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label for="stock" class="form-label fw-bold mb-0">
+                                                        {% trans "Available Stock" %}
+                                                    </label>
+                                                    <small class="badge {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}"
+                                                           id="stock">
+                                                        {% if product.stock > 0 %}
+                                                            {{ product.stock }}
+                                                        {% else %}
+                                                            0
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            {# Landing Page Details #}
+                                            {% if product.is_public %}
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label for="lp_lang" class="form-label fw-bold mb-0">
+                                                            {% trans "Page Language" %}
+                                                        </label>
+                                                        <small class="badge {% if product.landing_page.landing_language == "ar" %}bg-accent{% elif product.landing_page.landing_language == "en" %}bg-primary{% else %}bg-info{% endif %}">
+                                                            {{ product.landing_page.get_landing_language_display }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0">
+                                                            {% trans "Layout Direction" %}
+                                                        </label>
+                                                        <small class="badge {% if product.landing_page.layout_direction == 'horizontal' %}bg-accent{% else %}bg-primary{% endif %}">
+                                                            {{ product.landing_page.get_layout_direction_display }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0">
+                                                            {% trans "Feedbacks" %}
+                                                        </label>
+                                                        <small class="badge {% if product.landing_page.enable_feedbacks %}bg-accent{% else %}bg-secondary{% endif %}">
+                                                            {% if product.landing_page.enable_feedbacks %}{% trans "Enabled" %}{% else %}{% trans "Disabled" %}{% endif %}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0">
+                                                            {% trans "Related Products" %}
+                                                        </label>
+                                                        <small class="badge {% if product.landing_page.enable_related_products %}bg-accent{% else %}bg-secondary{% endif %}">
+                                                            {% if product.landing_page.enable_related_products %}{% trans "Enabled" %}{% else %}{% trans "Disabled" %}{% endif %}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-2 pt-2 border-top">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0">
+                                                            {% trans "Product Page URL" %}
+                                                        </label>
+                                                        <div class="input-group" style="max-width: 300px;">
+                                                            <input type="text" 
+                                                                   class="form-control form-control-sm" 
+                                                                   value="{{ request.scheme }}://{{ request.get_host }}{% url 'frontend:product_landing' shop_code=product.user.profile.shop_code pk=product.pk %}" 
+                                                                   readonly>
+                                                            <button class="btn btn-sm btn-outline-secondary copy-btn" type="button" data-bs-toggle="tooltip" title="{% trans 'Copy URL' %}">
+                                                                <i class="fas fa-copy"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +196,8 @@
                                     <p class="fw-bold my-2">
                                         {% trans "Product Page" %}
                                     </p>
-                                    <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}" class="text-primary ms-2">
+                                    <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}"
+                                       class="text-primary ms-2">
                                         <i class="fas fa-external-link-alt fs-6"></i>
                                     </a>
                                 </div>
@@ -98,4 +212,35 @@
 
 {% block extra_js %}
     <script src="{% static "js/action_buttons.js" %}?v={% now "U" %}"></script>
+    <script>
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Copy to clipboard functionality
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    input.select();
+                    document.execCommand('copy');
+                    
+                    // Show feedback
+                    const originalTitle = this.getAttribute('title');
+                    this.setAttribute('title', '{% trans "Copied!" %}');
+                    const tooltip = bootstrap.Tooltip.getInstance(this);
+                    tooltip.show();
+                    
+                    // Revert title after 2 seconds
+                    setTimeout(() => {
+                        this.setAttribute('title', originalTitle);
+                        tooltip.hide();
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 {% endblock extra_js %}

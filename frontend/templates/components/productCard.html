@@ -28,9 +28,12 @@
                         <a href="{% url 'dash:product_details' pk=product.pk %}">
                             {% trans "View Details" %}
                         </a>
-                        <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}" target="_blank">
-                            {% trans "Product Page" %}
-                        </a>
+                        {% if product.is_public %}
+                            <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}"
+                               target="_blank">
+                                {% trans "Product Page" %}
+                            </a>
+                        {% endif %}
                         <button href="#"
                                 class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
                                 data-delete-url="{% url "dash:product_delete" product.pk %}"
