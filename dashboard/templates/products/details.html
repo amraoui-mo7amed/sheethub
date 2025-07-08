@@ -22,7 +22,7 @@
                 <div class="row g-2">
                     {# Product Image #}
                     <div class="col-lg-4 col-md-12">
-                        <div class="card-image position-relative">
+                        <div class="card-image position-relative mb-2">
                             <img src="{{ product.image.url }}"
                                  alt="{{ product.name }}"
                                  class="rounded w-100" />
@@ -36,17 +36,15 @@
                             </p>
                         </div>
                         {% if product.preview_images %}
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card-preview-images">
+                                <div class="card-preview-images mb-2 d-flex gap-1">
                                     {% for image in product.preview_images.all %}
-                                        <div class="w-25 gap-2">
+                                        <div class="w-25">
                                             <img src="{{ image.image.url }}"
                                                  alt="{{ product.name }}"
                                                  class="rounded w-100" />
                                         </div>
                                     {% endfor %}
                                 </div>
-                            </div>
                         {% endif %}
                     </div>
                     {# Product Details #}
@@ -89,7 +87,6 @@
                                         <i class="fas fa-external-link-alt fs-6"></i>
                                     </a>
                                 </div>
-
                             </div>
                         </div>
                     </div>

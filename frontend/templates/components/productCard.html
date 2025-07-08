@@ -17,22 +17,15 @@
                 <span class="product-description fs-6 text-muted">
                     {{ product.description }}
                 </span>
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6">
-                        <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
-                            {{ product.price }} DZD
-                        </p>
-                    </div>
-                    {{ product.user.shop_code }}
-                    <div class="col-lg-6 col-md-6">
-                        <div class="d-flex justify-content-end">
-                            <a href="{% url 'dash:product_details' pk=product.pk %}"
-                               class="btn btn-outline-primary"
-                               title="{% trans "Product details" %}">
-                                <fas class="fas fa-caret-right"></fas>
-                            </a>
-                        </div>
-                    </div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
+                        {{ product.price }} DZD
+                    </p>
+                    <a href="{% url 'dash:product_details' pk=product.pk %}"
+                       class="btn btn-outline-primary"
+                       title="{% trans "Product details" %}">
+                        <fas class="fas fa-caret-right"></fas>
+                    </a>
                 </div>
             </div>
         </div>
