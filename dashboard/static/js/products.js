@@ -12,3 +12,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const pixelToggle = document.getElementById("enablePixelSwitch");
+    const pixelAsterisk = document.getElementById("pixelRequired");
+
+    const additionalToggle = document.getElementById("additionalImagesToggle");
+    const additionalAsterisk = document.getElementById("additionalImagesRequired");
+
+    function togglePixelField() {
+        pixelAsterisk.style.display = pixelToggle.checked ? "inline" : "none";
+    }
+
+    function toggleAdditionalImages() {
+        additionalAsterisk.style.display = additionalToggle.checked ? "inline" : "none";
+    }
+
+    pixelToggle.addEventListener("change", togglePixelField);
+    additionalToggle.addEventListener("change", toggleAdditionalImages);
+
+    togglePixelField();
+    toggleAdditionalImages();
+});

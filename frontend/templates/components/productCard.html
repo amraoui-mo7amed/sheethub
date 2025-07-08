@@ -1,9 +1,9 @@
 {% load static i18n %}
 
 <div class="col-lg-4 col-md-6 col-sm-12">
-    <div class="product-card row g-1 border rounded">
+    <div class="product-card row g-1 border rounded position-relative">
         <div class="col-lg-12 col-md-12 m-0">
-            <div class="product-image">
+            <div class="product-image position-relative">
                 <img src="{{ product.image.url }}"
                      alt="{{ product.name }}"
                      class="rounded w-100" />
@@ -14,18 +14,32 @@
                 <h5 class="product-name text-truncate fw-bold">
                     {{ product.name }}
                 </h5>
-                <span class="product-description fs-6 text-muted">
-                    {{ product.description }}
-                </span>
                 <div class="d-flex align-items-center justify-content-between">
                     <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
                         {{ product.price }} DZD
                     </p>
-                    <a href="{% url 'dash:product_details' pk=product.pk %}"
-                       class="btn btn-outline-primary"
-                       title="{% trans "Product details" %}">
-                        <fas class="fas fa-caret-right"></fas>
-                    </a>
+                    <!-- Menu toggle button -->
+                    <button class="dots-menu-btn" onclick="toggleMenu(this)">
+                        &#8942;
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div class="dots-menu">
+                        <a href="{% url 'dash:product_details' pk=product.pk %}">
+                            {% trans "View Details" %}
+                        </a>
+                        <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}" target="_blank">
+                            {% trans "Product Page" %}
+                        </a>
+                        <button href="#"
+                                class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
+                                data-delete-url="{% url "dash:product_delete" product.pk %}"
+                                style="width:95%"
+                                data-csrf-token="{{ csrf_token }}"
+                                title="{% trans 'Delete' %}">
+                            {% trans "Delete" %}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

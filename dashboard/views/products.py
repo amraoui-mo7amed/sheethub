@@ -68,6 +68,8 @@ def create(request):
         if enable_pixel and not facebook_pixel_id:
             errors.append(_("Facebook Pixel ID is required when tracking is enabled"))
 
+        if request.user.profile.max_products <= 0:
+            errors.append(_("You have reached the maximum number of products allowed"))
         if allow_additional_images:
             found = False
             for file_key in request.FILES:
@@ -104,7 +106,8 @@ def create(request):
             enable_pixel=enable_pixel,
             facebook_pixel_id=facebook_pixel_id,
         )
-
+        request.user.profile.max_products -= 1
+        request.user.profile.save()
         # === Save Landing Page Config ===
         LandingPageConfig.objects.create(
             product=product,
@@ -115,10 +118,9 @@ def create(request):
         )
 
         # === Save Additional Images ===
-        if allow_additional_images:
-            for file_key in request.FILES:
-                if "image" in file_key and file_key != "default_image":
-                    ProductImage.objects.create(product=product, image=request.FILES[file_key])
+        for file_key in request.FILES:
+            if file_key.startswith("image_"):
+                ProductImage.objects.create(product=product, image=request.FILES[file_key])
 
         return JsonResponse({
             'success': True,
@@ -133,8 +135,14 @@ def create(request):
 @role_required(["seller"])
 def productDetails(request, pk): 
     product = get_object_or_404(Product, pk=pk, user=request.user)
+    product_images = product.preview_images.all()
+    print(product_images)
     return render(request, "products/details.html", {"product": product})
 
 @role_required(["seller"])
 def Delete(request, pk):
+    if request.user.profile.max_products in range(0,5) and request.user.profile.role == "seller":
+        request.user.profile.max_products += 1
+        request.user.profile.save()
+
     return BaseDelete(request,Product,pk)

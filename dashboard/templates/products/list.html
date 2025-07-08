@@ -6,8 +6,6 @@
 {% block extra_css %}
 
     <link rel="stylesheet"
-          href="{% static 'css/action_buttons.css' %}?v={% now 'U' %}" />
-    <link rel="stylesheet"
           href="{% static 'css/productCard.css' %}?v={% now 'U' %}" />
 {% endblock extra_css %}
 
@@ -31,6 +29,7 @@
                         <div class="row g-3">
                             {% for product in products %}
                                 {% include "components/productCard.html" with product=product %}
+
                             {% endfor %}
                         </div>
                     {% else %}
@@ -51,3 +50,8 @@
         </div>
     </div>
 {% endblock dashContent %}
+
+
+{% block extra_js %}
+    <script src="{% static "js/productCard.js" %}?v={% now "U" %}"></script>
+{% endblock extra_js %}
