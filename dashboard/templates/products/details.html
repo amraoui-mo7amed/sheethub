@@ -56,33 +56,113 @@
                                         </h5>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row g-3">
+                                        <div class="row g-2">
 
                                             <!-- Product Price -->
-                                            <div class="col-md-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-6">
-                                                        <label class="form-label fw-bold mb-0">
-                                                            {% trans "Product Price" %}
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <span class="text-accent fw-bold fs-6">{{ product.price }} DZD</span>
-                                                    </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label fw-bold mb-0 text-truncate">
+                                                        {% trans "Product Price" %}
+                                                    </label>
+                                                    <span class="text-accent fw-bold fs-6 text-truncate">
+                                                        {{ product.price }} DZD
+                                                    </span>
                                                 </div>
                                             </div>
 
                                             <!-- Pixel Tracking -->
-                                            <div class="col-md-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-6">
-                                                        <label class="form-label fw-bold mb-0">
-                                                            {% trans "Pixel Tracking" %}
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label fw-bold mb-0 text-truncate">
+                                                        {% trans "Pixel Tracking" %}
+                                                    </label>
+                                                    <span class="badge text-truncate {% if product.enable_pixel %}bg-accent{% else %}bg-danger{% endif %}">
+                                                        {% if product.enable_pixel %}
+                                                            {% trans "Enabled" %}
+                                                        {% else %}
+                                                            {% trans "Disabled" %}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Product Page -->
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label fw-bold mb-0 text-truncate">
+                                                        {% trans "Product Page" %}
+                                                    </label>
+                                                    <span class="badge text-truncate {% if product.is_public %}bg-accent{% else %}bg-danger{% endif %}">
+                                                        {% if product.is_public %}
+                                                            {% trans "Published" %}
+                                                        {% else %}
+                                                            {% trans "Unpublished" %}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- In Stock -->
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label fw-bold mb-0 text-truncate">
+                                                        {% trans "Product Stock" %}
+                                                    </label>
+                                                    <span class="badge text-truncate {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}">
+                                                        {% if product.stock > 0 %}
+                                                            {% trans "In Stock" %}
+                                                        {% else %}
+                                                            {% trans "Out of Stock" %}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Available Stock -->
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="form-label fw-bold mb-0 text-truncate">
+                                                        {% trans "Available Stock" %}
+                                                    </label>
+                                                    <span class="badge text-truncate {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}">
+                                                        {{ product.stock|default:0 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {% if product.is_public %}
+                                                <!-- Page Language -->
+                                                <div class="col-lg-6 col-md-12">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0 text-truncate">
+                                                            {% trans "Page Language" %}
                                                         </label>
+                                                        <span class="badge text-truncate {% if product.landing_page.landing_language == "ar" %} bg-accent {% elif product.landing_page.landing_language == "en" %} bg-primary {% else %} bg-info {% endif %}">
+                                                            {{ product.landing_page.get_landing_language_display }}
+                                                        </span>
                                                     </div>
-                                                    <div class="col-6 text-end">
-                                                        <span class="badge {% if product.enable_pixel %}bg-accent{% else %}bg-danger{% endif %}">
-                                                            {% if product.enable_pixel %}
+                                                </div>
+
+                                                <!-- Layout Direction -->
+                                                <div class="col-lg-6 col-md-12">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0 text-truncate">
+                                                            {% trans "Layout Direction" %}
+                                                        </label>
+                                                        <span class="badge text-truncate {% if product.landing_page.layout_direction == 'horizontal' %} bg-accent {% else %} bg-primary {% endif %}">
+                                                            {{ product.landing_page.get_layout_direction_display }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Feedbacks -->
+                                                <div class="col-lg-6 col-md-12">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0 text-truncate">
+                                                            {% trans "Feedbacks" %}
+                                                        </label>
+                                                        <span class="badge text-truncate {% if product.landing_page.enable_feedbacks %}bg-accent{% else %}bg-secondary{% endif %}">
+                                                            {% if product.landing_page.enable_feedbacks %}
                                                                 {% trans "Enabled" %}
                                                             {% else %}
                                                                 {% trans "Disabled" %}
@@ -90,149 +170,35 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <!-- Product Page -->
-                                            <div class="col-md-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-6">
-                                                        <label class="form-label fw-bold mb-0">
-                                                            {% trans "Product Page" %}
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <span class="badge {% if product.is_public %}bg-accent{% else %}bg-danger{% endif %}">
-                                                            {% if product.is_public %}
-                                                                {% trans "Published" %}
-                                                            {% else %}
-                                                                {% trans "Unpublished" %}
-                                                            {% endif %}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- In Stock -->
-                                            <div class="col-md-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-6">
-                                                        <label class="form-label fw-bold mb-0">
-                                                            {% trans "Product Stock" %}
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <span class="badge {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}">
-                                                            {% if product.stock > 0 %}
-                                                                {% trans "In Stock" %}
-                                                            {% else %}
-                                                                {% trans "Out of Stock" %}
-                                                            {% endif %}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Available Stock -->
-                                            <div class="col-md-6">
-                                                <div class="row align-items-center">
-                                                    <div class="col-6">
-                                                        <label class="form-label fw-bold mb-0">
-                                                            {% trans "Available Stock" %}
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-6 text-end">
-                                                        <span class="badge {% if product.stock > 0 %}bg-accent{% else %}bg-danger{% endif %}">
-                                                            {{ product.stock|default:0 }}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {% if product.is_public %}
-                                                <!-- Page Language -->
-                                                <div class="col-md-6">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-6">
-                                                            <label class="form-label fw-bold mb-0">
-                                                                {% trans "Page Language" %}
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-6 text-end">
-                                                            <span class="badge {% if product.landing_page.landing_language == "ar" %} bg-accent {% elif product.landing_page.landing_language == "en" %} bg-primary {% else %} bg-info {% endif %}">
-                                                                {{ product.landing_page.get_landing_language_display }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Layout Direction -->
-                                                <div class="col-md-6">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-6">
-                                                            <label class="form-label fw-bold mb-0">
-                                                                {% trans "Layout Direction" %}
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-6 text-end">
-                                                            <span class="badge {% if product.landing_page.layout_direction == 'horizontal' %} bg-accent {% else %} bg-primary {% endif %}">
-                                                                {{ product.landing_page.get_layout_direction_display }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Feedbacks -->
-                                                <div class="col-md-6">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-6">
-                                                            <label class="form-label fw-bold mb-0">
-                                                                {% trans "Feedbacks" %}
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-6 text-end">
-                                                            <span class="badge {% if product.landing_page.enable_feedbacks %}bg-accent{% else %}bg-secondary{% endif %}">
-                                                                {% if product.landing_page.enable_feedbacks %}
-                                                                    {% trans "Enabled" %}
-                                                                {% else %}
-                                                                    {% trans "Disabled" %}
-                                                                {% endif %}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
                                                 <!-- Related Products -->
-                                                <div class="col-md-6">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-6">
-                                                            <label class="form-label fw-bold mb-0">
-                                                                {% trans "Related Products" %}
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-6 text-end">
-                                                            <span class="badge {% if product.landing_page.enable_related_products %}bg-accent{% else %}bg-secondary{% endif %}">
-                                                                {% if product.landing_page.enable_related_products %}
-                                                                    {% trans "Enabled" %}
-                                                                {% else %}
-                                                                    {% trans "Disabled" %}
-                                                                {% endif %}
-                                                            </span>
-                                                        </div>
+                                                <div class="col-lg-6 col-md-12">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="form-label fw-bold mb-0 text-truncate">
+                                                            {% trans "Related Products" %}
+                                                        </label>
+                                                        <span class="badge text-truncate {% if product.landing_page.enable_related_products %}bg-accent{% else %}bg-secondary{% endif %}">
+                                                            {% if product.landing_page.enable_related_products %}
+                                                                {% trans "Enabled" %}
+                                                            {% else %}
+                                                                {% trans "Disabled" %}
+                                                            {% endif %}
+                                                        </span>
                                                     </div>
                                                 </div>
 
                                                 <!-- Product Page URL -->
                                                 <div class="col-12 pt-3 border-top">
-                                                    <div class="row align-items-center">
+                                                    <div class="row align-items-center g-2">
                                                         <div class="col-12 col-md-4">
-                                                            <label class="form-label fw-bold mb-0">
+                                                            <label class="form-label fw-bold mb-0 text-truncate">
                                                                 {% trans "Product Page URL" %}
                                                             </label>
                                                         </div>
                                                         <div class="col-12 col-md-8">
                                                             <div class="input-group input-group-sm">
                                                                 <input type="text"
-                                                                       class="form-control"
+                                                                       class="form-control text-truncate"
                                                                        readonly
                                                                        value="{{ request.scheme }}://{{ request.get_host }}{% url 'frontend:product_landing' shop_code=product.user.profile.shop_code pk=product.pk %}" />
                                                                 <button type="button"
