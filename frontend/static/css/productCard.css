@@ -1,3 +1,10 @@
+.product-card img 
+{
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  height: 200px;
+  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)!important;
+}
 .dots-menu-btn {
   top: 10px;
   right: 10px;

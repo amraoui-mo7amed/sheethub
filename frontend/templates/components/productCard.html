@@ -18,31 +18,33 @@
                     <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
                         {{ product.price }} DZD
                     </p>
-                    <!-- Menu toggle button -->
-                    <button class="dots-menu-btn" onclick="toggleMenu(this)">
-                        &#8942;
-                    </button>
-
-                    <!-- Dropdown menu -->
-                    <div class="dots-menu">
-                        <a href="{% url 'dash:product_details' pk=product.pk %}">
-                            {% trans "View Details" %}
-                        </a>
-                        {% if product.is_public %}
-                            <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}"
-                               target="_blank">
-                                {% trans "Product Page" %}
-                            </a>
-                        {% endif %}
-                        <button href="#"
-                                class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
-                                data-delete-url="{% url "dash:product_delete" product.pk %}"
-                                style="width:95%"
-                                data-csrf-token="{{ csrf_token }}"
-                                title="{% trans 'Delete' %}">
-                            {% trans "Delete" %}
+                    {% if is_editable == True %}
+                        <!-- Menu toggle button -->
+                        <button class="dots-menu-btn" onclick="toggleMenu(this)">
+                            &#8942;
                         </button>
-                    </div>
+
+                        <!-- Dropdown menu -->
+                        <div class="dots-menu">
+                            <a href="{% url 'dash:product_details' pk=product.pk %}">
+                                {% trans "View Details" %}
+                            </a>
+                            {% if product.is_public %}
+                                <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}"
+                                   target="_blank">
+                                    {% trans "Product Page" %}
+                                </a>
+                            {% endif %}
+                            <button href="#"
+                                    class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
+                                    data-delete-url="{% url "dash:product_delete" product.pk %}"
+                                    style="width:95%"
+                                    data-csrf-token="{{ csrf_token }}"
+                                    title="{% trans 'Delete' %}">
+                                {% trans "Delete" %}
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

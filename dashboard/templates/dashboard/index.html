@@ -196,6 +196,12 @@
                 </div>
             </div>
         </div>
+        {% if not request.user.auth.email_confirmed %}
+            <div class="alert alert-warning" role="alert" data-target-url="{% url "user_auth:send_activation_email" %}" id="emailActivationWarning">
+                {% trans "Please confirm your email address" %}
+                <a href="#" onclick="sendActivationEmail()" class="text-primary">{% trans "Confirm" %}</a>.
+            </div>
+        {% endif %}
         <!-- Overlay for popups -->
         <div class="popup-overlay" id="popupOverlay">
         </div>

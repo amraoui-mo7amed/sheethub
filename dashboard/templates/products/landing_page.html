@@ -62,7 +62,7 @@
                     {# Product Details #}
                     <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-6 col-md-12" {% else %}class="col-lg-12" {% endif %}>
                         <div class="row g-2">
-                            <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-12 col-sm-6 col-sm-12" {% else %}class="col-lg-8 col-md-6 col-sm-12" {% endif %}>
+                            <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-12 col-sm-6 col-sm-12" {% else %}class="col-lg-7 col-md-6 col-sm-12" {% endif %}>
                                 <h2 class="fw-bold">
                                     {{ product.name }}
                                 </h2>
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             {% if product.stock > 0 %}
-                                <div class="{% if landing.layout_direction == 'horizontal' %}col-lg-12 col-sm-6 col-sm-12 {% else %}col-lg-4 col-md-6 col-sm-12 {% endif %}">
+                                <div class="{% if landing.layout_direction == 'horizontal' %}col-lg-12 col-sm-6 col-sm-12 {% else %}col-lg-5 col-md-6 col-sm-12 {% endif %}">
                                     <form class="form" method="POST" action="#">
                                         <div class="card">
                                             <div class="card-header bg-white">

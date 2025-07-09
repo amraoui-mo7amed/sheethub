@@ -89,7 +89,7 @@ class UserProfile(models.Model):
 
     image = models.ImageField(upload_to='profile_pics', blank=True, null=True)
     max_orders = models.IntegerField(_('max orders'), default=30)
-    max_products = models.IntegerField(_('max products'), default=10)
+    max_products = models.IntegerField(_('max products'), default=5)
     country = models.CharField(_('country'), max_length=100, blank=True, null=True)
     is_beta = models.BooleanField(_('is beta'), default=True)
 

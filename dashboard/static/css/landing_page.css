@@ -15,7 +15,20 @@ body.ltr {
     background: #fff;
     direction: ltr;
 }
-
+img 
+{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border: .5px solid var(--bs-gray-300);
+}
+img:hover
+{
+    border: 1px solid var(--bs-gray-300);
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all .3s ease-in-out;
+}
 .phone-prefix {
     background-color: #f1f3f5;
     padding: 0.375rem 0.75rem;

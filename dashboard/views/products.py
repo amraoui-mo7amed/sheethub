@@ -9,6 +9,10 @@ from dashboard.models import Product, ProductImage, LandingPageConfig
 from django.http import JsonResponse
 from .generic import BaseDelete
 from utils import loadJSON
+from django.http import JsonResponse
+from django.core.serializers import serialize
+from django.forms.models import model_to_dict
+from django.core.serializers.json import DjangoJSONEncoder
 
 userModel = get_user_model()
 
@@ -18,14 +22,18 @@ def list(request):
     Products = Product.objects.filter(user=request.user)
     return render(request, "products/list.html", {"products": Products})
 
-
 @login_required
 @role_required(["seller"])
-def create(request):
+def create_or_update_product(request, pk=None):
     if request.method == "POST":
+        is_update = pk is not None
         errors = []
 
-        # Extract data
+        product = None
+        if is_update:
+            product = get_object_or_404(Product, pk=pk, user=request.user)
+
+        # Extract form data
         name = request.POST.get("name", "").strip()
         description = request.POST.get("description", "").strip()
         price = request.POST.get("price", "").strip()
@@ -54,7 +62,7 @@ def create(request):
             except ValueError:
                 errors.append(_("Price must be a valid number"))
 
-        if not image:
+        if not is_update and not image:
             errors.append(_("Main product image is required"))
 
         try:
@@ -68,56 +76,68 @@ def create(request):
         if enable_pixel and not facebook_pixel_id:
             errors.append(_("Facebook Pixel ID is required when tracking is enabled"))
 
-        if request.user.profile.max_products <= 0:
-            errors.append(_("You have reached the maximum number of products allowed"))
-        if allow_additional_images:
-            found = False
-            for file_key in request.FILES:
-                if "image" in file_key and file_key != "default_image":
-                    found = True
-                    break
-            if not found:
-                errors.append(_("At least one additional image is required"))
-
         if not landing_language:
             errors.append(_("Landing page language is required"))
 
         if not layout_direction:
             errors.append(_("Layout direction is required"))
 
+        if not is_update and request.user.profile.max_products <= 0:
+            errors.append(_("You have reached the maximum number of products allowed"))
+
+        if allow_additional_images and not is_update:
+            found = any(k.startswith("image_") for k in request.FILES)
+            if not found:
+                errors.append(_("At least one additional image is required"))
+
         if errors:
-            return JsonResponse({
-                'success': False,
-                'errors': errors
-            })
+            return JsonResponse({'success': False, 'errors': errors})
 
-        # === Save Product ===
-        product = Product.objects.create(
-            user=request.user,
-            name=name,
-            description=description,
-            price=price,
-            stock=stock,
-            image=image,
-            is_public=is_public,
-            is_featured=is_featured,
-            in_stock=in_stock,
-            allow_additional_images=allow_additional_images,
-            enable_pixel=enable_pixel,
-            facebook_pixel_id=facebook_pixel_id,
-        )
-        request.user.profile.max_products -= 1
-        request.user.profile.save()
-        # === Save Landing Page Config ===
-        LandingPageConfig.objects.create(
+        # === Save or Update ===
+        if not is_update:
+            product = Product.objects.create(
+                user=request.user,
+                name=name,
+                description=description,
+                price=price,
+                stock=stock,
+                image=image,
+                is_public=is_public,
+                is_featured=is_featured,
+                in_stock=in_stock,
+                allow_additional_images=allow_additional_images,
+                enable_pixel=enable_pixel,
+                facebook_pixel_id=facebook_pixel_id,
+            )
+            request.user.profile.max_products -= 1
+            request.user.profile.save()
+        else:
+            product.name = name
+            product.description = description
+            product.price = price
+            product.stock = stock
+            product.is_public = is_public
+            product.is_featured = is_featured
+            product.in_stock = in_stock
+            product.allow_additional_images = allow_additional_images
+            product.enable_pixel = enable_pixel
+            product.facebook_pixel_id = facebook_pixel_id
+            if image:
+                product.image = image
+            product.save()
+
+        # === Landing Page Config ===
+        LandingPageConfig.objects.update_or_create(
             product=product,
-            landing_language=landing_language,
-            layout_direction=layout_direction,
-            enable_feedbacks=enable_feedbacks,
-            enable_related_products=enable_related_products
+            defaults={
+                "landing_language": landing_language,
+                "layout_direction": layout_direction,
+                "enable_feedbacks": enable_feedbacks,
+                "enable_related_products": enable_related_products
+            }
         )
 
-        # === Save Additional Images ===
+        # === Additional Images (append-only) ===
         for file_key in request.FILES:
             if file_key.startswith("image_"):
                 ProductImage.objects.create(product=product, image=request.FILES[file_key])
@@ -128,7 +148,7 @@ def create(request):
         })
 
     else:
-        return render(request, "products/create.html")
+        return render(request, "products/create.html")  # Reuse form page
 
 
 @login_required
@@ -146,3 +166,5 @@ def Delete(request, pk):
         request.user.profile.save()
 
     return BaseDelete(request,Product,pk)
+
+

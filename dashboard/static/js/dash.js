@@ -432,3 +432,44 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+
+function sendActivationEmail() {
+    const alertDiv = document.getElementById('emailActivationWarning')
+    fetch(alertDiv.getAttribute('data-target-url'), {
+        method: "GET",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: data.message,
+                timer: 3000,
+                showConfirmButton: false
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message,
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+    })
+    .catch(() => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong. Please try again later.',
+            timer: 3000,
+            showConfirmButton: false
+        });
+    });
+}

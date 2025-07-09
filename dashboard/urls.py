@@ -15,7 +15,7 @@ urlpatterns = [
     path("notifications/mark-all-read/", notifications.set_read , name="mark_all_read"),
     # Products 
     path('products/', products.list, name='products_list'),
-    path('products/create/', products.create, name='product_create'),
+    path('products/create/', products.create_or_update_product, name='product_create'),
     path('products/delete/<int:pk>', products.Delete, name='product_delete'),
     path('products/details/<int:pk>', products.productDetails, name='product_details'),
     # Waitlist

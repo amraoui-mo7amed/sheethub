@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import auth, password_reset, email
+from .utils import sendActivationeEmail
 
 app_name = 'user_auth'
 
@@ -11,4 +12,5 @@ urlpatterns = [
     path('password-reset/', password_reset.forgot_password, name='password_reset'),
     path('confirm-email/<str:token>/', email.confirm_email_view, name='confirm_email'),
     path('password-reset/confirm/<str:token>/', password_reset.password_reset_confirm, name='reset_password_confirm'),
+    path('send-activation-email/', sendActivationeEmail, name='send_activation_email'),
 ]
