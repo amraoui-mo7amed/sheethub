@@ -196,16 +196,11 @@
                                                             </label>
                                                         </div>
                                                         <div class="col-12 col-md-8">
-                                                            <div class="input-group input-group-sm">
+                                                            <div>
                                                                 <input type="text"
-                                                                       class="form-control text-truncate"
+                                                                       class="form-control text-truncate p-"
                                                                        readonly
                                                                        value="{{ request.scheme }}://{{ request.get_host }}{% url 'frontend:product_landing' shop_code=product.user.profile.shop_code pk=product.pk %}" />
-                                                                <button type="button"
-                                                                        class="btn btn-outline-secondary copy-btn"
-                                                                        title="{% trans 'Copy URL' %}">
-                                                                    <i class="fas fa-copy"></i>
-                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -247,35 +242,4 @@
 
 {% block extra_js %}
     <script src="{% static "js/action_buttons.js" %}?v={% now "U" %}"></script>
-    <script>
-        // Initialize tooltips
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Bootstrap tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-
-            // Copy to clipboard functionality
-            document.querySelectorAll('.copy-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.parentElement.querySelector('input');
-                    input.select();
-                    document.execCommand('copy');
-
-                    // Show feedback
-                    const originalTitle = this.getAttribute('title');
-                    this.setAttribute('title', '{% trans "Copied!" %}');
-                    const tooltip = bootstrap.Tooltip.getInstance(this);
-                    tooltip.show();
-
-                    // Revert title after 2 seconds
-                    setTimeout(() => {
-                        this.setAttribute('title', originalTitle);
-                        tooltip.hide();
-                    }, 2000);
-                });
-            });
-        });
-    </script>
 {% endblock extra_js %}
