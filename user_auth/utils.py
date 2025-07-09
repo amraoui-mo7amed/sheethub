@@ -6,6 +6,7 @@ from mailjet import MailJet
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import logout
 
 def generate_confirmation_link(request, user):
     """
@@ -45,6 +46,8 @@ def generate_password_reset_link(request, user):
 
 def sendActivationeEmail(request):
     try:
+        if request.user.is_authenticated:
+            logout(request)
         user = request.user
         first_name = user.first_name or "User"
         email = user.email

@@ -52,7 +52,7 @@ def forgot_password(request):
                     "activation_link": reset_link,
                     "template_text": str(_("Click the button below to reset your password. If you didn't request this, please ignore this email.")),
                     "template_title": str(_("Reset Your Password")),
-                    "reset_text": str(_("Password Reset"))
+                    "reset_text": str(_("Reset Password"))
                 }
                 
                 success, response = mailjet.sendMessage(
