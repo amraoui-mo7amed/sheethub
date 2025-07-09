@@ -2,12 +2,6 @@
 
 {% load static i18n %}
 
-{% block extra_css %}
-    <link rel="stylesheet"
-          href="{% static 'css/action_buttons.css' %}?v={% now "U" %}" />
-{% endblock extra_css %}
-
-
 {% block dashContent %}
     <div class="container-fluid">
         {# Product Card #}
