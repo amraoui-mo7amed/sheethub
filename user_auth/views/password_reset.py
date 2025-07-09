@@ -48,17 +48,16 @@ def forgot_password(request):
             try:
                 mailjet = MailJet()
                 reset_link = generate_password_reset_link(request, user)
-                variables = {
-                    "activation_link": reset_link,
-                    "template_text": str(_("Click the button below to reset your password. If you didn't request this, please ignore this email.")),
-                    "template_title": str(_("Reset Your Password")),
-                    "reset_text": str(_("Reset Password"))
-                }
                 
                 success, response = mailjet.sendMessage(
                     templateID=7132960,
                     subject=str(_("Password Reset Request")),
-                    variabels=variables,
+                    variabels= {
+                        "template_text": str(_("You requested a password reset. Please click the link below to set a new password.")),
+                        "activation_link": reset_link,
+                        "rest_text": str(_("Reset Password")),
+                        "template_title": str(_("Password Reset Request"))
+                        },
                     recipiant_email=email,
                     recipiant_name=user.first_name
                 )

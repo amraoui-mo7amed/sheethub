@@ -33,7 +33,7 @@ def generate_password_reset_link(request, user):
     token = secrets.token_urlsafe(32)  # Secure random token
     auth, created = UserAuth.objects.get_or_create(user=user)
     # Update user auth model with reset token and timestamp
-    auth.password_resemailActivationWarninget_token = token
+    auth.password_reset_token = token
     auth.password_reset_sent = timezone.now()
     auth.save()
 

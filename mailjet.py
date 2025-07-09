@@ -35,6 +35,7 @@ class MailJet:
         try:
             result = self.client.send.create(data=data)
             response_json = result.json()
+            print(response_json)
             status = response_json.get("Messages", [{}])[0].get("Status")
             message_id = response_json.get("Messages", [{}])[0].get("To", [{}])[0].get("MessageID")
             if result.status_code == 200 and status == "success":
