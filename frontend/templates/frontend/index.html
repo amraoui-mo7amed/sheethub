@@ -76,8 +76,11 @@
                                     <li class="nav-item ms-lg-3">
                                         <a class="btn btn-primary border rounded-pill"
                                            href="{% url "user_auth:login" %}">
+
                                             {% if request.user.is_authenticated %}
                                                 {% trans "Dashboard" %}
+                                            {% else %}
+                                                {% trans "Login" %}
                                             {% endif %}
                                         </a>
                                     </li>
@@ -102,7 +105,8 @@
                             </p>
                             <div class="d-flex flex-column flex-wrap gap-1">
                                 <a href="{% url 'user_auth:login' %}"
-                                   class="btn btn-primary-custom border rounded" style="max-width:fit-content;">
+                                   class="btn btn-primary-custom border rounded"
+                                   style="max-width:fit-content">
                                     {% trans "Start Selling for Free" %}
                                 </a>
                                 <small class="text-muted">{% trans "150 free orders while in beta. Limited seats." %}</small>
