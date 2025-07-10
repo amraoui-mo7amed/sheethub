@@ -73,17 +73,15 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="#contact">{% trans "Contact" %}</a>
                                     </li>
-                                    <li class="nav-item ms-lg-3">
-                                        <a class="btn btn-primary border rounded-pill"
-                                           href="{% url "user_auth:login" %}">
-
-                                            {% if request.user.is_authenticated %}
+                                    {% if request.user.is_authenticated %}
+                                        <li class="nav-item ms-lg-3">
+                                            <a class="btn btn-primary border rounded-pill"
+                                               href="{% url "user_auth:login" %}">
                                                 {% trans "Dashboard" %}
-                                            {% else %}
-                                                {% trans "Login" %}
-                                            {% endif %}
-                                        </a>
-                                    </li>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
                                 </ul>
                             </div>
                         </div>
