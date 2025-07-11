@@ -62,7 +62,7 @@ def signup(request):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
         try:
-            if userModel.objects.all().count <= 10:
+            if userModel.objects.all().count() <= 10:
                 is_beta = True
                 max_orders = 150
             else:
