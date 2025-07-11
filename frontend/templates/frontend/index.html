@@ -137,9 +137,12 @@
                     <div class="row align-items-start text-center ">
                         <div class="col-lg-5">
                             <img loading="lazy"
-                                 src="{% static "images/mission.webp" %}"
-                                 class="img-fluid w-100"
-                                 alt="{% trans "Mission" %}" />
+                                 srcset="{% static 'images/mission.webp' %} 1200w,
+                                         {% static 'images/resized/mission.webp' %} 600w"
+                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                 src="{% static 'images/mission.webp' %}"
+                                 class="img-fluid"
+                                 alt="{% trans 'Mission' %}" />
                         </div>
                         <div class="col-lg-7 text-start">
                             <h2 class="fw-bold mb-3">
@@ -200,9 +203,12 @@
                              data-sal="slide-up"
                              data-sal-delay="200">
                             <img loading="lazy"
+                                 srcset="{% static 'images/order.webp' %} 1200w,
+                                         {% static 'images/resized/order.webp' %} 600w"
+                                 sizes="(max-width: 768px) 100vw, 50vw"
                                  src="{% static 'images/order.webp' %}"
                                  class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Wilaya support" />
+                                 alt="{% trans 'Wilaya support' %}" />
                         </div>
                         <div class="col-md-8" data-sal="slide-up" data-sal-delay="300">
                             <h4 class="fw-bold animate__animated animate__fadeInLeft">
@@ -223,9 +229,12 @@
                              data-sal="slide-up"
                              data-sal-delay="300">
                             <img loading="lazy"
+                                 srcset="{% static 'images/analytics_interface.webp' %} 1200w,
+                                         {% static 'images/resized/analytics_interface.webp' %} 600w"
+                                 sizes="(max-width: 768px) 100vw, 50vw"
                                  src="{% static 'images/analytics_interface.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Smart Analytics" />
+                                 class="img-fluid"
+                                 alt="{% trans 'Analytics' %}" />
                         </div>
                         <div class="col-md-6" data-sal="slide-up" data-sal-delay="400">
                             <h4 class="fw-bold animate__animated animate__fadeInRight">
@@ -246,9 +255,12 @@
                              data-sal="slide-up"
                              data-sal-delay="400">
                             <img loading="lazy"
+                                 srcset="{% static 'images/communication.webp' %} 1200w,
+                                         {% static 'images/resized/communication.webp' %} 600w"
+                                 sizes="(max-width: 768px) 100vw, 50vw"
                                  src="{% static 'images/communication.webp' %}"
                                  class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Orders dashboard" />
+                                 alt="{% trans 'Orders dashboard' %}" />
                         </div>
                         <div class="col-md-6" data-sal="slide-up" data-sal-delay="500">
                             <h4 class="fw-bold animate__animated animate__fadeInLeft">
@@ -269,9 +281,12 @@
                              data-sal="slide-up"
                              data-sal-delay="500">
                             <img loading="lazy"
+                                 srcset="{% static 'images/tools.webp' %} 1200w,
+                                         {% static 'images/resized/tools.webp' %} 600w"
+                                 sizes="(max-width: 768px) 100vw, 50vw"
                                  src="{% static 'images/tools.webp' %}"
                                  class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Fast setup" />
+                                 alt="{% trans 'Fast setup' %}" />
                         </div>
                         <div class="col-md-6" data-sal="slide-up" data-sal-delay="600">
                             <h4 class="fw-bold animate__animated animate__fadeInRight">
