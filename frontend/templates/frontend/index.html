@@ -82,14 +82,6 @@
                                     </li>
                                 </ul>
                             </div>
-                            <a class="btn btn-primary border rounded "
-                               href="{% url "user_auth:login" %}">
-                                {% if request.user.is_authenticated %}
-                                    {% trans "Dashboard" %}
-                                {% else %}
-                                    {% trans "Login" %}
-                                {% endif %}
-                            </a>
                         </div>
                     </nav>
                 </div>
@@ -284,71 +276,29 @@
                 </div>
             </section>
 
-            <!-- Pricing Section -->
-            <section id="pricing" class="py-5 py-lg-7">
-                <div class="container">
-                    <div class="text-center mb-5">
-                        <h2 class="fw-bold mb-3">
-                            {% trans "Simple, Transparent Pricing" %}
-                        </h2>
-                        <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                            {% trans "No hidden fees. Cancel anytime." %}
-                        </p>
-                    </div>
-                    {% if plans %}
-                        <div class="row g-2">
-                            {% for plan in plans %}
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="subscription-card {% if forloop.first %}featured{% endif %}">
-                                        <div class="card-header">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <h3 class="mb-0">
-                                                    {{ plan.name|capfirst }}
-                                                </h3>
-                                                <div class="price fs-4">
-                                                    ${{ plan.price }}/mo
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <ul class="features-list">
-                                                {% for feature in plan.get_features %}
-                                                    <li>
-                                                        <i class="fas {% if feature.enabled %}fa-check-circle{% else %}fa-circle-xmark{% endif %}"></i>
-                                                        {{ feature.display }}
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                        <div class="card-footer ">
-                                            <div class="d-flex justify-content-center">
-                                                {% if plan.name == "free" %}
-                                                    <a href="#" class="btn btn-primary-custom">
-                                                        {% trans "Get Started For Free" %}
-                                                    </a>
-                                                {% else %}
-                                                    <a href="#" class="btn btn-outline-primary-custom">
-                                                        {% trans "Get Started" %}
-                                                    </a>
-                                                {% endif %}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
+            {% if plans %}
+                <!-- Pricing Section -->
+                <section id="pricing" class="py-5 py-lg-7">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold mb-3">
+                                {% trans "Simple, Transparent Pricing" %}
+                            </h2>
+                            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                                {% trans "No hidden fees. Cancel anytime." %}
+                            </p>
                         </div>
-                    {% else %}
-                        {% include "components/alert.html" with message="No plans found" type="danger" %}
-
-                    {% endif %}
-                    <div class="text-center mt-5">
-                        <p class="text-muted">
-                            {% trans "Need more?" %} <a href="#contact" class="text-primary">{% trans "Contact us" %}</a> {% trans "for enterprise solutions." %}
-                        </p>
+                        {% for plan in plans %}
+                            {{ plan.get_features }}
+                        {% endfor %}
+                        <div class="text-center mt-5">
+                            <p class="text-muted">
+                                {% trans "Need more?" %} <a href="#contact" class="text-primary">{% trans "Contact us" %}</a> {% trans "for enterprise solutions." %}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            {% endif %}
             {# FAQ Section #}
             <section id="faq" class="py-5 bg-white">
                 <div class="container">

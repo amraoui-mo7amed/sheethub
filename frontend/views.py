@@ -3,12 +3,16 @@ from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
 from dashboard.models import WaitList, Product
+from subscription.models import SubscriptionPlan
 from utils import loadJSON
 
 def index(request):
     """
     Render the index page.
     """
+    context= {
+        'plans': SubscriptionPlan.objects.all()
+    }
     return render(request, 'frontend/index.html')
 
 def waitlist(request):
