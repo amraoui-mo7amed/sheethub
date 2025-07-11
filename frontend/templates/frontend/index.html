@@ -150,15 +150,15 @@
                         <!-- Right Image Column -->
                         <div class="col-lg-6" data-sal="zoom-in" data-sal-duration="1500">
                             <picture>
-                                <source srcset="{% static 'images/resized/online_shopping_concept.webp' %}"
+                                <source srcset="{% static 'images/online_shopping_concept.webp' %}"
                                         type="image/webp" />
                                 <img loading="eager"
                                      fetchpriority="high"
-                                     src="{% static 'images/resized/online_shopping_concept.webp' %}"
+                                     src="{% static 'images/online_shopping_concept.webp' %}"
                                      class="img-fluid hero-image"
                                      alt="{% trans 'Woman shopping online illustration' %}"
-                                     width="400"
-                                     height="317" />
+                                     width="600"
+                                     height="450" />
                             </picture>
                         </div>
                     </div>
@@ -567,31 +567,33 @@
                                 <h5 class="fw-bold mb-4">
                                     {% trans "Send us a message" %}
                                 </h5>
-                                <form>
+                                {% include "components/errorList.html" %}
+                                <form class="form" method="POST" action="{% url "frontend:create_message" %}">
+                                    {% csrf_token %}
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label for="name" class="form-label">
                                                 {% trans "Your Name" %}
                                             </label>
-                                            <input type="text" class="form-control" id="name" required />
+                                            <input type="text" class="form-control" id="name" name="name" required />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="email" class="form-label">
                                                 {% trans "Email Address" %}
                                             </label>
-                                            <input type="email" class="form-control" id="email" required />
+                                            <input type="email" class="form-control" id="email" name="email" required />
                                         </div>
                                         <div class="col-12">
                                             <label for="subject" class="form-label">
                                                 {% trans "Subject" %}
                                             </label>
-                                            <input type="text" class="form-control" id="subject" required />
+                                            <input type="text" class="form-control" id="subject" name="subject" required />
                                         </div>
                                         <div class="col-12">
                                             <label for="message" class="form-label">
                                                 {% trans "Message" %}
                                             </label>
-                                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                                         </div>
                                         <div class="col-12">
                                             <div class="d-flex justify-content-end">

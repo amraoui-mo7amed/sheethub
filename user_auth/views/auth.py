@@ -21,6 +21,7 @@ userModel = get_user_model()
 def signup(request):
     if request.method == 'POST':
         errors = []
+        
         first_name = request.POST.get('first_name', '').strip()
         last_name = request.POST.get('last_name', '').strip()
         email = request.POST.get('email', '').strip().lower()
@@ -61,6 +62,12 @@ def signup(request):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
         try:
+            if userModel.objects.all().count <= 10:
+                is_beta = True
+                max_orders = 150
+            else:
+                is_beta = False
+                max_orders = 30
             with transaction.atomic():
                 user = userModel.objects.create_user(
                     email=email,
@@ -68,7 +75,12 @@ def signup(request):
                     first_name=first_name,
                     last_name=last_name,
                 )
-                profile = UserProfile.objects.create(user=user, role='seller', country=country)
+                profile = UserProfile.objects.create(
+                    user=user, 
+                    role='seller', 
+                    max_orders = max_orders, 
+                    is_beta = is_beta, 
+                    country=country)
                 user.profile = profile
                 user.save()
 
