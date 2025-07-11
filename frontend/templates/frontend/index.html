@@ -167,471 +167,217 @@
         {% endblock hero %}
 
         {% block content %}
-            {# Our Mission #}
             <section id="our-mission"
                      class="py-5 bg-white animate"
                      data-sal="slide-right"
                      data-sal-duration="1000">
                 <div class="container">
-                    <div class="row align-items-start text-center ">
+                    <div class="row align-items-start text-center">
                         <div class="col-lg-5">
-                            <img loading="lazy"
-                                 src="{% static "images/mission.webp" %}"
+                            <img src="{% static 'images/resized/mission.webp' %}"
+                                 srcset="{% static 'images/resized/mission.webp' %} 1x,
+                                         {% static 'images/mission.webp' %} 2x"
+                                 sizes="(max-width: 768px) 100vw,
+                                        50vw"
                                  class="img-fluid w-100"
-                                 alt="{% trans "Mission" %}" />
+                                 alt="{% trans 'Our Mission' %}"
+                                 loading="eager"
+                                 fetchpriority="high" />
                         </div>
                         <div class="col-lg-7 text-start">
                             <h2 class="fw-bold mb-3">
                                 {% trans "Built for Sellers Who’ve Had Enough" %}
                             </h2>
                             <p class="lead text-muted mb-4">
-                                {% trans "Tired of losing orders in chat? Tired of copying names and addresses into spreadsheets? Tired of Shopify asking for your credit card before you even sell?" %}
+                                {% trans "Tired of losing orders in chat?..." %}
                             </p>
                             <p class="text-muted">
-                                {% trans "SheetHub gives you what actually matters: a clean product link, simple order tracking, and no setup stress. Just add your product and start selling — all in one link." %}
+                                {% trans "SheetHub gives you what actually matters..." %}
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
-            {# Fetures Section #}
+
             <section id="features" class="py-5 bg-light-custom">
                 <div class="container">
-                    <!-- Section Title -->
                     <div class="text-center mb-5">
-                        <h2 class="fw-bold mb-3 " data-sal="slide-down" data-sal-delay="100">
+                        <h2 class="fw-bold mb-3" data-sal="slide-down" data-sal-delay="100">
                             {% trans "We Solve Real Problems for Real Sellers" %}
                         </h2>
-                        <p class="lead text-muted mx-auto "
+                        <p class="lead text-muted mx-auto"
+                           style="max-width: 700px"
                            data-sal="slide-up"
-                           data-sal-delay="200"
-                           style="max-width: 700px">
-                            {% trans "SheetHub removes the pain points of small sellers — no setup, no tech skills needed." %}
+                           data-sal-delay="200">
+                            {% trans "SheetHub removes the pain points of small sellers..." %}
                         </p>
                     </div>
 
-                    <!-- Feature 1 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="100">
-                            <img loading="lazy"
-                                 src="{% static 'images/website.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="No website needed" />
+                    {% comment %} FEATURES LOOP EXAMPLE {% endcomment %}
+                    {% for feature in features %}
+                        <div class="row align-items-center mb-5 {% if forloop.counter|divisibleby:2 %}flex-md-row-reverse{% endif %}">
+                            <div class="col-md-6 mb-3 mb-md-0"
+                                 data-sal="slide-up"
+                                 data-sal-delay="100">
+                                <img src="{% static 'images/resized/'|add:feature.image %}"
+                                     srcset="{% static 'images/resized/'|add:feature.image %} 1x,
+                                             {% static 'images/'|add:feature.image %} 2x"
+                                     sizes="(max-width: 768px) 100vw,
+                                            50vw"
+                                     class="img-fluid"
+                                     loading="lazy"
+                                     alt="{{ feature.alt }}" />
+                            </div>
+                            <div class="col-md-6" data-sal="slide-up" data-sal-delay="200">
+                                <h4 class="fw-bold">
+                                    {{ feature.title|safe }}
+                                </h4>
+                                <p class="text-muted mb-1">
+                                    {{ feature.description1|safe }}
+                                </p>
+                                <p class="text-muted">
+                                    {{ feature.description2|safe }}
+                                </p>
+                            </div>
                         </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="200">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No Website? No Problem." %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "Most sellers can’t afford to build a full store or don’t know where to start." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "SheetHub creates a shareable product page instantly — no tech skills or credit card required." %}
-                            </p>
-                        </div>
-                    </div>
+                    {% endfor %}
 
-                    <!-- Feature 2 -->
-                    <div class="row align-items-center flex-md-row-reverse mb-5">
-                        <div class="col-md-4 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="200">
-                            <img loading="lazy"
-                                 src="{% static 'images/order.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Wilaya support" />
-                        </div>
-                        <div class="col-md-8" data-sal="slide-up" data-sal-delay="300">
-                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
-                                {% trans "Order Forms That Work anaywhere" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
-                                {% trans "Shopify-style forms confuse local buyers and don’t support wilayas." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInLeft">
-                                {% trans "SheetHub’s forms are optimized for Algerian delivery — full province list, COD, and common needs." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="300">
-                            <img loading="lazy"
-                                 src="{% static 'images/analytics_interface.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Smart Analytics" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="400">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No More Guessing What's Working" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "You post and ship — but you don’t know what’s converting or where people drop off." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "Track visits, conversions, and revenue. Plus, add your Meta Pixel in one click." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="row align-items-center flex-md-row-reverse mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="400">
-                            <img loading="lazy"
-                                 src="{% static 'images/communication.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Orders dashboard" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="500">
-                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
-                                {% trans "Orders Are a Mess in Your Inbox" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
-                                {% trans "WhatsApp, Instagram, Excel... everything is scattered." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInLeft">
-                                {% trans "SheetHub shows you every order in one place, with status tracking, filters, and notifications." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 5 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="500">
-                            <img loading="lazy"
-                                 src="{% static 'images/tools.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Fast setup" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="600">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No Time to Learn New Tools" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "Most tools are made for agencies, not busy sellers with 50 DMs a day." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "SheetHub is built for speed. You can create a product and accept orders in under 3 minutes." %}
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             {% if plans %}
-                <!-- Pricing Section -->
                 <section id="pricing" class="py-5 py-lg-7">
-                    <div class="container">
-                        <div class="text-center mb-5">
-                            <h2 class="fw-bold mb-3">
-                                {% trans "Simple, Transparent Pricing" %}
-                            </h2>
-                            <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                                {% trans "No hidden fees. Cancel anytime." %}
-                            </p>
-                        </div>
+                    <div class="container text-center">
+                        <h2 class="fw-bold mb-3">
+                            {% trans "Simple, Transparent Pricing" %}
+                        </h2>
+                        <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                            {% trans "No hidden fees. Cancel anytime." %}
+                        </p>
                         {% for plan in plans %}
                             {{ plan.get_features }}
                         {% endfor %}
-                        <div class="text-center mt-5">
-                            <p class="text-muted">
-                                {% trans "Need more?" %} <a href="#contact" class="text-primary">{% trans "Contact us" %}</a> {% trans "for enterprise solutions." %}
-                            </p>
-                        </div>
+                        <p class="text-muted mt-5">
+                            {% trans "Need more?" %} <a href="#contact" class="text-primary">{% trans "Contact us" %}</a>
+                        </p>
                     </div>
                 </section>
             {% endif %}
-            {# FAQ Section #}
+
             <section id="faq" class="py-5 bg-white">
                 <div class="container">
-                    <!-- Section Header -->
                     <div class="text-center mb-5">
-                        <h2 class="fw-bold animate__animated animate__fadeInUp"
-                            data-sal="fade"
-                            data-sal-delay="100">
+                        <h2 class="fw-bold" data-sal="fade" data-sal-delay="100">
                             {% trans "Frequently Asked Questions" %}
                         </h2>
-                        <p class="lead text-muted animate__animated animate__fadeInUp"
-                           data-sal="fade"
-                           data-sal-delay="200">
+                        <p class="lead text-muted" data-sal="fade" data-sal-delay="200">
                             {% trans "Everything you need to know before you start using SheetHub." %}
                         </p>
                     </div>
 
-                    <!-- FAQ Accordion -->
                     <div class="accordion" id="faqAccordion">
-
-                        <!-- Purpose -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="100">
-                            <h2 class="accordion-header" id="faqHeading0">
-                                <button class="accordion-button"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse0"
-                                        aria-expanded="true"
-                                        aria-controls="faqCollapse0">
-                                    {% trans "What is the purpose of SheetHub?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse0"
-                                 class="accordion-collapse collapse show"
-                                 aria-labelledby="faqHeading0"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "SheetHub helps small and solo sellers start selling online instantly — with a product page, order tracking, analytics, and delivery support, all in one place." %}
+                        {% for faq in faqs %}
+                            <div class="accordion-item"
+                                 data-sal="slide-up"
+                                 data-sal-delay="{{ forloop.counter0|add:1 }}00">
+                                <h2 class="accordion-header" id="faqHeading{{ forloop.counter }}">
+                                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#faqCollapse{{ forloop.counter }}"
+                                            aria-expanded="{{ forloop.first|yesno:'true,false' }}"
+                                            aria-controls="faqCollapse{{ forloop.counter }}">
+                                        {{ faq.question }}
+                                    </button>
+                                </h2>
+                                <div id="faqCollapse{{ forloop.counter }}"
+                                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                     aria-labelledby="faqHeading{{ forloop.counter }}"
+                                     data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-muted">
+                                        {{ faq.answer }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Audience -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="150">
-                            <h2 class="accordion-header" id="faqHeadingAudience">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapseAudience"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapseAudience">
-                                    {% trans "Who is SheetHub for?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapseAudience"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeadingAudience"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "SheetHub is made for local Algerian sellers, small businesses, resellers, and social sellers who don’t want the complexity of eCommerce platforms." %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Existing FAQs... -->
-
-                        <!-- FAQ: Website -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="200">
-                            <h2 class="accordion-header" id="faqHeading1">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse1"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapse1">
-                                    {% trans "Do I need a website to use SheetHub?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse1"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeading1"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "No! SheetHub gives you a shareable product page instantly — no coding or website needed." %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ: Is it Free? -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="300">
-                            <h2 class="accordion-header" id="faqHeading2">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse2"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapse2">
-                                    {% trans "Is SheetHub free to use?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse2"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeading2"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "Yes — during the beta, you can use SheetHub completely free, including up to 150 orders." %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ: Order Tracking -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="400">
-                            <h2 class="accordion-header" id="faqHeading3">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse3"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapse3">
-                                    {% trans "Can I track orders and deliveries?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse3"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeading3"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "Yes, you get a dashboard where you can manage all orders with filters, statuses, and customer info." %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ: Algerian Support -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="500">
-                            <h2 class="accordion-header" id="faqHeading4">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse4"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapse4">
-                                    {% trans "Does it work in Algeria?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse4"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeading4"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "Absolutely. SheetHub supports all 58 wilayas, COD, and localized order forms made for Algerian buyers." %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ: Meta Pixel -->
-                        <div class="accordion-item animate__animated animate__fadeInUp"
-                             data-sal="slide-up"
-                             data-sal-delay="600">
-                            <h2 class="accordion-header" id="faqHeading5">
-                                <button class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faqCollapse5"
-                                        aria-expanded="false"
-                                        aria-controls="faqCollapse5">
-                                    {% trans "Can I add my Facebook/Meta Pixel?" %}
-                                </button>
-                            </h2>
-                            <div id="faqCollapse5"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="faqHeading5"
-                                 data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-muted">
-                                    {% trans "Yes. You can add your Pixel ID in the settings and it will be automatically injected into your product page." %}
-                                </div>
-                            </div>
-                        </div>
-
+                        {% endfor %}
                     </div>
                 </div>
             </section>
 
-            <!-- Contact Us -->
-            <div id="contact" class="contact-section py-2">
+            <section id="contact" class="py-5 contact-section">
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10 p">
-                            <div class="section-header text-center mb-5">
-                                <h2 class="fw-bold mb-3">
-                                    {% trans "Get In Touch" %}
-                                </h2>
-                                <p class="text-muted">
-                                    {% trans "Have questions or want to learn more? We'd love to hear from you!" %}
-                                </p>
-                            </div>
-                        </div>
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold">
+                            {% trans "Get In Touch" %}
+                        </h2>
+                        <p class="text-muted">
+                            {% trans "Have questions or want to learn more?..." %}
+                        </p>
                     </div>
-                    <div class="row g-2 justify-content-center">
-                        <!-- Contact Form -->
+                    <div class="row justify-content-center">
                         <div class="col-lg-10">
-
-                            <div class="contact-form border rounded shadow-sm p-4">
-                                <h5 class="fw-bold mb-4">
-                                    {% trans "Send us a message" %}
-                                </h5>
-                                <form>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label for="name" class="form-label">
-                                                {% trans "Your Name" %}
-                                            </label>
-                                            <input type="text" class="form-control" id="name" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="email" class="form-label">
-                                                {% trans "Email Address" %}
-                                            </label>
-                                            <input type="email" class="form-control" id="email" required />
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="subject" class="form-label">
-                                                {% trans "Subject" %}
-                                            </label>
-                                            <input type="text" class="form-control" id="subject" required />
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="message" class="form-label">
-                                                {% trans "Message" %}
-                                            </label>
-                                            <textarea class="form-control" id="message" rows="5" required></textarea>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="d-flex justify-content-end">
-                                                <button type="submit" class="btn btn-primary-custom px-4">
-                                                    {% trans "Send Message" %}
-                                                </button>
-                                            </div>
-                                        </div>
+                            <form class="border rounded shadow-sm p-4"
+                                  method="POST"
+                                  action="{% url 'frontend:contact' %}">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">
+                                            {% trans "Your Name" %}
+                                        </label>
+                                        <input type="text" name="name" id="name" class="form-control" required />
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">
+                                            {% trans "Email Address" %}
+                                        </label>
+                                        <input type="email" name="email" id="email" class="form-control" required />
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="subject" class="form-label">
+                                            {% trans "Subject" %}
+                                        </label>
+                                        <input type="text" name="subject" id="subject" class="form-control" required />
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="message" class="form-label">
+                                            {% trans "Message" %}
+                                        </label>
+                                        <textarea name="message" id="message" rows="5" class="form-control" required></textarea>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary-custom px-4">
+                                            {% trans "Send Message" %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         {% endblock content %}
-        {% block footer %}
-            <footer class="text-light pb-2 pt-4">
-                <div class="container">
-                    <div class="row">
 
-                        <!-- Logo & Description -->
+        {% block footer %}
+            <footer class="text-light pt-4 pb-2">
+                <div class="container">
+                    <div class="row gy-4">
+                        <!-- Logo and Description -->
                         <div class="col-md-4">
-                            <h5 class="fw-bold text-white mb-3">
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-2">
-                                        <img loading="lazy"
-                                             src="{% static "icons/favicon.webp" %}"
-                                             alt="SHeetHub Favicon"
-                                             class="w-100 rounded" />
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="d-flex flex-nowrap gap-0 display-6 fw-bold">
-                                            <span class="text-secondary">Sheet</span>
-                                            <span class="text-accent">Hub</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h5>
-                            <p class="text-muted">
+                            <div class="d-flex align-items-center mb-3">
+                                <img loading="lazy"
+                                     srcset="{% static 'icons/favicon.webp' %} 1x,
+                                             {% static 'icons/favicon.png' %} 2x"
+                                     src="{% static 'icons/favicon.webp' %}"
+                                     alt="SheetHub logo"
+                                     class="rounded me-2"
+                                     width="40"
+                                     height="40" />
+                                <h5 class="fw-bold text-white mb-0">
+                                    <span class="text-secondary">Sheet</span><span class="text-accent">Hub</span>
+                                </h5>
+                            </div>
+                            <p class="text-muted small mb-0">
                                 {% trans "All-in-one solution to help sellers launch fast, manage orders, and grow online — with zero technical hassle." %}
                             </p>
                         </div>
@@ -641,7 +387,7 @@
                             <h6 class="text-uppercase text-white fw-semibold mb-3">
                                 {% trans "Links" %}
                             </h6>
-                            <ul class="list-unstyled">
+                            <ul class="list-unstyled small">
                                 <li>
                                     <a href="{% url 'frontend:index' %}"
                                        class="text-muted text-decoration-none">{% trans "Home" %}</a>
@@ -662,11 +408,11 @@
                         </div>
 
                         <!-- Trust & Legal -->
-                        <div class="col-md-3 mb-4">
+                        <div class="col-md-3">
                             <h6 class="text-uppercase text-white fw-semibold mb-3">
                                 {% trans "Trust & Legal" %}
                             </h6>
-                            <ul class="list-unstyled">
+                            <ul class="list-unstyled small">
                                 <li>
                                     <a href="#" class="text-muted text-decoration-none">{% trans "Privacy Policy" %}</a>
                                 </li>
@@ -676,45 +422,43 @@
                             </ul>
                         </div>
 
+                        <!-- Waitlist Form -->
                         <div class="col-md-3">
                             <h6 class="text-uppercase fw-bold text-light mb-3">
-                                Stay Updated
+                                {% trans "Stay Updated" %}
                             </h6>
                             <p class="text-muted small">
-                                Join our waitlist and be first to know when we launch.
+                                {% trans "Join our waitlist and be first to know when we launch." %}
                             </p>
                             <form method="POST"
                                   action="{% url 'frontend:waitlist' %}"
                                   class="d-flex flex-column gap-2">
                                 {% csrf_token %}
-                                <div class="input-group position-relative">
+                                <div class="input-group input-group-sm">
                                     <input type="email"
                                            name="email"
-                                           class="form-control form-control-sm "
-                                           placeholder="Your email"
+                                           class="form-control"
+                                           placeholder="{% trans 'Your email' %}"
                                            required />
-                                    <button type="submit"
-                                            class="bg-primary border text-white position-absolute top-0 bottom-0 end-0">
+                                    <button type="submit" class="btn btn-primary-custom px-3">
                                         {% trans "Submit" %}
                                     </button>
                                 </div>
                             </form>
                         </div>
-
                     </div>
 
                     <!-- Divider -->
-                    <hr class="border-secondary" />
+                    <hr class="border-secondary mt-4 mb-3" />
 
-                    <!-- Bottom -->
-                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
-                        <p class="mb-0 text-muted small">
-                            © {{ year }} SheetHub. {% trans "All rights reserved." %}
-                        </p>
+                    <!-- Bottom Copyright -->
+                    <div class="text-center small text-muted">
+                        © {{ year }} SheetHub. {% trans "All rights reserved." %}
                     </div>
                 </div>
             </footer>
         {% endblock footer %}
+
         <!-- Language Switcher -->
         <div class="language-switcher">
             {% csrf_token %}
