@@ -40,6 +40,10 @@
         <link rel="stylesheet" href="{% static "css/index.css" %}?v={% now "U" %}" />
         <link rel="stylesheet"
               href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css" />
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/sal.js/dist/sal.css" />
+
         {% block css %}
             <link rel="stylesheet" href="{% static "css/subscriptions.css" %}" />
         {% endblock css %}
@@ -65,25 +69,27 @@
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav ms-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#features">{% trans "Features" %}</a>
+                                        <a class="nav-link" href="#our-mission">{% trans "Our Mission" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#how-it-works">{% trans "How It Works" %}</a>
+                                        <a class="nav-link" href="#features">{% trans "Our Features" %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#contact">{% trans "Contact" %}</a>
+                                        <a class="nav-link" href="#faq">{% trans "FAQ" %}</a>
                                     </li>
-                                    {% if request.user.is_authenticated %}
-                                        <li class="nav-item ms-lg-3">
-                                            <a class="btn btn-primary border rounded-pill"
-                                               href="{% url "user_auth:login" %}">
-                                                {% trans "Dashboard" %}
-                                            </a>
-                                        </li>
-                                    {% endif %}
-
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#contact">{% trans "Contact Us" %}</a>
+                                    </li>
                                 </ul>
                             </div>
+                            <a class="btn btn-primary border rounded "
+                               href="{% url "user_auth:login" %}">
+                                {% if request.user.is_authenticated %}
+                                    {% trans "Dashboard" %}
+                                {% else %}
+                                    {% trans "Login" %}
+                                {% endif %}
+                            </a>
                         </div>
                     </nav>
                 </div>
@@ -91,27 +97,31 @@
         {% endblock nav %}
 
         {% block hero %}
-            <section class="py-2 py-lg-7">
+            <section class="py-2">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 mb-5 mb-lg-0">
-                            <h1 class="display-6 fw-bold mb-4">
-                                {% trans "Your Product Page, Order Tracking & Sales — All in One Link." %}
+                    <div class="row align-items-start">
+                        <div class="col-lg-6 mb-2 mb-lg-0"
+                             data-sal="slide-left"
+                             data-sal-duration="1000">
+                            <h1 class="display-4 fw-bold my-3 " id="hero-title">
+                                {% trans "Start Selling with a single Click" %}
                             </h1>
-                            <p class="lead mb-4 text-muted">
-                                {% trans "Everything you need to sell with just a link. No credit card required." %}
+                            <p class="lead mb-2 text-muted mt-3" id="hero-subtitle">
+                                {% trans "All-in-one, no coding, no credit card — just smart, effortless selling." %}
                             </p>
-                            <div class="d-flex flex-column flex-wrap gap-1">
-                                <a href="{% url 'user_auth:login' %}"
-                                   class="btn btn-primary-custom border rounded"
-                                   style="max-width:fit-content">
-                                    {% trans "Start Selling for Free" %}
-                                </a>
-                                <small class="text-muted">{% trans "150 free orders while in beta. Limited seats." %}</small>
-                            </div>
+                            <small class="lead text-muted d-block mb-2" id="hero-description">
+                                {% trans "Create your page, track your orders, and grow your business with our smart sollution for ecommrce sellers." %}
+                            </small>
+                            <a href="{% url "user_auth:login" %}"
+                               class="btn btn-lg btn-primary border rounded mt-3 animate animate__animated animate__backInLeft">
+                                {% trans "Start Selling For Free" %}
+                            </a>
+                            <small class="text-muted d-block mt-2 ">
+                                {% trans "150 free orders for early users" %}
+                            </small>
                         </div>
-                        <div class="col-lg-6">
-                            <img src="https://plus.unsplash.com/premium_vector-1732286587369-22f21e18d70e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0"
+                        <div class="col-lg-6 " data-sal="zoom-in" data-sal-duration="1500">
+                            <img src="{% static "images/online_shopping_concept.png" %}"
                                  class="img-fluid hero-image" />
                         </div>
                     </div>
@@ -120,128 +130,160 @@
         {% endblock hero %}
 
         {% block content %}
-            <!-- Features Section -->
-            <section id="features" class="py-5 py-lg-7 bg-light-custom">
+            {# Our Mission #}
+            <section id="our-mission"
+                     class="py-5 bg-white animate"
+                     data-sal="slide-right"
+                     data-sal-duration="1000">
                 <div class="container">
-                    <div class="text-center mb-5">
-                        <h2 class="fw-bold mb-3">
-                            {% trans "Why 1,000+ Sellers Switched from Spreadsheets" %}
-                        </h2>
-                        <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                            {% trans "The features you need to streamline your order management" %}
-                        </p>
-                    </div>
-
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-boxes"></i>
-                                    </div>
-                                    <h3 class="h4 mb-3">
-                                        {% trans "Bulk Process Orders" %}
-                                    </h3>
-                                    <p class="text-muted">
-                                        {% trans "Save 5+ hours/week by updating 100+ orders at once with just a few clicks." %}
-                                    </p>
-                                </div>
-                            </div>
+                    <div class="row align-items-start text-center ">
+                        <div class="col-lg-5">
+                            <img src="{% static "images/mission.png" %}"
+                                 class="img-fluid w-100"
+                                 alt="{% trans "Mission" %}" />
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
-                                    <h3 class="h4 mb-3">
-                                        {% trans "Automatic Tracking" %}
-                                    </h3>
-                                    <p class="text-muted">
-                                        {% trans "Real-time status updates without manual entry. Customers get notified automatically." %}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <h3 class="h4 mb-3">
-                                        {% trans "Smart Insights" %}
-                                    </h3>
-                                    <p class="text-muted">
-                                        {% trans "See what's selling and what's stuck in fulfillment. Make data-driven decisions." %}
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="col-lg-7 text-start">
+                            <h2 class="fw-bold mb-3">
+                                {% trans "Built for Sellers Who’ve Had Enough" %}
+                            </h2>
+                            <p class="lead text-muted mb-4">
+                                {% trans "Tired of losing orders in chat? Tired of copying names and addresses into spreadsheets? Tired of Shopify asking for your credit card before you even sell?" %}
+                            </p>
+                            <p class="text-muted">
+                                {% trans "SheetHub gives you what actually matters: a clean product link, simple order tracking, and no setup stress. Just add your product and start selling — all in one link." %}
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- How It Works Section -->
-            <section id="how-it-works" class="py-5 py-lg-7 bg-light-custom">
+            {# Fetures Section #}
+            <section id="features" class="py-5 bg-light-custom">
                 <div class="container">
+                    <!-- Section Title -->
                     <div class="text-center mb-5">
-                        <h2 class="fw-bold mb-3">
-                            {% trans "From Chaos to Control in Minutes" %}
+                        <h2 class="fw-bold mb-3 " data-sal="slide-down" data-sal-delay="100">
+                            {% trans "We Solve Real Problems for Real Sellers" %}
                         </h2>
-                        <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                            {% trans "Get set up and start saving time today" %}
+                        <p class="lead text-muted mx-auto "
+                           data-sal="slide-up"
+                           data-sal-delay="200"
+                           style="max-width: 700px">
+                            {% trans "SheetHub removes the pain points of small sellers — no setup, no tech skills needed." %}
                         </p>
                     </div>
 
-                    <div class="row g-4 g-lg-5">
-                        <div class="col-md-4">
-                            <div class="text-center">
-                                <div class="step-number">
-                                    1
-                                </div>
-
-                                <h3 class="h4 mb-3">
-                                    {% trans "Import Spreadsheets" %}
-                                </h3>
-                                <p class="text-muted">
-                                    {% trans "Upload your existing spreadsheets and start managing your orders in minutes." %}
-                                </p>
-                            </div>
+                    <!-- Feature 1 -->
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-6 mb-3 mb-md-0"
+                             data-sal="slide-up"
+                             data-sal-delay="100">
+                            <img src="{% static 'images/website.png' %}"
+                                 class="img-fluid animate__animated animate__fadeInLeft"
+                                 alt="No website needed" />
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="text-center">
-                                <div class="step-number">
-                                    2
-                                </div>
-
-                                <h3 class="h4 mb-3">
-                                    {% trans "Manage Orders" %}
-                                </h3>
-                                <p class="text-muted">
-                                    {% trans "All your orders in one place with intuitive filters and bulk actions." %}
-                                </p>
-                            </div>
+                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="200">
+                            <h4 class="fw-bold animate__animated animate__fadeInRight">
+                                {% trans "No Website? No Problem." %}
+                            </h4>
+                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
+                                {% trans "Most sellers can’t afford to build a full store or don’t know where to start." %}
+                            </p>
+                            <p class="text-muted animate__animated animate__fadeInRight">
+                                {% trans "SheetHub creates a shareable product page instantly — no tech skills or credit card required." %}
+                            </p>
                         </div>
+                    </div>
 
-                        <div class="col-md-4">
-                            <div class="text-center">
-                                <div class="step-number">
-                                    3
-                                </div>
-                                <h3 class="h4 mb-3">
-                                    {% trans "Ship Faster" %}
-                                </h3>
-                                <p class="text-muted">
-                                    {% trans "Reduce fulfillment time and focus on growing your business." %}
-                                </p>
-                            </div>
+                    <!-- Feature 2 -->
+                    <div class="row align-items-center flex-md-row-reverse mb-5">
+                        <div class="col-md-4 mb-3 mb-md-0"
+                             data-sal="slide-up"
+                             data-sal-delay="200">
+                            <img src="{% static 'images/order.png' %}"
+                                 class="img-fluid animate__animated animate__fadeInRight"
+                                 alt="Wilaya support" />
+                        </div>
+                        <div class="col-md-8" data-sal="slide-up" data-sal-delay="300">
+                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
+                                {% trans "Order Forms That Work anaywhere" %}
+                            </h4>
+                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
+                                {% trans "Shopify-style forms confuse local buyers and don’t support wilayas." %}
+                            </p>
+                            <p class="text-muted animate__animated animate__fadeInLeft">
+                                {% trans "SheetHub’s forms are optimized for Algerian delivery — full province list, COD, and common needs." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-6 mb-3 mb-md-0"
+                             data-sal="slide-up"
+                             data-sal-delay="300">
+                            <img src="{% static 'images/analytics_interface.png' %}"
+                                 class="img-fluid animate__animated animate__fadeInLeft"
+                                 alt="Smart Analytics" />
+                        </div>
+                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="400">
+                            <h4 class="fw-bold animate__animated animate__fadeInRight">
+                                {% trans "No More Guessing What's Working" %}
+                            </h4>
+                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
+                                {% trans "You post and ship — but you don’t know what’s converting or where people drop off." %}
+                            </p>
+                            <p class="text-muted animate__animated animate__fadeInRight">
+                                {% trans "Track visits, conversions, and revenue. Plus, add your Meta Pixel in one click." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="row align-items-center flex-md-row-reverse mb-5">
+                        <div class="col-md-6 mb-3 mb-md-0"
+                             data-sal="slide-up"
+                             data-sal-delay="400">
+                            <img src="{% static 'images/communication.png' %}"
+                                 class="img-fluid animate__animated animate__fadeInRight"
+                                 alt="Orders dashboard" />
+                        </div>
+                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="500">
+                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
+                                {% trans "Orders Are a Mess in Your Inbox" %}
+                            </h4>
+                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
+                                {% trans "WhatsApp, Instagram, Excel... everything is scattered." %}
+                            </p>
+                            <p class="text-muted animate__animated animate__fadeInLeft">
+                                {% trans "SheetHub shows you every order in one place, with status tracking, filters, and notifications." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="row align-items-center mb-5">
+                        <div class="col-md-6 mb-3 mb-md-0"
+                             data-sal="slide-up"
+                             data-sal-delay="500">
+                            <img src="{% static 'images/tools.png' %}"
+                                 class="img-fluid animate__animated animate__fadeInLeft"
+                                 alt="Fast setup" />
+                        </div>
+                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="600">
+                            <h4 class="fw-bold animate__animated animate__fadeInRight">
+                                {% trans "No Time to Learn New Tools" %}
+                            </h4>
+                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
+                                {% trans "Most tools are made for agencies, not busy sellers with 50 DMs a day." %}
+                            </p>
+                            <p class="text-muted animate__animated animate__fadeInRight">
+                                {% trans "SheetHub is built for speed. You can create a product and accept orders in under 3 minutes." %}
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
+
             <!-- Pricing Section -->
             <section id="pricing" class="py-5 py-lg-7">
                 <div class="container">
@@ -307,6 +349,199 @@
                     </div>
                 </div>
             </section>
+            {# FAQ Section #}
+            <section id="faq" class="py-5 bg-white">
+                <div class="container">
+                    <!-- Section Header -->
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold animate__animated animate__fadeInUp"
+                            data-sal="fade"
+                            data-sal-delay="100">
+                            {% trans "Frequently Asked Questions" %}
+                        </h2>
+                        <p class="lead text-muted animate__animated animate__fadeInUp"
+                           data-sal="fade"
+                           data-sal-delay="200">
+                            {% trans "Everything you need to know before you start using SheetHub." %}
+                        </p>
+                    </div>
+
+                    <!-- FAQ Accordion -->
+                    <div class="accordion" id="faqAccordion">
+
+                        <!-- Purpose -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="100">
+                            <h2 class="accordion-header" id="faqHeading0">
+                                <button class="accordion-button"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse0"
+                                        aria-expanded="true"
+                                        aria-controls="faqCollapse0">
+                                    {% trans "What is the purpose of SheetHub?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse0"
+                                 class="accordion-collapse collapse show"
+                                 aria-labelledby="faqHeading0"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "SheetHub helps small and solo sellers start selling online instantly — with a product page, order tracking, analytics, and delivery support, all in one place." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audience -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="150">
+                            <h2 class="accordion-header" id="faqHeadingAudience">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapseAudience"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapseAudience">
+                                    {% trans "Who is SheetHub for?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapseAudience"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeadingAudience"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "SheetHub is made for local Algerian sellers, small businesses, resellers, and social sellers who don’t want the complexity of eCommerce platforms." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Existing FAQs... -->
+
+                        <!-- FAQ: Website -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="200">
+                            <h2 class="accordion-header" id="faqHeading1">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse1"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapse1">
+                                    {% trans "Do I need a website to use SheetHub?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse1"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeading1"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "No! SheetHub gives you a shareable product page instantly — no coding or website needed." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ: Is it Free? -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="300">
+                            <h2 class="accordion-header" id="faqHeading2">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse2"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapse2">
+                                    {% trans "Is SheetHub free to use?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse2"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeading2"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "Yes — during the beta, you can use SheetHub completely free, including up to 150 orders." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ: Order Tracking -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="400">
+                            <h2 class="accordion-header" id="faqHeading3">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse3"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapse3">
+                                    {% trans "Can I track orders and deliveries?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse3"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeading3"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "Yes, you get a dashboard where you can manage all orders with filters, statuses, and customer info." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ: Algerian Support -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="500">
+                            <h2 class="accordion-header" id="faqHeading4">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse4"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapse4">
+                                    {% trans "Does it work in Algeria?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse4"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeading4"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "Absolutely. SheetHub supports all 58 wilayas, COD, and localized order forms made for Algerian buyers." %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ: Meta Pixel -->
+                        <div class="accordion-item animate__animated animate__fadeInUp"
+                             data-sal="slide-up"
+                             data-sal-delay="600">
+                            <h2 class="accordion-header" id="faqHeading5">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faqCollapse5"
+                                        aria-expanded="false"
+                                        aria-controls="faqCollapse5">
+                                    {% trans "Can I add my Facebook/Meta Pixel?" %}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse5"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="faqHeading5"
+                                 data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">
+                                    {% trans "Yes. You can add your Pixel ID in the settings and it will be automatically injected into your product page." %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
 
             <!-- Contact Us -->
             <div id="contact" class="contact-section py-2">
@@ -323,43 +558,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-4">
-                        <!-- Contact Info -->
-                        <div class="col-lg-5">
-                            <div class="contact-info h-100 p-4 rounded">
-                                <h5 class="fw-bold mb-4">
-                                    {% trans "Contact Information" %}
-                                </h5>
-                                <ul class="list-unstyled">
-                                    <li class="mb-3 d-flex">
-                                        <i class="fas fa-location-dot text-primary me-3 mt-1"></i>
-                                        <div>
-                                            <p class="mb-0 text-muted">
-                                                123 Business Street, City, Country
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3 d-flex">
-                                        <i class="fas fa-envelope text-primary me-3 mt-1"></i>
-                                        <div>
-                                            <p class="mb-0 text-muted">
-                                                contact@sheethub.com
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3 d-flex">
-                                        <i class="fas fa-phone text-primary me-3 mt-1"></i>
-                                        <div>
-                                            <p class="mb-0 text-muted">
-                                                +1 234 567 890
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="row g-2 justify-content-center">
                         <!-- Contact Form -->
-                        <div class="col-lg-7">
+                        <div class="col-lg-10">
 
                             <div class="contact-form border rounded shadow-sm p-4">
                                 <h5 class="fw-bold mb-4">
@@ -407,14 +608,107 @@
             </div>
         {% endblock content %}
         {% block footer %}
-            <!-- Footer -->
-            <footer class="footer-main">
+            <footer class="text-light pb-2 pt-4">
                 <div class="container">
-                    <div class="footer-content d-flex flex-column">
-                        <span class="footer-copyright">
-                            &copy; <span id="currentYear"></span>
-                            {% trans "All rights reserved" %}
-                        </span>
+                    <div class="row">
+
+                        <!-- Logo & Description -->
+                        <div class="col-md-4">
+                            <h5 class="fw-bold text-white mb-3">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-2">
+                                        <img src="{% static "icons/favicon.png" %}"
+                                             alt="SHeetHub Favicon"
+                                             class="w-100 rounded" />
+                                    </div>
+                                    <div class="col-10">
+                                        <div class="d-flex flex-nowrap gap-0 display-6 fw-bold">
+                                            <span class="text-secondary">Sheet</span>
+                                            <span class="text-accent">Hub</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h5>
+                            <p class="text-muted">
+                                {% trans "All-in-one solution to help sellers launch fast, manage orders, and grow online — with zero technical hassle." %}
+                            </p>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="col-md-2">
+                            <h6 class="text-uppercase text-white fw-semibold mb-3">
+                                {% trans "Links" %}
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="{% url 'frontend:index' %}"
+                                       class="text-muted text-decoration-none">{% trans "Home" %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'frontend:index' %}#features"
+                                       class="text-muted text-decoration-none">{% trans "Features" %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'frontend:index' %}#faq"
+                                       class="text-muted text-decoration-none">{% trans "FAQ" %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'user_auth:login' %}"
+                                       class="text-muted text-decoration-none">{% trans "Login" %}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Trust & Legal -->
+                        <div class="col-md-3 mb-4">
+                            <h6 class="text-uppercase text-white fw-semibold mb-3">
+                                {% trans "Trust & Legal" %}
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="#" class="text-muted text-decoration-none">{% trans "Privacy Policy" %}</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-muted text-decoration-none">{% trans "Terms of Use" %}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-3">
+                            <h6 class="text-uppercase fw-bold text-light mb-3">
+                                Stay Updated
+                            </h6>
+                            <p class="text-muted small">
+                                Join our waitlist and be first to know when we launch.
+                            </p>
+                            <form method="POST"
+                                  action="{% url 'frontend:waitlist' %}"
+                                  class="d-flex flex-column gap-2">
+                                {% csrf_token %}
+                                <div class="input-group position-relative">
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control form-control-sm "
+                                           placeholder="Your email"
+                                           required />
+                                    <button type="submit"
+                                            class="bg-primary border text-white position-absolute top-0 bottom-0 end-0">
+                                        {% trans "Submit" %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!-- Divider -->
+                    <hr class="border-secondary" />
+
+                    <!-- Bottom -->
+                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center">
+                        <p class="mb-0 text-muted small">
+                            © {{ year }} SheetHub. {% trans "All rights reserved." %}
+                        </p>
                     </div>
                 </div>
             </footer>
@@ -437,7 +731,11 @@
         <!-- Scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/sal.js/dist/sal.js"></script>
         <script src="{% static "js/index.js" %}?v={% now "U" %}"></script>
+        <script>
+            sal()
+        </script>
         <!-- DataTables JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
@@ -446,72 +744,5 @@
         {% endblock js %}
         {% block extra_js %}
         {% endblock extra_js %}
-
-        <!-- Waitlist Modal -->
-        <div class="modal fade"
-             id="waitlistModal"
-             tabindex="-1"
-             aria-labelledby="waitlistModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="waitlistModalLabel">
-                            {% trans "Join Our Waitlist" %}
-                        </h5>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="{% trans 'Close' %}">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted mb-4">
-                            {% trans "Be the first to know when we launch! Enter your details below to join our waitlist." %}
-                        </p>
-                        {% include "components/errorList.html" %}
-
-                        <form id="waitlistForm"
-                              class="form"
-                              method="POST"
-                              action="{% url 'frontend:waitlist' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label">
-                                    {% trans "Full Name" %}
-                                </label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="fullName"
-                                       name="name"
-                                       required
-                                       autocomplete="name" />
-                            </div>
-                            <div class="mb-3">
-                                <label for="waitlistEmail" class="form-label">
-                                    {% trans "Email Address" %}
-                                </label>
-                                <input type="email"
-                                       class="form-control"
-                                       id="waitlistEmail"
-                                       name="email"
-                                       required
-                                       autocomplete="email" />
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button"
-                                class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">
-                            {% trans "Close" %}
-                        </button>
-                        <button type="submit" form="waitlistForm" class="btn btn-primary">
-                            {% trans "Join Waitlist" %}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
 </html>
