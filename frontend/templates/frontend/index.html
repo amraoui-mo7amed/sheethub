@@ -398,15 +398,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="card-footer">
-                                        <div class="d-flex justify-content-end">
-                                            {% url "subs:delete_subscription" plan.pk as delete_url %}
-                                            {% with delete_url=delete_url %}
-                                                {% include "components/action_buttons.html" %}
-
-                                            {% endwith %}
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
