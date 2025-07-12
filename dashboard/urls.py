@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dash, users, waitlist, smtp, notifications, products
+from .views import dash, users, waitlist, smtp, notifications, products, contacts
 
 app_name = 'dash'  # Changed from 'dashboard' to match the namespace in the template
 
@@ -25,4 +25,8 @@ urlpatterns = [
     path('smtp/update/', smtp.update_smtp_config, name='update_smtp_config'),
     path('smtp/test-connection/', smtp.test_connection, name='test_smtp_connection'),
     path('smtp/delete/<int:pk>', smtp.Delete, name='smtp_delete'),
+    # Contacts 
+    path('contacts/', contacts.List, name='contacts'),
+    path('contacts/details/<int:pk>', contacts.details, name='contact_details'),
+    path('contacts/reply/<int:contact_pk>', contacts.Reply, name='reply'),
 ]

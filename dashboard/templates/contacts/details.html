@@ -1,0 +1,114 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n filters %}
+
+{% block dashContent %}
+    <div class="container-fluid">
+        <div class="card mb-2">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% trans "Contact details" %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    {# Sender Details #}
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <img src="{{ contact.email|gravatar:120 }}"
+                                             class="img-fluid w-100 rounded" />
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="mb-0 fw-bold text-primary text-truncate">
+                                            {{ contact.name }}
+                                        </p>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            {{ contact.email }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# Message Details #}
+                    <div class="col-lg-9 col-md-9 col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    {% trans "Messages" %}
+                                </h5>
+                            </div>
+                            <div class="card-body overflow-y-scroll" style="max-height: 400px;">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <div class="contact-message bg-light p-2 rounded">
+                                            <img src="{{ contact.email|gravatar:160 }}"
+                                                 width="32"
+                                                 height="32"
+                                                 class="rounded" />
+                                            <span class="fs-4">
+                                                {{ contact.message }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {% if contact.replies.all %}
+                                        {% for reply in contact.replies.all %}
+                                            <div class="col-12">
+                                                <div class="d-flex flex-row-reverse contact-message bg-primary p-2 rounded text-light">
+                                                    <img src="{% static "icons/favicon.png" %}"
+                                                         width="32"
+                                                         height="32"
+                                                         class="rounded ms-2" />
+                                                    <span class="fs-4">
+                                                        {{ reply.message }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Reply card #}
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        {% trans "Send a reply" %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post"
+                          action="{% url "dash:reply" contact_pk=contact.pk %}"
+                          class="form">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="message" class="form-label">
+                                {% trans "Message" %}
+                            </label>
+                            {% include "components/errorList.html" %}
+
+                            <textarea name="message" id="message" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="actions d-flex justify-content-end gap-2">
+                            <a href="{% url 'dash:contacts' %}" class="btn btn-outline-secondary">
+                                {% trans "Go Back" %}
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                {% trans "Send" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock dashContent %}

@@ -59,9 +59,10 @@ def forgot_password(request):
                         "template_title": str(_("Password Reset Request"))
                         },
                     recipiant_email=email,
-                    recipiant_name=user.first_name
+                    recipiant_name=user.first_name,
+                    type="noreply"
                 )
-                
+                print(success)
                 if success:
                     return JsonResponse({'success': True, 'message': _('Password reset email sent successfully.')})
                 else:

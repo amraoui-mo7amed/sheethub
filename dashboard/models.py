@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from frontend.models import Contact
 
 userModel = get_user_model()
 
@@ -107,3 +108,12 @@ class LandingPageConfig(models.Model):
 
     def __str__(self):
         return f"Landing config for {self.product.name}"
+
+
+class contactReply(models.Model):
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="replies")
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Reply for {self.contact.name}"

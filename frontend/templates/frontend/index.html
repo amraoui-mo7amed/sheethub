@@ -62,7 +62,9 @@
 
         <!-- Core styles -->
         <link rel="stylesheet" href="{% static 'css/index.css' %}?v={% now 'U' %}" />
-
+        {# Subscriptions #}
+        <link rel="stylesheet"
+              href="{% static "css/subscriptions.css" %}?v={% now "U" %}" />
         <!-- Optional/third-party styles -->
         <link rel="stylesheet"
               href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css" />
@@ -340,7 +342,73 @@
                             </p>
                         </div>
                         {% for plan in plans %}
-                            {{ plan.get_features }}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="subscription-card {% if forloop.first %}featured{% endif %}">
+                                    <div class="card-header">
+                                        <h3>
+                                            {{ plan.name|capfirst }}
+                                        </h3>
+                                        <div class="price">
+                                            ${{ plan.price }}/mo
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="features-list">
+                                            <li>
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ plan.max_orders }} {% trans "orders per month" %}
+                                            </li>
+                                            <li>
+                                                <i class="fas fa-check-circle"></i>
+                                                {{ plan.max_products }} {% trans "products" %}
+                                            </li>
+
+                                            <li>
+                                                {% if plan.can_export %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Data export" %}
+                                            </li>
+
+                                            <li>
+                                                {% if plan.can_import %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Data import" %}
+                                            </li>
+                                            <li>
+                                                {% if plan.email_support %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Email support" %}
+                                            </li>
+                                            <li>
+                                                {% if plan.has_analytics %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% else %}
+                                                    <i class="fas fa-circle-xmark"></i>
+                                                {% endif %}
+                                                {% trans "Advanced analytics" %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="d-flex justify-content-end">
+                                            {% url "subs:delete_subscription" plan.pk as delete_url %}
+                                            {% with delete_url=delete_url %}
+                                                {% include "components/action_buttons.html" %}
+
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
                         <div class="text-center mt-5">
                             <p class="text-muted">
@@ -568,7 +636,10 @@
                                     {% trans "Send us a message" %}
                                 </h5>
                                 {% include "components/errorList.html" %}
-                                <form class="form" method="POST" action="{% url "frontend:create_message" %}">
+
+                                <form class="form"
+                                      method="POST"
+                                      action="{% url "frontend:create_message" %}">
                                     {% csrf_token %}
                                     <div class="row g-3">
                                         <div class="col-md-6">

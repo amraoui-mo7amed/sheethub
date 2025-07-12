@@ -89,6 +89,7 @@ def signup(request):
                 success, response = mailjet.sendMessage(
                     templateID=mailjet.account_activation_templateID,
                     subject=str(_("Sheethub Account activation")),
+                    type="noreply",
                     variabels={
                         "activation_link": activation_link,
                         "first_name": first_name,

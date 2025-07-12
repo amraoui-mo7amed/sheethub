@@ -6,15 +6,21 @@ class MailJet:
         self.api_key = config('MJ_API_KEY')
         self.api_secret = config('MJ_SECRET_KEY')
         self.client = Client(auth=(self.api_key, self.api_secret), version='v3.1')
-        self.from_email = config('DEFAULT_FROM_EMAIL')
+        
         self.from_name = config('DEFAULT_FROM_NAME')
         self.account_activation_templateID = int(config('ACCOUNT_ACTIVATION_TEMPLATEID'))
-    def sendMessage(self, templateID: int, subject: str ,recipiant_email : str ,recipiant_name : str, variabels: dict):
+    def sendMessage(self, templateID: int, subject: str ,recipiant_email : str ,recipiant_name : str, variabels: dict, type:str):
+        if type == 'support':
+            from_email = config('DEFAULT_SUPPORT_EMAIL')
+        elif type == "noreply":
+            from_email = config('DEFAULT_NOREPLY_EMAIL')
+
+        print(from_email)
         data = {
         'Messages': [
                         {
                                 "From": {
-                                        "Email": self.from_email,
+                                        "Email": from_email,
                                         "Name": self.from_name
                                 },
                                 "To": [

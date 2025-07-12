@@ -34,6 +34,12 @@ menu_items = [
         "icon" : "fas fa-user-clock",
         "roles": ["admin"]
     },
+    {
+        "name" : _('Contacts'),
+        "url" : "dash:contacts",
+        "icon" : "fas fa-address-card",
+        "roles": ["admin"]
+    },
     # Seller Menu 
     {
         "name" : _('Products'),
