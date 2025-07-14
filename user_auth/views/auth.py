@@ -62,13 +62,16 @@ def signup(request):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
         try:
+            # Set default values
+            is_beta = False
+            max_orders = 30
+            max_products = 1
+            
+            # Override for first 10 users
             if userModel.objects.all().count() <= 10:
                 is_beta = True
                 max_orders = 150
                 max_products = 5
-            else:
-                is_beta = False
-                max_orders = 30
             with transaction.atomic():
                 user = userModel.objects.create_user(
                     email=email,
