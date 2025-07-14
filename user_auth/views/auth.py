@@ -65,6 +65,7 @@ def signup(request):
             if userModel.objects.all().count() <= 10:
                 is_beta = True
                 max_orders = 150
+                max_products = 5
             else:
                 is_beta = False
                 max_orders = 30
@@ -79,6 +80,7 @@ def signup(request):
                     user=user, 
                     role='seller', 
                     max_orders = max_orders, 
+                    max_products = max_products,
                     is_beta = is_beta, 
                     country=country)
                 user.profile = profile
