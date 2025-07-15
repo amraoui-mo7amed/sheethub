@@ -7,7 +7,7 @@ User = get_user_model()
 
 class SubscriptionPlan(models.Model):
     name = models.CharField(max_length=20, unique=True)
-    code = models.SlugField(max_length=30, unique=True, blank=True)
+    code = models.CharField(max_length=50, blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     max_orders = models.PositiveBigIntegerField(default=30)
     max_products = models.PositiveBigIntegerField(default=1)
