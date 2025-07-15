@@ -4,7 +4,6 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 import random, string
 
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -88,8 +87,6 @@ class UserProfile(models.Model):
     )
 
     image = models.ImageField(upload_to='profile_pics', blank=True, null=True)
-    max_orders = models.IntegerField(_('max orders'), default=30)
-    max_products = models.IntegerField(_('max products'), default=1)
     country = models.CharField(_('country'), max_length=100, blank=True, null=True)
     is_beta = models.BooleanField(_('is beta'), default=True)
 

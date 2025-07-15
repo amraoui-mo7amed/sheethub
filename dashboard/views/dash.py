@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from dashboard.decorators import admin_required, role_required
-from user_auth.models import UserProfile
 from dashboard.models import Product, WaitList
+from subscription.models import UserSubscription
 
 userModel = get_user_model()
+
 
 @role_required(["admin", "seller"])
 def home(request):
@@ -19,5 +20,6 @@ def home(request):
         context['orders'] = 0
     elif request.user.profile.role == "seller":
         context['products'] = Product.objects.filter(user=request.user)
+        context['subPlan'] = UserSubscription.objects.get(user=request.user)
         context['orders'] = 0  
     return render(request, 'dashboard/home.html', context=context) 

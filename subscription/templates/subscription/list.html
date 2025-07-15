@@ -30,11 +30,20 @@
                             <div class="col-lg-4 col-md-6">
                                 <div class="subscription-card {% if forloop.first %}featured{% endif %}">
                                     <div class="card-header">
-                                        <h3>
-                                            {{ plan.name|capfirst }}
-                                        </h3>
-                                        <div class="price">
-                                            ${{ plan.price }}/mo
+                                        <div class="row g-2 align-items-center w-100">
+                                            <div class="col-6">
+                                                <h3 class="mb-0 text-start">
+                                                    {{ plan.name|capfirst }}
+                                                </h3>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="d-flex gap-2 align-items-end justify-content-end">
+                                                    <div class="price text-end">
+                                                        {{ plan.price }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted fw-bold"> {{ plan.code }} </small>
                                         </div>
                                     </div>
                                     <div class="card-body">

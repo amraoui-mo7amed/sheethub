@@ -302,44 +302,30 @@
     {% elif request.user.profile.role == "seller" %}
         <div class="container-fluid">
             <div class="row g-2 mb-4">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="stats-card">
                         <div class="stats-icon bg-primary-subtle">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-money-bills"></i>
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ pages.count|default:"0" }}
+                                {{ pages.count|default:"0" }} 
+                                <small class="text-muted">DZD</small>
                             </h4>
                             <p>
-                                {% trans "Landing Pages" %}
+                                {% trans "Total Revenue" %}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="stats-card">
-                        <div class="stats-icon bg-danger-subtle">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        <div class="stats-info">
-                            <h4>
-                                {{ waitlist.count|default:"0" }}
-                            </h4>
-                            <p>
-                                {% trans "Total Waitlist" %}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="stats-card">
                         <div class="stats-icon bg-warning-subtle">
                             <i class="fas fa-box-open"></i>
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ products.count|default:"0" }}/{{ request.user.profile.max_products }}
+                                {{ products.count|default:"0" }}/{{ subPlan.plan.max_products }}
                             </h4>
                             <p>
                                 {% trans "Total Products" %}
@@ -347,14 +333,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="stats-card">
                         <div class="stats-icon bg-info-subtle">
                             <i class="fas fa-shipping-fast"></i>
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ orders.count|default:"0" }}/{{ request.user.profile.max_orders }}
+                                {{ orders.count|default:"0" }}/{{ subPlan.plan.max_orders }}
                             </h4>
                             <p>
                                 {% trans "Max Orders" %}

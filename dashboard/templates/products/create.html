@@ -12,15 +12,13 @@
 
 {% block dashContent %}
     <div class="container-fluid">
-
-        {% if request.user.profile.max_products > 0 %}
+        {% if userPlan.plan.max_products > 0 %}
             <!-- Asterisk Legend -->
             <p class="text-muted">
                 <span class="text-danger">*</span> {% trans "indicates required field" %}
             </p>
             <div class="container my-1">
                 {% include "components/errorList.html" %}
-
             </div>
             <form action="{% url 'dash:product_create' %}"
                   method="post"
@@ -47,18 +45,6 @@
                                         {% trans "Allow Additional Images" %}
                                     </label>
                                 </div>
-
-                                <!-- Show Product Publicly -->
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input"
-                                           type="checkbox"
-                                           id="publicToggle"
-                                           name="is_public" />
-                                    <label class="form-check-label" for="publicToggle">
-                                        {% trans "Show Product Publicly" %}
-                                    </label>
-                                </div>
-
                                 <!-- Mark as Featured -->
                                 <div class="form-check form-switch">
                                     <input class="form-check-input"

@@ -13,13 +13,17 @@ from django.http import JsonResponse
 from django.core.serializers import serialize
 from django.forms.models import model_to_dict
 from django.core.serializers.json import DjangoJSONEncoder
+from subscription.models import UserSubscription
 
 userModel = get_user_model()
 
 @login_required
-@role_required(["seller"])
+@role_required(["admin","seller"])
 def list(request): 
-    Products = Product.objects.filter(user=request.user)
+    if request.user.profile.role == "admin":
+        Products = Product.objects.all()
+    else:
+        Products = Product.objects.filter(user=request.user)
     return render(request, "products/list.html", {"products": Products})
 
 @login_required
@@ -27,6 +31,7 @@ def list(request):
 def create_or_update_product(request, pk=None):
     if request.method == "POST":
         is_update = pk is not None
+        userPlan = UserSubscription.objects.get(user=request.user)
         errors = []
 
         product = None
@@ -38,7 +43,7 @@ def create_or_update_product(request, pk=None):
         description = request.POST.get("description", "").strip()
         price = request.POST.get("price", "").strip()
         stock = request.POST.get("stock", "").strip()
-        is_public = bool(request.POST.get("is_public"))
+        is_public = True
         is_featured = bool(request.POST.get("is_featured"))
         in_stock = bool(request.POST.get("in_stock", True))
         allow_additional_images = bool(request.POST.get("allow_additional_images"))
@@ -82,7 +87,7 @@ def create_or_update_product(request, pk=None):
         if not layout_direction:
             errors.append(_("Layout direction is required"))
 
-        if not is_update and request.user.profile.max_products <= 0:
+        if not is_update and userPlan.plan.max_products <= 0:
             errors.append(_("You have reached the maximum number of products allowed"))
 
         if allow_additional_images and not is_update:
@@ -109,8 +114,9 @@ def create_or_update_product(request, pk=None):
                 enable_pixel=enable_pixel,
                 facebook_pixel_id=facebook_pixel_id,
             )
-            request.user.profile.max_products -= 1
-            request.user.profile.save()
+            userPlan.plan.max_products -= 1
+            userPlan.plan.save()
+            userPlan.save()
         else:
             product.name = name
             product.description = description
@@ -148,18 +154,23 @@ def create_or_update_product(request, pk=None):
         })
 
     else:
-        return render(request, "products/create.html")  # Reuse form page
+        userPlan = UserSubscription.objects.get(user=request.user)
+        return render(request, "products/create.html", {"userPlan": userPlan})  # Reuse form page
 
 
 @login_required
-@role_required(["seller"])
+@role_required(["admin","seller"])
 def productDetails(request, pk): 
-    product = get_object_or_404(Product, pk=pk, user=request.user)
+    if request.user.profile.role == "admin":
+        product = get_object_or_404(Product, pk=pk)
+    else:
+        product = get_object_or_404(Product, pk=pk, user=request.user)
     product_images = product.preview_images.all()
     print(product_images)
     return render(request, "products/details.html", {"product": product})
 
-@role_required(["seller"])
+@login_required
+@role_required(["admin","seller"])
 def Delete(request, pk):
     if request.user.profile.max_products in range(0,5) and request.user.profile.role == "seller":
         request.user.profile.max_products += 1

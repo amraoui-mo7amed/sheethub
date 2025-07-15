@@ -13,6 +13,7 @@ from user_auth.models import UserAuth, UserProfile
 from user_auth.decorators import redirect_user
 from user_auth.utils import generate_confirmation_link
 from mailjet import MailJet
+from subscription.models import UserSubscription, SubscriptionPlan
 
 userModel = get_user_model()
 
@@ -62,16 +63,14 @@ def signup(request):
             return JsonResponse({'success': False, 'errors': errors}, status=400)
 
         try:
-            # Set default values
-            is_beta = False
-            max_orders = 30
-            max_products = 1
-            
+
             # Override for first 10 users
             if userModel.objects.all().count() <= 10:
+                plan = SubscriptionPlan.objects.get(code='beta')
                 is_beta = True
-                max_orders = 150
-                max_products = 5
+            else:
+                plan = SubscriptionPlan.objects.get(code='free')
+                is_beta = False
             with transaction.atomic():
                 user = userModel.objects.create_user(
                     email=email,
@@ -82,11 +81,15 @@ def signup(request):
                 profile = UserProfile.objects.create(
                     user=user, 
                     role='seller', 
-                    max_orders = max_orders, 
-                    max_products = max_products,
                     is_beta = is_beta, 
                     country=country)
                 user.profile = profile
+                userSub = UserSubscription.objects.create(
+                    user=user,
+                    plan=plan,
+                    start_date=timezone.now(),
+                )
+                userSub.save()
                 user.save()
 
                 activation_link = generate_confirmation_link(request, user)

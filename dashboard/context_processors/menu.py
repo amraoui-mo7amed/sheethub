@@ -40,12 +40,12 @@ menu_items = [
         "icon" : "fas fa-address-card",
         "roles": ["admin"]
     },
-    # Seller Menu 
+    # Seller Menu (ADMIN)
     {
         "name" : _('Products'),
         "url" : "dash:products_list",
         "icon" : "fas fa-box",
-        "roles": ["seller"]
+        "roles": ["admin","seller"]
     },
 
 ]

@@ -341,66 +341,68 @@
                                 {% trans "No hidden fees. Cancel anytime." %}
                             </p>
                         </div>
-                        {% for plan in plans %}
-                            <div class="col-lg-4 col-md-6">
-                                <div class="subscription-card {% if forloop.first %}featured{% endif %}">
-                                    <div class="card-header">
-                                        <h3>
-                                            {{ plan.name|capfirst }}
-                                        </h3>
-                                        <div class="price">
-                                            ${{ plan.price }}/mo
+                        <div class="row g-2">
+                            {% for plan in plans %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="subscription-card {% if forloop.first %}featured{% endif %}">
+                                        <div class="card-header">
+                                            <h3>
+                                                {{ plan.name|capfirst }}
+                                            </h3>
+                                            <div class="price">
+                                                ${{ plan.price }}/mo
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="features-list">
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    {{ plan.max_orders }} {% trans "orders per month" %}
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    {{ plan.max_products }} {% trans "products" %}
+                                                </li>
+
+                                                <li>
+                                                    {% if plan.can_export %}
+                                                        <i class="fas fa-check-circle"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-circle-xmark"></i>
+                                                    {% endif %}
+                                                    {% trans "Data export" %}
+                                                </li>
+
+                                                <li>
+                                                    {% if plan.can_import %}
+                                                        <i class="fas fa-check-circle"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-circle-xmark"></i>
+                                                    {% endif %}
+                                                    {% trans "Data import" %}
+                                                </li>
+                                                <li>
+                                                    {% if plan.email_support %}
+                                                        <i class="fas fa-check-circle"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-circle-xmark"></i>
+                                                    {% endif %}
+                                                    {% trans "Email support" %}
+                                                </li>
+                                                <li>
+                                                    {% if plan.has_analytics %}
+                                                        <i class="fas fa-check-circle"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-circle-xmark"></i>
+                                                    {% endif %}
+                                                    {% trans "Advanced analytics" %}
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        <ul class="features-list">
-                                            <li>
-                                                <i class="fas fa-check-circle"></i>
-                                                {{ plan.max_orders }} {% trans "orders per month" %}
-                                            </li>
-                                            <li>
-                                                <i class="fas fa-check-circle"></i>
-                                                {{ plan.max_products }} {% trans "products" %}
-                                            </li>
-
-                                            <li>
-                                                {% if plan.can_export %}
-                                                    <i class="fas fa-check-circle"></i>
-                                                {% else %}
-                                                    <i class="fas fa-circle-xmark"></i>
-                                                {% endif %}
-                                                {% trans "Data export" %}
-                                            </li>
-
-                                            <li>
-                                                {% if plan.can_import %}
-                                                    <i class="fas fa-check-circle"></i>
-                                                {% else %}
-                                                    <i class="fas fa-circle-xmark"></i>
-                                                {% endif %}
-                                                {% trans "Data import" %}
-                                            </li>
-                                            <li>
-                                                {% if plan.email_support %}
-                                                    <i class="fas fa-check-circle"></i>
-                                                {% else %}
-                                                    <i class="fas fa-circle-xmark"></i>
-                                                {% endif %}
-                                                {% trans "Email support" %}
-                                            </li>
-                                            <li>
-                                                {% if plan.has_analytics %}
-                                                    <i class="fas fa-check-circle"></i>
-                                                {% else %}
-                                                    <i class="fas fa-circle-xmark"></i>
-                                                {% endif %}
-                                                {% trans "Advanced analytics" %}
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                         <div class="text-center mt-5">
                             <p class="text-muted">
                                 {% trans "Need more?" %} <a href="#contact" class="text-primary">{% trans "Contact us" %}</a> {% trans "for enterprise solutions." %}
