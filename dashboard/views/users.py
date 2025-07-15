@@ -11,13 +11,43 @@ from dashboard.utils import create_user_notification
 
 userModel = get_user_model()
 
-class list( AdminRequiredMixin ,BaseListView):
-    model = userModel 
+class list(AdminRequiredMixin, BaseListView):
+    model = userModel
     template_name = "users/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['objects'] = userModel.objects.all().exclude(is_staff=True)
+
+        # Base queryset
+        users = userModel.objects.all().exclude(is_staff=True)
+
+        # GET filters
+        role = self.request.GET.get("role")
+        country = self.request.GET.get("country")
+        is_beta = self.request.GET.get("is_beta")
+        email_confirmed = self.request.GET.get("email_confirmed")
+
+        if role:
+            users = users.filter(profile__role=role)
+        if is_beta:
+            email_confirmed = None
+        if country:
+            users = users.filter(profile__country__icontains=country)
+
+        if is_beta == "true":
+            users = users.filter(profile__is_beta=True)
+        elif is_beta == "false":
+            users = users.filter(profile__is_beta=False)
+
+        if email_confirmed == "true":
+            users = users.filter(auth__email_confirmed=True)
+        elif email_confirmed == "false":
+            users = users.filter(auth__email_confirmed=False)
+
+        context["objects"] = users
+        context['beta_users'] = is_beta
+        context["active_email_filter"] = email_confirmed  # for tab highlighting
+
         return context
 
 @login_required

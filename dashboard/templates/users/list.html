@@ -8,20 +8,45 @@
           href="{% static 'css/dashHome.css' %}?v={% now 'U' %}" />
     <link rel="stylesheet"
           href="{% static 'css/action_buttons.css' %}?v={% now 'U' %}" />
+    <link rel="stylesheet" href="{% static "css/users.css" %}?v={% now "U" %}" />
 {% endblock extra_css %}
 
 {% block dashContent %}
-
     {% if request.user.profile.role == "admin" %}
         {# Recent Users Row #}
         <div class="row mt-4">
-            <div class="col-lg-12">
+            <div class="col-12 ">
                 <div class="booking-card">
                     <div class="card-header">
                         <h5>
                             {% trans "Users List" %}
                         </h5>
-                        {% comment %} <a href="#" class="view-all">{% trans "View All" %}</a> {% endcomment %}
+                        <div class="custom-dropdown position-relative">
+                            <button id="customDropdownToggle"
+                                    class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center"
+                                    type="button">
+                                <i class="fas fa-chevron-down fs-6"></i>
+                            </button>
+
+                            <div id="customDropdownMenu" class="custom-dropdown-menu mt-2">
+                                <a class="dropdown-item {% if not active_email_filter %}active{% endif %}"
+                                   href="{% url 'dash:users_list' %}">
+                                    {% trans "All" %}
+                                </a>
+                                <a class="dropdown-item {% if active_email_filter == 'true' %}active{% endif %}"
+                                   href="{% url 'dash:users_list' %}?email_confirmed=true">
+                                    {% trans "Confirmed" %}
+                                </a>
+                                <a class="dropdown-item {% if active_email_filter == 'false' %}active{% endif %}"
+                                   href="{% url 'dash:users_list' %}?email_confirmed=false">
+                                    {% trans "Unconfirmed" %}
+                                </a>
+                                <a class="dropdown-item {% if beta_users == 'true' %}active{% endif %}"
+                                   href="{% url 'dash:users_list' %}?is_beta=true">
+                                    {% trans "Beta Users" %}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="users-list p-3">
                         {% if objects %}
@@ -113,4 +138,5 @@
 
 {% block extra_js %}
     <script src="{% static "js/dashHome.js" %}?v={% now "U" %}"></script>
+    <script src="{% static "js/users.js" %}?v={% now "U" %}"></script>
 {% endblock extra_js %}

@@ -16,6 +16,13 @@ menu_items = [
         "icon": "fas fa-users",
         "roles": ["admin"]
     },
+    # ADMIN && SELLER
+    {
+        "name" : _('Products'),
+        "url" : "dash:products_list",
+        "icon" : "fas fa-box",
+        "roles": ["admin","seller"]
+    },
     {
         "name" : _('Subscriptions'),
         "url" : "subs:plans", 
@@ -39,13 +46,6 @@ menu_items = [
         "url" : "dash:contacts",
         "icon" : "fas fa-address-card",
         "roles": ["admin"]
-    },
-    # Seller Menu (ADMIN)
-    {
-        "name" : _('Products'),
-        "url" : "dash:products_list",
-        "icon" : "fas fa-box",
-        "roles": ["admin","seller"]
     },
 
 ]
