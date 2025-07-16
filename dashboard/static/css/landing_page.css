@@ -74,8 +74,7 @@ img
     color: #fff;
     cursor: pointer;
 }
-
-/* Prev/Next Arrows */
+/* Base styles for arrows */
 .image-overlay-nav {
     position: absolute;
     top: 50%;
@@ -93,11 +92,23 @@ img
 .image-overlay-nav:hover {
     background: rgba(0, 0, 0, 0.6);
 }
+
+/* Default LTR positioning */
 .image-overlay-prev {
     left: 2rem;
 }
 .image-overlay-next {
     right: 2rem;
+}
+
+/* RTL Support */
+html[dir="rtl"] .image-overlay-prev {
+    right: 2rem;
+    left: auto;
+}
+html[dir="rtl"] .image-overlay-next {
+    left: 2rem;
+    right: auto;
 }
 
 .phone-prefix {
