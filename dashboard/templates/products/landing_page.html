@@ -224,7 +224,7 @@
                                      id="quantity"
                                      min="1"
                                      value="1"
-                                     disabled
+                                     readonly
                                      required />
                               <button type="button"
                                       class="quantity-btn plus"
@@ -262,24 +262,6 @@
                             </label>
                             {% include "components/custom_select.html" with name="commune" id="commune" selected_label="Select A Commune" %}
 
-                          </div>
-
-                          <!-- Note -->
-                          <div class="col-12">
-                            <label class="form-label" for="note">
-                              {% if lang == "ar" %}
-                                ملاحظة إضافية
-                              {% elif lang == "fr" %}
-                                Note supplémentaire
-                              {% else %}
-                                Additional note
-                              {% endif %}
-                            </label>
-                            <textarea name="note"
-                                      id="note"
-                                      class="form-control"
-                                      rows="3"
-                                      placeholder="{% if lang == 'ar' %}مثال: وقت التسليم{% elif lang == 'fr' %}Ex: heure de livraison{% else %}e.g. Delivery time{% endif %}"></textarea>
                           </div>
 
                           <!-- Delivery Note -->
