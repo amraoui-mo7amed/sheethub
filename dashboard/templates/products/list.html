@@ -17,17 +17,20 @@
                     <h5>
                         {% trans "Products List" %}
                     </h5>
-                    <a href="{% url 'dash:product_create' %}"
-                       class="btn btn-primary"
-                       title="{% trans "Add New Product" %}">
-                        <fas class="fas fa-plus"></fas>
-                    </a>
+                    {% if request.user.profile.role == "seller" %}
+                        <a href="{% url 'dash:product_create' %}"
+                           class="btn btn-primary"
+                           title="{% trans "Add New Product" %}">
+                            <fas class="fas fa-plus"></fas>
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="users-list p-3">
                     {% if products %}
                         <div class="row g-3">
                             {% for product in products %}
                                 {% include "components/productCard.html" with product=product is_editable=True %}
+
                             {% endfor %}
                         </div>
                     {% else %}

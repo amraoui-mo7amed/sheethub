@@ -22,13 +22,84 @@ img
     object-fit: cover;
     border: .5px solid var(--bs-gray-300);
 }
-img:hover
-{
-    border: 1px solid var(--bs-gray-300);
-    cursor: pointer;
-    transform: scale(1.1);
-    transition: all .3s ease-in-out;
+.image-animate {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s ease-out;
 }
+
+.image-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.zoomable-image {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+/* Overlay base */
+.image-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 2rem;
+}
+
+/* Smooth zoom animation */
+.image-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.image-overlay.loaded img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Close Button */
+.image-overlay-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Prev/Next Arrows */
+.image-overlay-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 10000;
+    user-select: none;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+}
+.image-overlay-nav:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+.image-overlay-prev {
+    left: 2rem;
+}
+.image-overlay-next {
+    right: 2rem;
+}
+
 .phone-prefix {
     background-color: #f1f3f5;
     padding: 0.375rem 0.75rem;

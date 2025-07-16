@@ -89,7 +89,9 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener("DOMContentLoaded", function () {
     const wilayaSelect = document.querySelector("#wilaya");
     const communeSelect = document.querySelector("#commune");
-
+    const langCode = document.documentElement.lang || "ar"; // Default to 'ar' if not found
+    console.log(langCode);
+    
     if (!wilayaSelect || !communeSelect) return;
 
     const wilayaInput = wilayaSelect.querySelector("input[type='hidden']");
@@ -135,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const selectedWilayaCode = this.dataset.value;
             wilayaInput.value = selectedWilayaCode;
 
-            fetch(`/get-communes/${selectedWilayaCode}/`)
+            fetch(`/get-communes/${selectedWilayaCode}/${langCode}/`)
                 .then(response => response.json())
                 .then(data => populateCommunes(data))
                 .catch(error => console.error("Failed to fetch communes:", error));
@@ -145,9 +147,118 @@ document.addEventListener("DOMContentLoaded", function () {
     // Auto-load communes if wilaya is pre-selected
     const preselectedWilaya = wilayaInput.value;
     if (preselectedWilaya) {
-        fetch(`/get-communes/${preselectedWilaya}/`)
+        fetch(`/get-communes/${preselectedWilaya}/${langCode}/`)
             .then(response => response.json())
             .then(data => populateCommunes(data))
             .catch(error => console.error("Failed to preload communes:", error));
     }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Animate on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.image-animate').forEach(el => observer.observe(el));
+
+    // Zoomable gallery
+    const previewImages = Array.from(document.querySelectorAll('.zoomable-image'));
+    let currentIndex = -1;
+
+    function createOverlay(img) {
+        const overlay = document.createElement("div");
+        overlay.className = "image-overlay";
+
+        const closeBtn = document.createElement("span");
+        closeBtn.className = "image-overlay-close";
+        closeBtn.innerHTML = "&times;";
+        closeBtn.onclick = closeOverlay;
+
+        const imgElement = document.createElement("img");
+        imgElement.src = img.src;
+        imgElement.alt = img.alt || "";
+
+        const prevBtn = document.createElement("div");
+        prevBtn.className = "image-overlay-nav image-overlay-prev";
+        prevBtn.innerHTML = "&#10094;";
+        prevBtn.onclick = () => showImage(currentIndex - 1);
+
+        const nextBtn = document.createElement("div");
+        nextBtn.className = "image-overlay-nav image-overlay-next";
+        nextBtn.innerHTML = "&#10095;";
+        nextBtn.onclick = () => showImage(currentIndex + 1);
+
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(prevBtn);
+        overlay.appendChild(nextBtn);
+        overlay.appendChild(imgElement);
+
+        document.body.appendChild(overlay);
+
+        // Animate after slight delay
+        requestAnimationFrame(() => overlay.classList.add("loaded"));
+
+        // ESC / arrow keys
+        function keyHandler(e) {
+            if (e.key === "Escape") closeOverlay();
+            else if (e.key === "ArrowLeft") showImage(currentIndex - 1);
+            else if (e.key === "ArrowRight") showImage(currentIndex + 1);
+        }
+
+        document.addEventListener("keydown", keyHandler);
+        overlay._keyHandler = keyHandler;
+
+        // Swipe support
+        let startX = null;
+        overlay.addEventListener("touchstart", (e) => {
+            startX = e.touches[0].clientX;
+        });
+        overlay.addEventListener("touchend", (e) => {
+            if (!startX) return;
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            if (Math.abs(diff) > 40) {
+                diff > 0 ? showImage(currentIndex + 1) : showImage(currentIndex - 1);
+            }
+            startX = null;
+        });
+
+        return overlay;
+    }
+
+    let overlayRef = null;
+
+    function showImage(index) {
+        if (index < 0 || index >= previewImages.length) return;
+
+        currentIndex = index;
+        const newImg = previewImages[currentIndex];
+
+        if (overlayRef) {
+            const imgEl = overlayRef.querySelector("img");
+            imgEl.src = newImg.src;
+            imgEl.alt = newImg.alt || "";
+        } else {
+            overlayRef = createOverlay(newImg);
+        }
+    }
+
+    function closeOverlay() {
+        if (overlayRef) {
+            document.removeEventListener("keydown", overlayRef._keyHandler);
+            overlayRef.remove();
+            overlayRef = null;
+            currentIndex = -1;
+        }
+    }
+
+    previewImages.forEach((img, index) => {
+        img.addEventListener("click", () => showImage(index));
+    });
 });

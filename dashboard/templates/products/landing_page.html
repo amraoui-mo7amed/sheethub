@@ -45,14 +45,14 @@
                         <div class="col-lg-12 col-md-12">
                             <img src="{{ product.image.url }}"
                                  alt="{{ product.name }}"
-                                 class="img-fluid w-100 rounded mb-3" />
+                                 class="zoomable-image image-animate rounded w-100" />
                             {% if product.preview_images %}
                                 <div class="card-preview-images mb-2 d-flex gap-1">
                                     {% for image in product.preview_images.all %}
                                         <div class="w-25">
                                             <img src="{{ image.image.url }}"
                                                  alt="{{ product.name }}"
-                                                 class="rounded w-100" />
+                                                 class="zoomable-image image-animate rounded w-100 w-100" />
                                         </div>
                                     {% endfor %}
                                 </div>

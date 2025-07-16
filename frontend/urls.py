@@ -18,6 +18,6 @@ urlpatterns = [
     path('<str:shop_code>/<int:pk>', product.product_landing, name='product_landing'),
 
     # Order
-    path('get-communes/<int:province_id>/', order.getCommunes, name='getCommunes'),
+    path('get-communes/<int:province_id>/<str:lang_code>/', order.getCommunes, name='getCommunes'),
 ]
 
