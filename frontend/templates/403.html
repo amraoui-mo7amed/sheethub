@@ -1,0 +1,38 @@
+{% extends "frontend/index.html" %}
+
+{% load static i18n %}
+
+{% block subtitle %}
+    {% trans "403 Forbidden" %}
+{% endblock subtitle %}
+
+{% block nav %}
+{% endblock nav %}
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <section class="min-vh-100 d-flex align-items-center justify-content-center bg-light text-center">
+        <div data-sal="fade" data-sal-duration="1000">
+            <img src="{% static 'images/403_error.webp' %}"
+                 alt="{% trans 'Access Denied' %}"
+                 class="img-fluid mb-4"
+                 width="300"
+                 height="200"
+                 loading="lazy" />
+
+            <h1 class="display-4 text-danger fw-bold">
+                403
+            </h1>
+            <p class="lead text-muted mb-3">
+                {% trans "You don’t have permission to access this page." %}
+            </p>
+
+            <a href="{% url 'frontend:index' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-home me-2"></i> {% trans "Return Home" %}
+            </a>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}

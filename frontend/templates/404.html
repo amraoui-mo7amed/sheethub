@@ -1,0 +1,37 @@
+{% extends "frontend/index.html" %}
+
+{% load static i18n %}
+
+{% block subtitle %}
+    {% trans "404 Not Found" %}
+{% endblock subtitle %}
+{% block nav %}
+{% endblock nav %}
+{% block hero %}
+{% endblock hero %}
+{% block content %}
+    <section class="min-vh-100 d-flex align-items-center justify-content-center bg-light text-center">
+        <div data-sal="zoom-in" data-sal-duration="1000">
+            <img src="{% static 'images/404_error.webp' %}"
+                 alt="{% trans 'Page Not Found' %}"
+                 class="img-fluid mb-4"
+                 width="300"
+                 height="200"
+                 loading="lazy" />
+
+            <h1 class="display-4 fw-bold text-primary">
+                404
+            </h1>
+            <p class="lead text-muted mb-3">
+                {% trans "Oops! The page you’re looking for doesn’t exist." %}
+            </p>
+
+            <a href="{% url 'frontend:index' %}" class="btn btn-primary mt-3">
+                <i class="fas fa-home me-2"></i> {% trans "Back to Home" %}
+            </a>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}
