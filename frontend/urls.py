@@ -19,5 +19,7 @@ urlpatterns = [
 
     # Order
     path('get-communes/<int:province_id>/<str:lang_code>/', order.getCommunes, name='getCommunes'),
+    path("submit-order/<int:product_id>/", order.submit_order, name="submit_order"),
+
 ]
 

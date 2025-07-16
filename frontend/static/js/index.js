@@ -166,7 +166,6 @@ $(document).ready(function () {
     $('.custom-table').DataTable({
         lengthChange: false,
         pageLength: 10,
-        
         searching: true,
         info: false,
         responsive: true,
@@ -176,6 +175,6 @@ $(document).ready(function () {
                 previous: "← Prev"
             }
         },
-        className: "table table-hover" // Bootstrap classes
+        className: "table table-hover"
     });
 });

@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const communeSelect = document.querySelector("#commune");
     const langCode = document.documentElement.lang || "ar"; // Default to 'ar' if not found
     console.log(langCode);
-    
+
     if (!wilayaSelect || !communeSelect) return;
 
     const wilayaInput = wilayaSelect.querySelector("input[type='hidden']");
@@ -260,5 +260,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
     previewImages.forEach((img, index) => {
         img.addEventListener("click", () => showImage(index));
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form.form");
+    const errorList = document.getElementById("errorList");
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const url = form.getAttribute("action") || window.location.href;
+        const formData = new FormData(form);
+        const csrfToken = getCookie("csrftoken");
+
+        // Clear previous errors
+        errorList.classList.remove("d-none");
+        errorList.innerHTML = "";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken
+            },
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    errorList.classList.add("d-none");
+                    Swal.fire({
+                        icon: "success",
+                        title: data.message || "Order submitted successfully!",
+                        confirmButtonText: "OK",
+                    });
+                    form.reset();
+                } else if (data.errors && Array.isArray(data.errors)) {
+                    errorList.classList.add("list-group", "mb-3");
+                    data.errors.forEach((error) => {
+                        const li = document.createElement("li");
+                        li.className = "list-group-item list-group-item-danger";
+                        li.textContent = error;
+                        errorList.appendChild(li);
+                    });
+                } else {
+                    errorList.innerHTML = `<li class="list-group-item list-group-item-danger">An unexpected error occurred.</li>`;
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                errorList.innerHTML = `<li class="list-group-item list-group-item-danger">Failed to submit the form. Please try again later.</li>`;
+            });
     });
 });

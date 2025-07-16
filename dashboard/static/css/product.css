@@ -1,0 +1,43 @@
+.timeline-line {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    bottom: 0;
+    width: 2px;
+    background-color: #e0e0e0;
+    z-index: 0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 18px;
+    top: 12px;
+    z-index: 1;
+    font-size: 1.2rem;
+}
+
+.timeline-card {
+    background-color: #ffffff;
+    border-left: 4px solid #0d6efd;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+@media (max-width: 576px) {
+    .timeline-item {
+        padding-left: 40px;
+    }
+
+    .timeline-dot {
+        left: 10px;
+    }
+
+    .timeline-line {
+        left: 15px;
+    }
+}
