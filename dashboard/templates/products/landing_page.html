@@ -1,307 +1,233 @@
 {% load static %}
 
 {% with lang=landing.landing_language %}
-    <!DOCTYPE html>
-    <html {% if lang == 'ar' %} lang="ar" dir="rtl" {% elif lang == 'fr' %} lang="fr" dir="ltr" {% else %} lang="en" dir="ltr" {% endif %}>
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta name="description" content="{{ product.name }}" />
-            <meta name="author" content="{{ product.user.get_full_name }}" />
-            <meta name="robots" content="index, follow" />
-            <meta name="theme-color" content="#000000" />
-            {% if lang == 'ar' %}
-                <!-- Ar Bootstrap -->
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css"
-                      rel="stylesheet" />
-                <!-- Cairo Font -->
-                <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap"
-                      rel="stylesheet" />
-            {% else %}
-                <link rel="stylesheet"
-                      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-                <!-- Inter Font -->
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-                      rel="stylesheet" />
+<!DOCTYPE html>
+<html {% if lang == 'ar' %}lang="ar" dir="rtl"{% elif lang == 'fr' %}lang="fr" dir="ltr"{% else %}lang="en" dir="ltr"{% endif %}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{ product.name }}" />
+    <meta name="author" content="{{ product.user.get_full_name }}" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- Preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    {% if lang == 'ar' %}
+      <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css"></noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+    {% else %}
+      <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"></noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    {% endif %}
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="{% static 'css/landing_page.css' %}?v={% now 'U' %}" />
+    <link rel="stylesheet" href="{% static 'css/custom_select.css' %}?v={% now 'U' %}" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
+    <title>{{ product.name|capfirst }}</title>
+  </head>
+  <body {% if lang == 'ar' %}class="rtl"{% else %}class="ltr"{% endif %}>
+    <div class="container my-2 bg-light p-2">
+      <div id="landing" class="row g-2">
+        <!-- Product Image -->
+        <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-6 col-md-12"{% else %}class="col-lg-12"{% endif %}>
+          <div class="col-lg-12 col-md-12">
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.name }}"
+                 class="zoomable-image image-animate rounded w-100"
+                 width="800"
+                 height="600"
+                 loading="lazy" />
+            {% if product.preview_images %}
+              <div class="card-preview-images mb-2 d-flex gap-1">
+                {% for image in product.preview_images.all %}
+                  <div class="w-25">
+                    <img src="{{ image.image.url }}"
+                         alt="{{ product.name }}"
+                         class="zoomable-image image-animate rounded w-100"
+                         width="300"
+                         height="200"
+                         loading="lazy" />
+                  </div>
+                {% endfor %}
+              </div>
             {% endif %}
-            <link rel="stylesheet"
-                  href="{% static 'css/landing_page.css' %}?v={% now "U" %}" />
-            {# custom select #}
-            <link rel="stylesheet"
-                  href="{% static "css/custom_select.css" %}?v={% now "U" %}" />
-            {# fontawesome #}
-            <link rel="stylesheet"
-                  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-                  integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-                  crossorigin="anonymous"
-                  referrerpolicy="no-referrer" />
-            <title>{{ product.name|capfirst }}</title>
-        </head>
-        <body {% if lang == 'ar' %}class="rtl" {% elif lang == 'fr' %} class="ltr" {% else %} class="ltr" {% endif %}>
-            <div class="container my-2 bg-light p-2">
-                <div id="landing" class="row g-2">
-                    {# Product Image #}
-                    <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-6 col-md-12" {% else %}class="col-lg-12" {% endif %}>
-                        <div class="col-lg-12 col-md-12">
-                            <img src="{{ product.image.url }}"
-                                 alt="{{ product.name }}"
-                                 class="zoomable-image image-animate rounded w-100" />
-                            {% if product.preview_images %}
-                                <div class="card-preview-images mb-2 d-flex gap-1">
-                                    {% for image in product.preview_images.all %}
-                                        <div class="w-25">
-                                            <img src="{{ image.image.url }}"
-                                                 alt="{{ product.name }}"
-                                                 class="zoomable-image image-animate rounded w-100 w-100" />
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {# Product Details #}
-                    <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-6 col-md-12" {% else %}class="col-lg-12" {% endif %}>
-                        <div class="row g-2">
-                            <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-12 col-sm-6 col-sm-12" {% else %}class="col-lg-7 col-md-6 col-sm-12" {% endif %}>
-                                <h2 class="fw-bold">
-                                    {{ product.name }}
-                                </h2>
-                                <p class="text-muted">
-                                    {{ product.description }}
-                                </p>
-                                <div class="d-flex align-items-center justify-content-between text-primary">
-                                    <h4 class="fw-bold">
-                                        {% if lang == 'ar' %}
-                                            السعر
-                                        {% elif lang == 'fr' %}
-                                            Prix
-                                        {% else %}
-                                            Price
-                                        {% endif %}
-                                    </h4>
-                                    <h4 class="fw-bold">
-                                        {{ product.price }}
-                                        <small class="fw-normal fs-6 text-primary">
-                                            {% if lang == 'ar' %}
-                                                دينار
-                                            {% elif lang == 'fr' %}
-                                                DZD
-                                            {% else %}
-                                                DZD
-                                            {% endif %}
-                                        </small>
-                                    </h4>
-                                </div>
-                            </div>
-                            {% if product.stock > 0 %}
-                                <div class="{% if landing.layout_direction == 'horizontal' %}col-lg-12 col-sm-6 col-sm-12 {% else %}col-lg-5 col-md-6 col-sm-12 {% endif %}">
-                                    <form class="form" method="POST" action="#">
-                                        <div class="card">
-                                            <div class="card-header bg-white">
-                                                <h3 class="fw-bold text-primary mb-0">
-                                                    {% if lang == "ar" %}
-                                                        طلب المنتج
-                                                    {% elif lang == "fr" %}
-                                                        Demande de produit
-                                                    {% else %}
-                                                        Order the product
-                                                    {% endif %}
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action="#" method="POST">
-                                                    {% csrf_token %}
-                                                    <div class="row g-2">
-                                                        <!-- Full Name -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label" for="fullname">
-                                                                {% if lang == "ar" %}
-                                                                    الاسم الكامل
-                                                                {% elif lang == "fr" %}
-                                                                    Nom complet
-                                                                {% else %}
-                                                                    Full name
-                                                                {% endif %}
-                                                            </label>
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   name="fullname"
-                                                                   id="fullname"
-                                                                   required />
-                                                        </div>
+          </div>
+        </div>
 
-                                                        <!-- Email -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label" for="email">
-                                                                {% if lang == "ar" %}
-                                                                    البريد الإلكتروني
-                                                                {% elif lang == "fr" %}
-                                                                    Email
-                                                                {% else %}
-                                                                    Email
-                                                                {% endif %}
-                                                            </label>
-                                                            <input type="email"
-                                                                   class="form-control"
-                                                                   name="email"
-                                                                   id="email"
-                                                                   placeholder="example@mail.com"
-                                                                   required />
-                                                        </div>
-
-                                                        <!-- Phone Number (Always LTR input) -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label" for="phone">
-                                                                {% if lang == "ar" %}
-                                                                    رقم الهاتف
-                                                                {% elif lang == "fr" %}
-                                                                    Numéro de téléphone
-                                                                {% else %}
-                                                                    Phone number
-                                                                {% endif %}
-                                                            </label>
-
-                                                            <div class="custom-phone-input d-flex align-items-stretch">
-                                                                <span class="phone-prefix">+213</span>
-                                                                <input type="tel"
-                                                                       class="form-control phone-ltr-input"
-                                                                       name="phone"
-                                                                       id="phone"
-                                                                       pattern="[567]\d{8}"
-                                                                       maxlength="9"
-                                                                       placeholder="5XXXXXXXX"
-                                                                       required
-                                                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);" />
-                                                            </div>
-                                                        </div>
-                                                        <!-- Quantity -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label">
-                                                                {% if lang == "ar" %}
-                                                                    الكمية
-                                                                {% elif lang == "fr" %}
-                                                                    Quantité
-                                                                {% else %}
-                                                                    Quantity
-                                                                {% endif %}
-                                                            </label>
-                                                            <div class="quantity-input">
-                                                                <button type="button"
-                                                                        class="quantity-btn minus"
-                                                                        aria-label="{% if lang == 'ar' %}تقليل الكمية{% elif lang == 'fr' %}Diminuer la quantité{% else %}Decrease quantity{% endif %}">
-                                                                    <i class="fas fa-minus"></i>
-                                                                </button>
-                                                                <input type="number"
-                                                                       class="form-control"
-                                                                       name="quantity"
-                                                                       id="quantity"
-                                                                       min="1"
-                                                                       value="1"
-                                                                       aria-label="{% if lang == 'ar' %}الكمية{% elif lang == 'fr' %}Quantité{% else %}Quantity{% endif %}"
-                                                                       required />
-                                                                <button type="button"
-                                                                        class="quantity-btn plus"
-                                                                        aria-label="{% if lang == 'ar' %}زيادة الكمية{% elif lang == 'fr' %}Augmenter la quantité{% else %}Increase quantity{% endif %}">
-                                                                    <i class="fas fa-plus"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Province -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label" for="province">
-                                                                {% if lang == "ar" %}
-                                                                    الولاية
-                                                                {% elif lang == "fr" %}
-                                                                    Wilaya
-                                                                {% else %}
-                                                                    Province
-                                                                {% endif %}
-                                                            </label>
-                                                            {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected="01" %}
-
-                                                        </div>
-
-                                                        <!-- Commune -->
-                                                        <div class="col-lg-6 col-md-12">
-                                                            <label class="form-label" for="commune">
-                                                                {% if lang == "ar" %}
-                                                                    البلدية
-                                                                {% elif lang == "fr" %}
-                                                                    Commune
-                                                                {% else %}
-                                                                    Commune
-                                                                {% endif %}
-                                                            </label>
-                                                            {% include "components/custom_select.html" with name="commune" id="commune" selected="01" %}
-
-                                                        </div>
-
-                                                        <!-- Note -->
-                                                        <div class="col-12">
-                                                            <label class="form-label" for="note">
-                                                                {% if lang == "ar" %}
-                                                                    ملاحظة إضافية
-                                                                {% elif lang == "fr" %}
-                                                                    Note supplémentaire
-                                                                {% else %}
-                                                                    Additional note
-                                                                {% endif %}
-                                                            </label>
-                                                            <textarea name="note"
-                                                                      id="note"
-                                                                      class="form-control"
-                                                                      rows="3"
-                                                                      placeholder="{% if lang == 'ar' %}مثال: وقت التسليم، ملاحظات مهمة{% elif lang == 'fr' %}Ex: heure de livraison, porte spéciale{% else %}e.g. Delivery time, special note...{% endif %}"></textarea>
-                                                        </div>
-
-                                                        <!-- Delivery Price Note -->
-                                                        <div class="col-12">
-                                                            <small class="text-muted">
-                                                                {% if lang == "ar" %}
-                                                                    سعر التوصيل يحدده شركة الشحن
-                                                                {% elif lang == "fr" %}
-                                                                    Les frais de livraison sont fixés par la société de livraison
-                                                                {% else %}
-                                                                    Delivery price is determined by the shipping company
-                                                                {% endif %}
-                                                            </small>
-                                                        </div>
-
-                                                        <!-- Submit Button -->
-                                                        <div class="col-12 mt-2">
-                                                            <button type="submit" class="btn btn-primary w-100">
-                                                                {% if lang == "ar" %}
-                                                                    تأكيد الطلب
-                                                                {% elif lang == "fr" %}
-                                                                    Confirmer la commande
-                                                                {% else %}
-                                                                    Confirm Order
-                                                                {% endif %}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            {% else %}
-                                <div class="alert alert-danger">
-                                    {% if lang == "ar" %}
-                                        المنتج غير متاح حاليا
-                                    {% elif lang == "fr" %}
-                                        Le produit n'est pas disponible actuellement
-                                    {% else %}
-                                        The product is not available at the moment
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+        <!-- Product Details -->
+        <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-6 col-md-12"{% else %}class="col-lg-12"{% endif %}>
+          <div class="row g-2">
+            <div {% if landing.layout_direction == 'horizontal' %}class="col-lg-12 col-sm-6"{% else %}class="col-lg-7 col-md-6"{% endif %}>
+              <h2 class="fw-bold">{{ product.name }}</h2>
+              <p class="text-muted">{{ product.description }}</p>
+              <div class="d-flex align-items-center justify-content-between text-primary">
+                <h4 class="fw-bold"> {% if lang == 'ar' %} السعر {% elif lang == 'fr' %} Prix {% else %} Price {% endif %} </h4>
+                <h4 class="fw-bold">
+                  {{ product.price }}
+                  <small class="fw-normal fs-6 text-primary">
+                    {% if lang == 'ar' %}دينار{% else %}DZD{% endif %}
+                  </small>
+                </h4>
+              </div>
             </div>
-            <script src="{% static 'js/landing_page.js' %}?v={% now 'U' %}"></script>
-            <script src="{% static 'js/custom_select.js' %}?v={% now 'U' %}"></script>
-        </body>
-    </html>
+
+            {% if product.stock > 0 %}
+              <div class="{% if landing.layout_direction == 'horizontal' %}col-lg-12 col-sm-6{% else %}col-lg-5 col-md-6{% endif %}">
+                <form class="form" method="POST" action="#">
+                  <div class="card">
+                    <div class="card-header bg-white">
+                      <h3 class="fw-bold text-primary mb-0">
+                        {% if lang == "ar" %}
+                          طلب المنتج
+                        {% elif lang == "fr" %}
+                          Demande de produit
+                        {% else %}
+                          Order the product
+                        {% endif %}
+                      </h3>
+                    </div>
+                    <div class="card-body">
+                      {% csrf_token %}
+                      <div class="row g-2">
+                        <!-- Full Name -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label" for="fullname">
+                            {% if lang == "ar" %} الاسم الكامل {% elif lang == "fr" %} Nom complet {% else %} Full name {% endif %}
+                          </label>
+                          <input type="text" class="form-control" name="fullname" id="fullname" required />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label" for="email">
+                            {% if lang == "ar" %} البريد الإلكتروني {% else %} Email {% endif %}
+                          </label>
+                          <input type="email" class="form-control" name="email" id="email" placeholder="example@mail.com" required />
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label" for="phone">
+                            {% if lang == "ar" %} رقم الهاتف {% elif lang == "fr" %} Numéro de téléphone {% else %} Phone number {% endif %}
+                          </label>
+                          <div class="custom-phone-input d-flex align-items-stretch">
+                            <span class="phone-prefix">+213</span>
+                            <input type="tel"
+                                   class="form-control phone-ltr-input"
+                                   name="phone"
+                                   id="phone"
+                                   pattern="[567]\d{8}"
+                                   maxlength="9"
+                                   placeholder="5XXXXXXXX"
+                                   required
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);" />
+                          </div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label">
+                            {% if lang == "ar" %} الكمية {% elif lang == "fr" %} Quantité {% else %} Quantity {% endif %}
+                          </label>
+                          <div class="quantity-input">
+                            <button type="button" class="quantity-btn minus" aria-label="Decrease quantity">
+                              <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1" required />
+                            <button type="button" class="quantity-btn plus" aria-label="Increase quantity">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Province -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label" for="province">
+                            {% if lang == "ar" %} الولاية {% elif lang == "fr" %} Wilaya {% else %} Province {% endif %}
+                          </label>
+                          {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected="01" %}
+                        </div>
+
+                        <!-- Commune -->
+                        <div class="col-lg-6 col-md-12">
+                          <label class="form-label" for="commune">
+                            {% if lang == "ar" %} البلدية {% elif lang == "fr" %} Commune {% else %} Commune {% endif %}
+                          </label>
+                          {% include "components/custom_select.html" with name="commune" id="commune" selected="01" %}
+                        </div>
+
+                        <!-- Note -->
+                        <div class="col-12">
+                          <label class="form-label" for="note">
+                            {% if lang == "ar" %} ملاحظة إضافية {% elif lang == "fr" %} Note supplémentaire {% else %} Additional note {% endif %}
+                          </label>
+                          <textarea name="note" id="note" class="form-control" rows="3"
+                                    placeholder="{% if lang == 'ar' %}مثال: وقت التسليم{% elif lang == 'fr' %}Ex: heure de livraison{% else %}e.g. Delivery time{% endif %}"></textarea>
+                        </div>
+
+                        <!-- Delivery Note -->
+                        <div class="col-12">
+                          <small class="text-muted">
+                            {% if lang == "ar" %}
+                              سعر التوصيل يحدده شركة الشحن
+                            {% elif lang == "fr" %}
+                              Les frais de livraison sont fixés par la société de livraison
+                            {% else %}
+                              Delivery price is determined by the shipping company
+                            {% endif %}
+                          </small>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="col-12 mt-2">
+                          <button type="submit" class="btn btn-primary w-100">
+                            {% if lang == "ar" %}
+                              تأكيد الطلب
+                            {% elif lang == "fr" %}
+                              Confirmer la commande
+                            {% else %}
+                              Confirm Order
+                            {% endif %}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            {% else %}
+              <div class="alert alert-danger">
+                {% if lang == "ar" %}
+                  المنتج غير متاح حاليا
+                {% elif lang == "fr" %}
+                  Le produit n'est pas disponible actuellement
+                {% else %}
+                  The product is not available at the moment
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="{% static 'js/landing_page.js' %}?v={% now 'U' %}" defer></script>
+    <script src="{% static 'js/custom_select.js' %}?v={% now 'U' %}" defer></script>
+  </body>
+</html>
 {% endwith %}
