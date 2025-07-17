@@ -309,7 +309,7 @@
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ pages.count|default:"0" }} 
+                                {{ delivered_revenue }}
                                 <small class="text-muted">DZD</small>
                             </h4>
                             <p>
@@ -350,10 +350,57 @@
                 </div>
             </div>
         </div>
+        <div class="container-fluid">
+            <div class="row gy-4">
+                <!-- Revenue Chart -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Revenue Over Time" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Summary -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Orders Summary" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="ordersChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Top Products by Sales" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="topProductsChart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
 
 {% endblock dashContent %}
 {% block extra_js %}
     <script src="{% static "js/dashHome.js" %}?v={% now "U" %}"></script>
+    <script src="{% static "js/seller_charts.js" %}?v={% now "U" %}"></script>
 {% endblock extra_js %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.db.models import Sum, Count, F, FloatField
 from utils import loadJSON
+from django.utils.translation import gettext_lazy as _
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)
@@ -13,11 +14,11 @@ class Contact(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
+        ('pending', _('Pending')),
+        ('confirmed', _('Confirmed')),
+        ('shipped', _('Shipped')),
+        ('delivered', _('Delivered')),
+        ('cancelled', _('Cancelled')),
     ]
 
     full_name = models.CharField(max_length=255)

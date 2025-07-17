@@ -1,7 +1,7 @@
 .timeline-line {
     position: absolute;
-    top: 0;
-    left: 25px;
+    top: 0px;
+    left: 15px;
     bottom: 0;
     width: 2px;
     background-color: #e0e0e0;
@@ -40,4 +40,38 @@
     .timeline-line {
         left: 15px;
     }
+}
+
+
+
+.timeline-card .card-body  .row > div i 
+{
+    font-size: 24px !important;
+}
+
+
+.order-timeline {
+    max-height: 700px; /* Adjust as needed */
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.order-timeline::-webkit-scrollbar {
+    width: 6px;
+}
+
+.order-timeline::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.order-timeline .timeline-item {
+    transition: all 0.2s ease;
+}
+
+.order-timeline .timeline-item.hidden {
+    display: none !important;
+}
+.order-timeline .col-6.hidden {
+    display: none !important;
 }
