@@ -261,7 +261,15 @@
                                   Province
                                 {% endif %}
                               </label>
-                              {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected_label=_("Select A Province") %}
+                              {% if lang == 'ar' %}
+                                {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected_label=_("إختر ولاية") %}
+                              {% elif lang == 'fr' %}
+                                {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected_label=_("Sélectionnez wilaya") %}
+                              {% elif lang == 'en' %}
+                                {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected_label=_("Select a Province") %}
+                              {% else %}
+                                {% include "components/custom_select.html" with name="wilaya" id="wilaya" options=wilayas selected_label=_("Select A Province") %}
+                              {% endif %}
 
                             </div>
 
@@ -276,8 +284,13 @@
                                   Commune
                                 {% endif %}
                               </label>
-                              {% include "components/custom_select.html" with name="commune" id="commune" selected_label="Select A Commune" %}
-
+                              {% if lang == 'ar' %}
+                              {% include "components/custom_select.html" with name="commune" id="commune" selected_label="إختر ولاية" %}
+                              {% elif lang == 'fr' %}
+                              {% include "components/custom_select.html" with name="commune" id="commune" selected_label="Sélectionnez" %}
+                              {% else %}
+                              {% include "components/custom_select.html" with name="commune" id="commune" selected_label="Select a Commune" %}
+                              {% endif %}
                             </div>
 
                             <!-- Delivery Note -->
@@ -335,11 +348,11 @@
             </div>
           </div>
         </div>
-
-        <!-- JS Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="{% static 'js/landing_page.js' %}?v={% now 'U' %}" defer></script>
-        <script src="{% static 'js/custom_select.js' %}?v={% now 'U' %}" defer></script>
-      </body>
-    </html>
-  {% endwith %}
+      </div>
+      <!-- JS Scripts -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="{% static 'js/landing_page.js' %}?v={% now 'U' %}" defer></script>
+      <script src="{% static 'js/custom_select.js' %}?v={% now 'U' %}" defer></script>
+    </body>
+  </html>
+{% endwith %}
