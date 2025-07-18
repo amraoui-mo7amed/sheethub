@@ -114,7 +114,6 @@ def create_or_update_product(request, pk=None):
                 enable_pixel=enable_pixel,
                 facebook_pixel_id=facebook_pixel_id,
             )
-            userPlan.plan.max_products -= 1
             userPlan.plan.save()
             userPlan.save()
         else:
@@ -172,10 +171,6 @@ def productDetails(request, pk):
 @login_required
 @role_required(["admin","seller"])
 def Delete(request, pk):
-    if request.user.profile.max_products in range(0,5) and request.user.profile.role == "seller":
-        request.user.profile.max_products += 1
-        request.user.profile.save()
-
     return BaseDelete(request,Product,pk)
 
 

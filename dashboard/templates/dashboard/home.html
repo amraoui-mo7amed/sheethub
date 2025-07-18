@@ -309,8 +309,17 @@
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ delivered_revenue }}
-                                <small class="text-muted">DZD</small>
+                                {# Format delivered_revenue using K/M suffixes #}
+                                {% with rev=delivered_revenue|floatformat:0 %}
+                                    {% if rev >= 1000000 %}
+                                        {{ rev|divisibleby:1000000|floatformat:1 }}M
+                                    {% elif rev >= 1000 %}
+                                        {{ rev|divisibleby:1000|floatformat:1 }}K
+                                    {% else %}
+                                        {{ rev }}
+                                    {% endif %}
+                                {% endwith %}
+                                <small class="text-muted">DZD</small>                                <small class="text-muted">DZD</small>
                             </h4>
                             <p>
                                 {% trans "Total Revenue" %}
