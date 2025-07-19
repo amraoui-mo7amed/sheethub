@@ -96,7 +96,7 @@ def submit_order(request, product_id):
         quantity=quantity,
         created_at=now()
     )
-    product.stock -= 1
+    product.stock -= quantity
     product.save()
     return JsonResponse({
         "success": True,
