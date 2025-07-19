@@ -117,3 +117,24 @@ class contactReply(models.Model):
     
     def __str__(self):
         return f"Reply for {self.contact.name}"
+
+
+# create a model to store the feedback/bug reports
+class Feedback(models.Model):
+    # specify its type 
+    FEEDBACK_TYPE_CHOICES = [
+        ('bug', 'Bug Report'),
+        ('feature', 'Feature Request'),
+        ('general', 'General Feedback'),
+    ]
+    user = models.ForeignKey(userModel, on_delete=models.CASCADE, related_name="feedbacks", blank=True, null=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Feedback from {self.user.username if self.user else 'Anonymous'}"
+    
+    class Meta:
+        verbose_name = _("Feedback")
+        verbose_name_plural = _("Feedbacks")
+        ordering = ["-created_at"]

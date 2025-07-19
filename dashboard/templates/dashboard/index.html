@@ -36,11 +36,11 @@
             {% include "menu/list.html" with menu_items=menu_items %}
 
         </div>
-        {% if request.user.role == "admin" %}
-            <div class="sidebar-footer d-flex flex-column justify-content-center">
-                <a href="#" class="btn btn-md btn-primary-custom w-100 mb-2">
-                    {% trans "Website Settings" %}
-                </a>
+        {% if request.user.profile.role == "seller" %}
+            <div class="sidebar-footer">
+                <button class="btn btn-primary btn-md w-100" id="openModal">
+                    {% trans "Help & feedback" %}
+                </button>
             </div>
         {% endif %}
     </div>
@@ -197,7 +197,10 @@
             </div>
         </div>
         {% if not request.user.auth.email_confirmed %}
-            <div class="alert alert-warning" role="alert" data-target-url="{% url "user_auth:send_activation_email" %}" id="emailActivationWarning">
+            <div class="alert alert-warning"
+                 role="alert"
+                 data-target-url="{% url "user_auth:send_activation_email" %}"
+                 id="emailActivationWarning">
                 {% trans "Please confirm your email address" %}
                 <a href="#" onclick="sendActivationEmail()" class="text-primary">{% trans "Confirm" %}</a>.
             </div>
@@ -208,6 +211,51 @@
         {% block dashContent %}
         {% endblock dashContent %}
     </div>
+    {# Custom feedback model#}
+    {% if request.user.profile.role == 'seller' %}
+        <div id="customModal" class="custom-modal" tabindex="-1">
+            <div class="custom-modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="custom-modal-title">
+                        {% trans "Help & Feedback" %}
+                    </h5>
+                    <span class="close-button" tabindex="0" aria-label="Close">&times;</span>
+                </div>
+                <div class="custom-modal-body">
+                    <form id="feedbackForm">
+                        <div class="mb-3">
+                            <label for="feedbackType" class="form-label">
+                                {% trans "Feedback Type" %}
+                            </label>
+                            <select class="form-select" id="feedbackType" name="feedbackType">
+                                <option value="bug">
+                                    {% trans "Bug Report" %}
+                                </option>
+                                <option value="feature">
+                                    {% trans "Feature Request" %}
+                                </option>
+                                <option value="other">
+                                    {% trans "Other" %}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackMessage" class="form-label">
+                                {% trans "Message" %}
+                            </label>
+                            <textarea class="form-control"
+                                      id="feedbackMessage"
+                                      name="feedbackMessage"
+                                      rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Submit" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
 {% block extra_js %}
 {% endblock extra_js %}

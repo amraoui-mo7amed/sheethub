@@ -473,3 +473,44 @@ function sendActivationEmail() {
         });
     });
 }
+
+// feedback model 
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('customModal');
+    const openBtn = document.getElementById('openModal');
+    const closeBtn = modal.querySelector('.close-button');
+    const modalContent = modal.querySelector('.custom-modal-content');
+
+    // Open modal
+    openBtn.addEventListener('click', () => openModal());
+
+    // Close modal
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close on background click
+    modal.addEventListener('mousedown', function(e) {
+        if (e.target === modal) closeModal();
+    });
+
+    // Exit with Esc key
+    window.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" && modal.classList.contains('show')) closeModal();
+    });
+
+    // Keyboard accessible close button
+    closeBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') closeModal();
+    });
+
+    function openModal() {
+        modal.classList.add('show');
+        document.body.classList.add('modal-open');
+        // Focus for accessibility
+        setTimeout(() => closeBtn.focus(), 200);
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+    }
+});

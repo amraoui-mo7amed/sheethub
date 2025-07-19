@@ -1,6 +1,7 @@
-i{
+i {
     font-size: 1.7rem;
 }
+
 /* Sidebar */
 .sidebar {
     background-color: white;
@@ -23,10 +24,11 @@ i{
     font-size: 1.8rem;
     margin-bottom: 0;
 }
-.sidebar-brand .text-muted 
-{
+
+.sidebar-brand .text-muted {
     font-size: .75rem !important;
 }
+
 .sidebar-menu {
     padding: 20px 0;
 }
@@ -42,7 +44,8 @@ i{
     transition: all 0.3s ease;
 }
 
-.menu-item:hover, .menu-item.active {
+.menu-item:hover,
+.menu-item.active {
     background-color: rgba(193, 154, 107, 0.1);
     border-left-color: var(--primary);
     color: var(--primary);
@@ -330,6 +333,7 @@ i{
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -342,6 +346,7 @@ i{
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -505,7 +510,7 @@ html[lang="ar"] .menu-item {
     border-right: 3px solid transparent;
 }
 
-html[lang="ar"] .menu-item:hover, 
+html[lang="ar"] .menu-item:hover,
 html[lang="ar"] .menu-item.active {
     border-right-color: var(--primary);
 }
@@ -608,6 +613,7 @@ html[lang="ar"] .stats-card {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -635,12 +641,13 @@ html[lang="ar"] .activity-icon {
     margin-right: 0;
     margin-left: 15px;
 }
-.menu-toggle
-{
+
+.menu-toggle {
     display: none;
     line-height: 1;
     margin: 0 5px;
 }
+
 /* Mobile Menu Toggle RTL */
 html[lang="ar"] .menu-toggle {
     margin-right: 0;
@@ -649,34 +656,35 @@ html[lang="ar"] .menu-toggle {
 
 /* Responsive RTL Adjustments */
 @media (max-width: 992px) {
-    .menu-toggle
-    {
+    .menu-toggle {
         display: block !important;
     }
-    .sidebar{
+
+    .sidebar {
         transform: translate(-280px);
     }
-    .sidebar.active 
-    {
+
+    .sidebar.active {
         transform: translateX(0);
     }
-    .main-content
-    {
+
+    .main-content {
         margin-left: 0px;
         padding: 7px;
     }
+
     html[lang="ar"] .sidebar {
         transform: translateX(100%);
     }
-    
+
     html[lang="ar"] .sidebar.active {
         transform: translateX(0);
     }
-    
+
     html[lang="ar"] .main-content {
         margin-right: 0;
     }
-    
+
     html[lang="ar"] .notification-popup {
         left: 20px;
         right: auto;
@@ -688,8 +696,8 @@ html[lang="ar"] .menu-toggle {
         left: 10px;
         right: auto;
     }
-    .user-name
-    {
+
+    .user-name {
         display: none;
     }
 
@@ -699,4 +707,76 @@ html[lang="ar"] .menu-toggle {
 html[lang="ar"] .notification-popup.show,
 html[lang="ar"] .account-popup.show {
     animation: fadeInDown 0.3s ease;
+}
+
+
+/* Feedback model */
+.custom-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 20, 30, 0.72);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.custom-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.custom-modal-content {
+    background: var(--bs-body-bg, #18122B);
+    border-radius: 18px;
+    box-shadow: 0 12px 48px rgba(90, 40, 160, 0.13);
+    width: 95%;
+    max-width: 420px;
+    padding: 0;
+    transform: translateY(60px) scale(0.98);
+    opacity: 0;
+    transition: transform 0.34s cubic-bezier(.3, 1.5, .5, 1), opacity 0.26s cubic-bezier(.3, 1.5, .5, 1);
+}
+
+.custom-modal.show .custom-modal-content {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.4rem 1rem 1.4rem;
+    border-bottom: 1px solid var(--bs-border-color-translucent, #444);
+}
+
+.custom-modal-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.close-button {
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--bs-secondary, #c0c0e4);
+    transition: color 0.2s;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #e95cdf;
+}
+
+.custom-modal-body {
+    padding: 1.3rem 1.4rem 1.5rem 1.4rem;
+}
+
+/* Optional: Prevent scroll on html when modal open */
+body.modal-open {
+    overflow: hidden;
 }
