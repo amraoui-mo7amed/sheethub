@@ -23,6 +23,7 @@ menu_items = [
         "icon" : "fas fa-box",
         "roles": ["admin","seller"]
     },
+    # ADMIN ONLY
     {
         "name" : _('Subscriptions'),
         "url" : "subs:plans", 
@@ -47,6 +48,12 @@ menu_items = [
         "icon" : "fas fa-address-card",
         "roles": ["admin"]
     },
+    {
+        "name" : _('Feedbacks'),
+        "url" : "dash:feedback_list",
+        "icon" : "fas fa-comments",
+        "roles": ["admin"]
+    }
 
 ]
 

@@ -14,7 +14,7 @@ def feedback_list(request):
     """
     feedbacks = Feedback.objects.all().order_by('-created_at')
 
-    return render(request, 'dashboard/feedback_list.html', {'feedbacks': feedbacks})
+    return render(request, 'feedback/list.html', {'feedbacks': feedbacks})
 
 @login_required
 @role_required('seller')

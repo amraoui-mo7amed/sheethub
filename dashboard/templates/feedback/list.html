@@ -1,0 +1,86 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "css/action_buttons.css" %}" />
+{% endblock extra_css %}
+
+{% block dashContent %}
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% trans "Users Feedback" %}
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if feedbacks %}
+                    <div class="row g-2">
+                        {% for feedback in feedbacks %}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="row g-1 border rounded px-2 align-items-top position-relative">
+                                    {% comment %} <i class="fas fa-comments display-1 text-primary"></i> {% endcomment %}
+                                    <div class="col-lg-4 col-md-4 col-sm-12">
+                                        {% comment %} <i class="fas fa-address-card display-1 text-primary"></i> {% endcomment %}
+                                        <svg viewBox="0 0 1024 1024"
+                                             class="icon "
+                                             version="1.1"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             fill="#000000">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0">
+                                            </g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                            </g>
+                                            <g id="SVGRepo_iconCarrier">
+                                            <path d="M853.333333 874.666667H170.666667c-46.933333 0-85.333333-38.4-85.333334-85.333334V343.466667c0-27.733333 12.8-53.333333 36.266667-70.4L512 0l390.4 273.066667c23.466667 14.933333 36.266667 42.666667 36.266667 70.4V789.333333c0 46.933333-38.4 85.333333-85.333334 85.333334z" fill="#78909C">
+                                            </path>
+                                            <path d="M256 234.666667h512v469.333333H256z" fill="#FFFFFF">
+                                            </path>
+                                            <path d="M512 290.133333l-128 166.4h256z" fill="#9C27B0">
+                                            </path>
+                                            <path d="M853.333333 874.666667H170.666667c-46.933333 0-85.333333-38.4-85.333334-85.333334V362.666667l426.666667 277.333333 426.666667-277.333333v426.666666c0 46.933333-38.4 85.333333-85.333334 85.333334z" fill="#CFD8DC">
+                                            </path>
+                                            <path d="M512 597.333333l42.666667-27.733333V426.666667h-85.333334v142.933333z" fill="#9C27B0">
+                                            </path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-12">
+                                        {# display the type  #}
+                                        <span class="badge {% if feedback.type == 'bug' %} bg-danger {% elif feedback.type == "feature" %} bg-success {% else %} bg-secondary {% endif %} position-absolute start-0 bottom-0 m-2">
+                                            {{ feedback.get_type_display }}
+                                        </span>
+
+                                        <h5 class="mb-1 text-truncate text-primary fw-bold">
+                                            {{ feedback.user.get_full_name }}
+                                        </h5>
+                                        <p class="mb-1 text-muted text-truncate">
+                                            {{ feedback.user.email }}
+                                        </p>
+                                        <p class="mb-1 text-muted">
+                                            {{ feedback.message }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state text-center py-5">
+                        <div class="empty-state-icon mb-3">
+                            <i class="fas fa-envelope fs-1"></i>
+                        </div>
+                        <h6>
+                            {% trans "No Contacts Found" %}
+                        </h6>
+                        <p class="text-muted text-truncate">
+                            {% trans "There are no contacts to display at the moment." %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock dashContent %}
