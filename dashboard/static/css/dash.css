@@ -5,7 +5,8 @@ i {
 /* Sidebar */
 .sidebar {
     background-color: white;
-    height: 100vh;
+    top: 0;
+    bottom: 0;
     position: fixed;
     width: 280px;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
