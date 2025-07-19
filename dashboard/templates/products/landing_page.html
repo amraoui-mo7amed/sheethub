@@ -125,7 +125,7 @@
                 <div class="{% if landing.layout_direction == 'horizontal' %}col-lg-12 col-sm-6{% else %}col-lg-5 col-md-6{% endif %}">
                   <ul id="errorList" class="d-none">
                   </ul>
-                  {% if request.user.sub.plan.max_orders >= product.orders.count %}
+                  {% if product.user.sub.plan.max_orders >= product.orders.count %}
                     <form class="form"
                           method="POST"
                           action="{% url "frontend:submit_order" product.id %}">
