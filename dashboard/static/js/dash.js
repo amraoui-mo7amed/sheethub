@@ -15,13 +15,13 @@ const accountPopup = document.getElementById('accountPopup');
 const popupOverlay = document.getElementById('popupOverlay');
 
 notificationBtn.addEventListener('click', function (e) {
-       e.stopPropagation();
+    e.stopPropagation();
     // Toggle the notification popup
     const isShowing = !notificationPopup.classList.contains('show');
     notificationPopup.classList.toggle('show');
     accountPopup.classList.remove('show');
     popupOverlay.style.display = isShowing ? 'block' : 'none';
-    
+
     // If showing notifications, fetch the latest ones
     if (isShowing) {
         fetchNotifications();
@@ -40,11 +40,11 @@ function fetchNotifications() {
     const notificationBtn = document.getElementById('notificationBtn');
     const notificationList = document.querySelector('.notification-list');
     const notificationBadge = document.querySelector('.notification-badge');
-    
+
     if (!notificationBtn || !notificationList) return;
-    
+
     const url = notificationBtn.getAttribute('data-target-url');
-    
+
     fetch(url, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -53,43 +53,43 @@ function fetchNotifications() {
         },
         credentials: 'same-origin'
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Clear existing notifications
-        notificationList.innerHTML = '';
-        
-        if (data.error) {
-            // Handle case where no notifications are found
-            notificationList.innerHTML = `
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Clear existing notifications
+            notificationList.innerHTML = '';
+
+            if (data.error) {
+                // Handle case where no notifications are found
+                notificationList.innerHTML = `
                 <div class="text-center p-4 text-muted">
                     ${data.error}
                 </div>
             `;
-            if (notificationBadge) {
-                notificationBadge.style.display = 'none';
+                if (notificationBadge) {
+                    notificationBadge.style.display = 'none';
+                }
+                return;
             }
-            return;
-        }
-        
-        if (data.notifications && data.notifications.length > 0) {
+
+            if (data.notifications && data.notifications.length > 0) {
                 // Update notification badge count (unread notifications)
                 const unreadCount = data.notifications.filter(n => !n.is_read).length;
-                const notificationBadge = notificationBtn.querySelector('.notification-badge') || 
-                                       document.createElement('span');
-                
+                const notificationBadge = notificationBtn.querySelector('.notification-badge') ||
+                    document.createElement('span');
+
                 if (!notificationBadge.classList.contains('notification-badge')) {
                     notificationBadge.className = 'notification-badge';
                     notificationBtn.appendChild(notificationBadge);
                 }
-                
+
                 notificationBadge.textContent = unreadCount > 0 ? unreadCount : '';
                 notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
-                
+
                 // Add each notification to the list
                 data.notifications.forEach(notification => {
                     const notificationItem = document.createElement('div');
@@ -119,16 +119,16 @@ function fetchNotifications() {
 }
 
 // Handle mark all as read button click
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const markAllReadBtn = e.target.closest('.mark-all-read');
     if (!markAllReadBtn) return;
-    
+
     e.preventDefault();
     e.stopPropagation();
-    
+
     const url = markAllReadBtn.getAttribute('data-target-url');
     const notificationBtn = document.getElementById('notificationBtn');
-    
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -139,34 +139,34 @@ document.addEventListener('click', function(e) {
         credentials: 'same-origin',
         body: JSON.stringify({})
     })
-    .then(async response => {
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || 'Failed to mark notifications as read');
-        }
-        return data;
-    })
-    .then(data => {
-        // Update UI to show all notifications as read
-        const unreadItems = document.querySelectorAll('.notification-unread');
-        unreadItems.forEach(item => {
-            item.classList.remove('notification-unread');
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to mark notifications as read');
+            }
+            return data;
+        })
+        .then(data => {
+            // Update UI to show all notifications as read
+            const unreadItems = document.querySelectorAll('.notification-unread');
+            unreadItems.forEach(item => {
+                item.classList.remove('notification-unread');
+            });
+
+            // Update badge count to 0
+            const notificationBadge = notificationBtn ? notificationBtn.querySelector('.notification-badge') : null;
+            if (notificationBadge) {
+                notificationBadge.style.display = 'none';
+                notificationBadge.textContent = '';
+            }
+
+            // Show success message from backend
+            showToast(data.message || 'Notifications updated', 'success');
+        })
+        .catch(error => {
+            console.error('Error marking notifications as read:', error);
+            showToast(error.message || 'Failed to update notifications', 'error');
         });
-        
-        // Update badge count to 0
-        const notificationBadge = notificationBtn ? notificationBtn.querySelector('.notification-badge') : null;
-        if (notificationBadge) {
-            notificationBadge.style.display = 'none';
-            notificationBadge.textContent = '';
-        }
-        
-        // Show success message from backend
-        showToast(data.message || 'Notifications updated', 'success');
-    })
-    .catch(error => {
-        console.error('Error marking notifications as read:', error);
-        showToast(error.message || 'Failed to update notifications', 'error');
-    });
 });
 
 // Helper function to get CSRF token
@@ -198,11 +198,11 @@ function showToast(message, type = 'info') {
         toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
-    
+
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.textContent = message;
-    
+
     // Add toast to container and set timeout to remove it
     toastContainer.appendChild(toast);
     setTimeout(() => {
@@ -230,16 +230,16 @@ document.addEventListener('click', function (e) {
 });
 
 // Close sidebar when clicking outside
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const sidebar = document.querySelector('.sidebar');
     const menuToggleBtn = document.getElementById('menuToggle');
     const overlay = document.getElementById('popupOverlay');
-    
+
     // Only handle if sidebar exists and is active
     if (sidebar && sidebar.classList.contains('active')) {
         const isClickInsideSidebar = sidebar.contains(event.target);
         const isClickOnMenuToggle = menuToggleBtn && menuToggleBtn.contains(event.target);
-        
+
         // Close sidebar if click is outside and not on menu toggle
         if (!isClickInsideSidebar && !isClickOnMenuToggle) {
             sidebar.classList.remove('active');
@@ -258,9 +258,9 @@ const notificationBadge = document.querySelector('.notification-badge');
 markAllRead.addEventListener('click', async function (e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const url = markAllRead.getAttribute('data-target-url');
-    
+
     // Show loading popup
     Swal.fire({
         title: 'Processing...',
@@ -270,7 +270,7 @@ markAllRead.addEventListener('click', async function (e) {
             Swal.showLoading();
         }
     });
-    
+
     try {
         // Make the API call
         const response = await fetch(url, {
@@ -282,22 +282,22 @@ markAllRead.addEventListener('click', async function (e) {
             },
             credentials: 'same-origin'
         });
-        
+
         const data = await response.json();
-        
+
         if (!response.ok) {
             throw new Error(data.message || 'Failed to update notifications');
         }
-        
+
         // Update UI
         unreadNotifications.forEach(notification => {
             notification.classList.remove('notification-unread');
         });
-        
+
         if (notificationBadge) {
             notificationBadge.style.display = 'none';
         }
-        
+
         // Show success popup
         Swal.fire({
             icon: 'success',
@@ -307,10 +307,10 @@ markAllRead.addEventListener('click', async function (e) {
             timer: 3000,
             timerProgressBar: true
         });
-        
+
     } catch (error) {
         console.error('Error marking notifications as read:', error);
-        
+
         // Show error popup
         Swal.fire({
             icon: 'error',
@@ -443,39 +443,39 @@ function sendActivationEmail() {
             "X-Requested-With": "XMLHttpRequest",
         },
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: data.message,
-                timer: 3000,
-                showConfirmButton: false
-            });
-        } else {
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: data.message,
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }
+        })
+        .catch(() => {
             Swal.fire({
                 icon: 'error',
-                title: 'Error',
-                text: data.message,
+                title: 'Oops...',
+                text: 'Something went wrong. Please try again later.',
                 timer: 3000,
                 showConfirmButton: false
             });
-        }
-    })
-    .catch(() => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong. Please try again later.',
-            timer: 3000,
-            showConfirmButton: false
         });
-    });
 }
 
 // feedback model 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('customModal');
     const openBtn = document.getElementById('openModal');
     const closeBtn = modal.querySelector('.close-button');
@@ -488,17 +488,17 @@ document.addEventListener('DOMContentLoaded', function() {
     closeBtn.addEventListener('click', closeModal);
 
     // Close on background click
-    modal.addEventListener('mousedown', function(e) {
+    modal.addEventListener('mousedown', function (e) {
         if (e.target === modal) closeModal();
     });
 
     // Exit with Esc key
-    window.addEventListener('keydown', function(e) {
+    window.addEventListener('keydown', function (e) {
         if (e.key === "Escape" && modal.classList.contains('show')) closeModal();
     });
 
     // Keyboard accessible close button
-    closeBtn.addEventListener('keydown', function(e) {
+    closeBtn.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') closeModal();
     });
 
@@ -512,5 +512,81 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeModal() {
         modal.classList.remove('show');
         document.body.classList.remove('modal-open');
+    }
+});
+
+// feedback form 
+document.addEventListener("DOMContentLoaded", function () {
+    const feedbackForm = document.getElementById("feedbackForm");
+    const feedbackErrors = document.getElementById("feedbackErrors");
+    const customModal = document.getElementById("customModal");
+    const closeButton = customModal.querySelector(".close-button");
+
+
+
+    feedbackForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        feedbackErrors.innerHTML = ""; // Clear old errors
+
+        const formData = new FormData(feedbackForm);
+
+        try {
+            const response = await fetch(feedbackForm.getAttribute('data-target-url'), {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || data.success === false) {
+                const errors = data.errors || ["Unexpected error."];
+                for (const error of errors) {
+                    const li = document.createElement("li");
+                    li.textContent = error;
+                    li.classList.add("text-danger", "mb-1");
+                    feedbackErrors.appendChild(li);
+                }
+            } else {
+                // Close modal
+                customModal.classList.remove('show');
+                // Show SweetAlert using backend message
+                Swal.fire({
+                    icon: "success",
+                    title: data.message || "✅ Success",
+                    text: "",
+                    timer: 2500,
+                    showConfirmButton: false,
+                });
+
+                feedbackForm.reset();
+            }
+        } catch (error) {
+            console.error("Feedback error:", error);
+            const li = document.createElement("li");
+            li.textContent = "❌ Server error. Try again.";
+            li.classList.add("text-danger");
+            feedbackErrors.appendChild(li);
+        }
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 });

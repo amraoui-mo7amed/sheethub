@@ -780,3 +780,20 @@ html[lang="ar"] .account-popup.show {
 body.modal-open {
     overflow: hidden;
 }
+
+
+/* feedback form */
+#feedbackErrors {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#feedbackErrors li {
+    background-color: #e74a3b;
+    color: #fff !important;
+    padding: 5px !important;
+    font-size: 0.9rem;
+    margin-bottom: 5px !important;
+    border-radius: 5px !important;
+}

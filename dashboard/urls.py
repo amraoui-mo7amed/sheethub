@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import dash, users, waitlist, smtp, notifications, products, contacts, order
+from .views import dash, users, waitlist, smtp, notifications, products, contacts, order, feedback
 
 app_name = 'dash'  # Changed from 'dashboard' to match the namespace in the template
 
@@ -33,5 +33,7 @@ urlpatterns = [
     path('contacts/reply/<int:contact_pk>', contacts.Reply, name='reply'),
     # Order 
     path('orders/update-status/', order.update_order_status, name='update_order_status'),
-
+    # feedback 
+    path('feedback/', feedback.feedback_list, name='feedback_list'),
+    path('feedback/create/', feedback.create, name='create_feedback'),
 ]

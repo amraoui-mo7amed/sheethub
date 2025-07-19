@@ -212,7 +212,7 @@
         {% endblock dashContent %}
     </div>
     {# Custom feedback model#}
-    {% if request.user.profile.role == 'seller' and  %}
+    {% if request.user.profile.role == 'seller' %}
         <div id="customModal" class="custom-modal" tabindex="-1">
             <div class="custom-modal-content">
                 <div class="custom-modal-header">
@@ -222,7 +222,9 @@
                     <span class="close-button" tabindex="0" aria-label="Close">&times;</span>
                 </div>
                 <div class="custom-modal-body">
-                    <form id="feedbackForm">
+                    <ul id="feedbackErrors"></ul>
+                    <form id="feedbackForm" method="post" data-target-url="{% url 'dash:create_feedback' %}">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="feedbackType" class="form-label">
                                 {% trans "Feedback Type" %}
@@ -234,8 +236,8 @@
                                 <option value="feature">
                                     {% trans "Feature Request" %}
                                 </option>
-                                <option value="other">
-                                    {% trans "Other" %}
+                                <option value="general">
+                                    {% trans "General" %}
                                 </option>
                             </select>
                         </div>
