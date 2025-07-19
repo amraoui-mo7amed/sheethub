@@ -212,7 +212,7 @@
         {% endblock dashContent %}
     </div>
     {# Custom feedback model#}
-    {% if request.user.profile.role == 'seller' %}
+    {% if request.user.profile.role == 'seller' and  %}
         <div id="customModal" class="custom-modal" tabindex="-1">
             <div class="custom-modal-content">
                 <div class="custom-modal-header">
