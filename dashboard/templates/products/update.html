@@ -1,0 +1,310 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}" />
+{% endblock extra_css %}
+
+
+{% block dashContent %}
+    {% include "components/errorList.html" %}
+    <form class="container-fluid form"
+    action="{% url "dash:product_update" product.id %}"
+    method="post"
+    enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-2 mb-3">
+            {# Product Image #}
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-12 col-sm-12 col-md-12">
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Product Image" %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="custom-uploader" id="customUploader">
+                                <img id="customPreview"
+                                     src="{% if product and product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/180x180?text=Upload{% endif %}"
+                                     alt="Image Preview" />
+                                <span>Click or drag an image here</span>
+                                <input type="file" id="customInput" name="image" accept="image/*" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {# Product LandingPage #}
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    {% if product.landing_page %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    {% trans "Product Page Settings" %}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-2">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="landing_language">
+                                                {% trans "Landing Language" %}
+                                            </label>
+                                            <select class="form-select" id="landing_language" name="landing_language">
+                                                {% for key,value in product.landing_page.LANGUAGE_CHOICES %}
+                                                    <option value="{{ key }}"
+                                                            {% if product.landing_page.landing_language == key %} selected {% endif %}>
+                                                        {{ value }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <span class="form-label fw-bold mb-3">
+                                            {% trans "Page Options" %}
+                                        </span>
+                                        <div class="row g-2">
+                                            {% for key,layout in product.landing_page.DIRECTION_CHOICES %}
+                                                <div class="col-lg-12 col-sm-12 col-md-12">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input"
+                                                               type="radio"
+                                                               id="layoutDirection"
+                                                               name="layout_direction"
+                                                               value="{{ key }}"
+                                                               {% if product.landing_page.layout_direction == key %}checked{% endif %} />
+                                                        <label class="form-check-label" for="layoutDirection">
+                                                            {{ layout|capfirst }} {% trans "Layout" %}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="enableFeedbacks"
+                                                           name="enable_feedbacks"
+                                                           {% if product.landing_page.enable_feedbacks %}checked{% endif %} />
+                                                    <label class="form-check-label" for="enableFeedbacks">
+                                                        {% trans "Enable Feedbacks" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="enableRelatedProducts"
+                                                           name="enable_related_products"
+                                                           {% if product.landing_page.enable_related_products %}checked{% endif %} />
+                                                    <label class="form-check-label" for="enableRelatedProducts">
+                                                        {% trans "Enable Related Products" %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12">
+                {# Product Settings #}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            {% trans "Product Settings" %}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div class="col-lg-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="productPublic"
+                                           name="is_public"
+                                           {% if product.is_public %}checked{% endif %} />
+                                    <label class="form-check-label" for="productPublic">
+                                        {% trans "Public" %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="productFeatured"
+                                           name="is_featured"
+                                           {% if product.is_featured %}checked{% endif %} />
+                                    <label class="form-check-label" for="productFeatured">
+                                        {% trans "Featured" %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="productInStock"
+                                           name="in_stock"
+                                           {% if product.in_stock %}checked{% endif %} />
+                                    <label class="form-check-label" for="productInStock">
+                                        {% trans "In Stock" %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="productAllowAdditionalImages"
+                                           name="allow_additional_images"
+                                           {% if product.allow_additional_images %}checked{% endif %} />
+                                    <label class="form-check-label" for="productAllowAdditionalImages">
+                                        {% trans "Additional Images" %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="productEnablePixel"
+                                           name="enable_pixel"
+                                           {% if product.enable_pixel %}checked{% endif %} />
+                                    <label class="form-check-label" for="productEnablePixel">
+                                        {% trans "Enable Pixel" %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# Product Details #}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            {% trans "Product Details" %}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="name">
+                                        {% trans "Product Name" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="name"
+                                           name="name"
+                                           value="{{ product.name }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="price">
+                                        {% trans "Product Price" %}
+                                    </label>
+                                    <input type="number"
+                                           class="form-control"
+                                           id="price"
+                                           name="price"
+                                           value="{{ product.price|stringformat:".2f" }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="stock">
+                                        {% trans "Product Stock" %}
+                                    </label>
+                                    <input type="number"
+                                           class="form-control"
+                                           id="stock"
+                                           name="stock"
+                                           value="{{ product.stock }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="facebook_pixel_id">
+                                        {% trans "Facebook Pixel ID" %}
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="facebook_pixel_id"
+                                           name="facebook_pixel_id"
+                                           value="{{ product.facebook_pixel_id }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <label for="description" class="form-label">
+                                    {% trans "Product description" %}
+                                </label>
+                                <textarea name="description" id="description" rows="7" class="mb-3 form-control">
+                                    {{ product.description|safe }}
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-2">
+            {# Additional images #}
+            <div class="col-lg-12 col-md-12">
+                    <div class="card mb-3" id="previewImagesContainer">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                {% trans "Product Additional Images" %}
+                            </h5>
+                        </div>
+                        <div class="card-body d-flex flex-wrap gap-2" id="add_images">
+                            {% for image in product.preview_images.all %}
+                                <div class="preview_image position-relative" style="width:48%;">
+                                    <img src="{{ image.image.url }}"
+                                         alt="{{ image.product.name }}"
+                                         class="rounded w-100 preview-img"
+                                         data-index="{{ forloop.counter0 }}" />
+
+                                    <!-- Store original URL as hidden input -->
+                                    <input type="hidden" name="preview_images" value="{{ image.image.url }}" />
+
+                                    <!-- File input (hidden) -->
+                                    <input type="file"
+                                           class="d-none file-input"
+                                           accept="image/*"
+                                           value="{{ image.image.url }}"
+                                           name="preview_images"
+                                           data-index="{{ forloop.counter0 }}" />
+
+                                    <div class="action-buttons d-flex flex-column gap-2 position-absolute top-0 end-0 m-1 z-index-1 p-1 rounded">
+                                        <button type="button"
+                                                class="btn btn-primary  upload-btn"
+                                                data-index="{{ forloop.counter0 }}">
+                                            <i class="fas fa-upload fs-6"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            {% trans "Update Product" %}
+        </button>
+    </form>
+{% endblock dashContent %}
+
+{% block extra_js %}
+    <script src="{% static 'js/products.js' %}?v={% now 'U' %}"></script>
+{% endblock extra_js %}

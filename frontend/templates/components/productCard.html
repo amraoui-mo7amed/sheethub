@@ -52,6 +52,9 @@
                                     {% trans "Product Page" %}
                                 </a>
                             {% endif %}
+                            <a href="{% url "dash:product_update" product.pk %}">
+                                {% trans "Edit" %}
+                            </a>
                             <button href="#"
                                     class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
                                     data-delete-url="{% url "dash:product_delete" product.pk %}"

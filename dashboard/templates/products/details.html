@@ -5,6 +5,8 @@
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static "css/product.css" %}?v={% now "U" %}" />
+
+
 {% endblock extra_css %}
 
 {% block dashContent %}
@@ -195,11 +197,51 @@
                                                             </label>
                                                         </div>
                                                         <div class="col-12 col-md-8">
-                                                            <div>
+                                                            <div class="d-flex align-items-center">
                                                                 <input type="text"
-                                                                       class="form-control text-truncate p-"
+                                                                       class="form-control text-truncate"
                                                                        readonly
+                                                                       id="productUrlInput"
                                                                        value="{{ request.scheme }}://{{ request.get_host }}{% url 'frontend:product_landing' shop_code=product.user.profile.shop_code pk=product.pk %}" />
+
+                                                                <div class="d-flex align-items-center ms-1">
+                                                                    <!-- Open Product Page Button -->
+                                                                    <a href="{% url 'frontend:product_landing' shop_code=product.user.profile.shop_code pk=product.pk %}"
+                                                                       class="bg-primary text-white p-1 border rounded"
+                                                                       target="_blank"
+                                                                       aria-label="Open Product Page">
+                                                                        <svg viewBox="0 0 16 16"
+                                                                             width="27"
+                                                                             height="27"
+                                                                             fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M14 2H5.5L4 3.5L6.84 6.34L0.59 12.59L3.41 15.41L9.66 9.16L12.5 12L14 10.5V2Z" fill="#fff" />
+                                                                        </svg>
+                                                                    </a>
+
+                                                                    <button class="bg-primary border rounded p-1 ms-1 position-relative"
+                                                                            type="button"
+                                                                            id="copyProductUrlBtn"
+                                                                            aria-label="Copy URL to clipboard">
+                                                                        <!-- SVG Icon -->
+                                                                        <svg viewBox="0 0 24 24"
+                                                                             fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg"
+                                                                             width="27"
+                                                                             height="27">
+                                                                            <path d="M17.1 2H12.9C9.82 2 8.37 3.09 8.07 5.74C8.01 6.29 8.46 6.75 9.02 6.75H11.1C15.3 6.75 17.25 8.7 17.25 12.9V14.98C17.25 15.53 17.71 15.99 18.26 15.93C20.91 15.63 22 14.18 22 11.1V6.9C22 3.4 20.6 2 17.1 2Z" fill="#fff" />
+                                                                            <path d="M11.1 8H6.9C3.4 8 2 9.4 2 12.9V17.1C2 20.6 3.4 22 6.9 22H11.1C14.6 22 16 20.6 16 17.1V12.9C16 9.4 14.6 8 11.1 8ZM12.29 13.65L8.58 17.36C8.44 17.5 8.26 17.57 8.07 17.57C7.88 17.57 7.7 17.5 7.56 17.36L5.7 15.5C5.42 15.22 5.42 14.77 5.7 14.49C5.98 14.21 6.43 14.21 6.71 14.49L8.06 15.84L11.27 12.63C11.55 12.35 12 12.35 12.28 12.63C12.56 12.91 12.57 13.37 12.29 13.65Z" fill="#fff" />
+                                                                        </svg>
+
+                                                                        <!-- Copied message -->
+                                                                        <span id="copiedMsg"
+                                                                              class="position-absolute top-0 start-100 translate-middle badge bg-success d-none"
+                                                                              style="font-size: 0.75rem">
+                                                                            Copied!
+                                                                        </span>
+                                                                    </button>
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -243,20 +285,7 @@
                                     <div class="timeline-item d-flex flex-column flex-md-row">
                                         <!-- Dot -->
                                         <div class="timeline-dot text-center me-md-3 mb-2 mb-md-0">
-                                            <i class="fas fa-check-circle fa-lg
-                                                {% if order.status == 'confirmed' %}
-                                                    text-success
-                                                {% elif order.status == 'pending' %}
-                                                    text-warning
-                                                {% elif order.status == 'shipped' %}
-                                                    text-info
-                                                {% elif order.status == 'delivered' %}
-                                                    text-primary
-                                                {% elif order.status == 'cancelled' %}
-                                                    text-danger
-                                                {% else %}
-                                                    text-secondary
-                                                {% endif %}"></i>
+                                            <i class="fas fa-check-circle fa-lg {% if order.status == 'confirmed' %} text-success {% elif order.status == 'pending' %} text-warning {% elif order.status == 'shipped' %} text-info {% elif order.status == 'delivered' %} text-primary {% elif order.status == 'cancelled' %} text-danger {% else %} text-secondary {% endif %}"></i>
                                         </div>
 
                                         <!-- Card -->
@@ -267,24 +296,11 @@
                                                         {{ order.full_name }}
                                                     </h5>
                                                     <div class="dropdown">
-                                                        <button class="badge dropdown-toggle border-0
-                                                            {% if order.status == 'confirmed' %}
-                                                                bg-success
-                                                            {% elif order.status == 'pending' %}
-                                                                bg-warning text-dark
-                                                            {% elif order.status == 'shipped' %}
-                                                                bg-info
-                                                            {% elif order.status == 'delivered' %}
-                                                                bg-primary
-                                                            {% elif order.status == 'cancelled' %}
-                                                                bg-danger
-                                                            {% else %}
-                                                                bg-secondary
-                                                            {% endif %}"
-                                                            type="button"
-                                                            id="statusDropdown{{ order.id }}"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
+                                                        <button class="badge dropdown-toggle border-0 {% if order.status == 'confirmed' %} bg-success {% elif order.status == 'pending' %} bg-warning text-dark {% elif order.status == 'shipped' %} bg-info {% elif order.status == 'delivered' %} bg-primary {% elif order.status == 'cancelled' %} bg-danger {% else %} bg-secondary {% endif %}"
+                                                                type="button"
+                                                                id="statusDropdown{{ order.id }}"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
                                                             {% if order.status == 'pending' %}
                                                                 {% trans "Pending" %}
                                                             {% elif order.status == 'confirmed' %}

@@ -154,3 +154,147 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+// Product Update 
+
+const uploader = document.getElementById('customUploader');
+const fileInput = document.getElementById('customInput');
+const previewImage = document.getElementById('customPreview');
+
+// Click to open file dialog
+if (uploader) {
+    uploader.addEventListener('click', () => fileInput.click());
+    // Drag-over effect
+    uploader.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploader.classList.add('dragover');
+    });
+
+    uploader.addEventListener('dragleave', () => {
+        uploader.classList.remove('dragover');
+    });
+
+    uploader.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploader.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            fileInput.files = e.dataTransfer.files;
+            preview(file);
+        }
+    });
+}
+
+
+
+// On file selected
+if (fileInput) {
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file && file.type.startsWith('image/')) {
+            preview(file);
+        }
+    });
+}
+
+function preview(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        previewImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+
+// Preview image 
+document.addEventListener('DOMContentLoaded', () => {
+    const uploadButtons = document.querySelectorAll('.upload-btn');
+
+    uploadButtons.forEach(button => {
+        const index = button.dataset.index;
+        const fileInput = document.querySelector(`.file-input[data-index="${index}"]`);
+        const imgPreview = document.querySelector(`.preview-img[data-index="${index}"]`);
+
+        // Click upload button → open file dialog
+        button.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // When file is selected → upload immediately
+        fileInput.addEventListener('change', event => {
+            const file = event.target.files[0];
+            if (!file || !file.type.startsWith('image/')) {
+                alert("Please select a valid image file.");
+                return;
+            }
+
+            // Preview immediately
+            const reader = new FileReader();
+            reader.onload = e => {
+                imgPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+        });
+    });
+
+});
+
+
+// Toggle Additional images update 
+document.addEventListener("DOMContentLoaded", function () {
+    const checkbox = document.getElementById("productAllowAdditionalImages");
+    const container = document.getElementById("previewImagesContainer");
+
+    if (!checkbox || !container) return;
+
+    const togglePreviewImageCards = () => {
+        if (checkbox.checked) {
+            container.classList.remove("d-none");
+            container.classList.add("d-block");
+        } else {
+            container.classList.remove("d-block");
+            container.classList.add("d-none");
+        }
+    };
+
+    // Force re-check state on full load (useful if rendering is delayed)
+    setTimeout(togglePreviewImageCards, 50);
+
+    checkbox.addEventListener("change", togglePreviewImageCards);
+});
+
+
+//  JS to handle copy + feedback 
+document.addEventListener("DOMContentLoaded", function () {
+    const copyBtn = document.getElementById("copyProductUrlBtn");
+    const urlInput = document.getElementById("productUrlInput");
+    const copiedMsg = document.getElementById("copiedMsg");
+    if (copyBtn) {
+
+        copyBtn.addEventListener("click", function () {
+            if (!urlInput) return;
+
+            navigator.clipboard.writeText(urlInput.value)
+                .then(() => {
+                    // Show copied message
+                    copiedMsg.classList.remove("d-none");
+
+                    // Change bg to success
+                    copyBtn.classList.remove("bg-primary");
+                    copyBtn.classList.add("bg-success");
+
+                    // Revert after 2 seconds
+                    setTimeout(() => {
+                        copiedMsg.classList.add("d-none");
+                        copyBtn.classList.remove("bg-success");
+                        copyBtn.classList.add("bg-primary");
+                    }, 2000);
+                })
+                .catch((err) => {
+                    console.error("Copy failed:", err);
+                });
+        });
+    }
+});

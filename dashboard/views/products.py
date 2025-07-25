@@ -14,6 +14,8 @@ from django.core.serializers import serialize
 from django.forms.models import model_to_dict
 from django.core.serializers.json import DjangoJSONEncoder
 from subscription.models import UserSubscription
+from django.core.exceptions import ValidationError
+from django.db import transaction
 
 userModel = get_user_model()
 
@@ -156,6 +158,102 @@ def create_or_update_product(request, pk=None):
         userPlan = UserSubscription.objects.get(user=request.user)
         return render(request, "products/create.html", {"userPlan": userPlan})  # Reuse form page
 
+# Product Update 
+@login_required
+@role_required(["seller"]) # Assuming only sellers can update their products
+def update_product(request, pk):
+    if request.method == "POST":
+        product = get_object_or_404(Product, pk=pk, user=request.user)
+        errors = []
+
+        # Product Fields
+        name = request.POST.get("name", "").strip()
+        description = request.POST.get("description", "").strip()
+        stock = request.POST.get("stock", "").strip()
+        price = request.POST.get("price", "").strip()
+        facebook_pixel_id = request.POST.get("facebook_pixel_id", "").strip()
+
+        is_public = bool(request.POST.get("is_public"))
+        is_featured = bool(request.POST.get("is_featured"))
+        in_stock = bool(request.POST.get("in_stock"))
+        allow_additional_images = bool(request.POST.get("allow_additional_images"))
+        enable_pixel = bool(request.POST.get("enable_pixel"))
+
+        # Validate required
+        if not name:
+            errors.append("Product name is required.")
+        if not price:
+            errors.append("Product price is required.")
+        if not stock:
+            errors.append("Product stock is required.")
+
+        # Image Upload (optional)
+        image = request.FILES.get("image")
+
+        # LandingPageConfig
+        landing_language = request.POST.get("landing_language", "ar")
+        layout_direction = request.POST.get("layout_direction", "horizontal")
+        enable_feedbacks = bool(request.POST.get("enable_feedbacks"))
+        enable_related_products = bool(request.POST.get("enable_related_products"))
+        if errors:
+            return JsonResponse({"success": False, "errors": errors})
+        else:
+            try:
+                with transaction.atomic():
+                    # Update Product
+                    product.name = name
+                    product.description = description
+                    product.stock = int(stock or 0)
+                    product.price = price
+                    product.is_public = is_public
+                    product.is_featured = is_featured
+                    product.in_stock = in_stock
+                    product.allow_additional_images = allow_additional_images
+                    product.enable_pixel = enable_pixel
+                    product.facebook_pixel_id = facebook_pixel_id or None
+
+                    if image:
+                        product.image = image
+
+                    product.full_clean()
+                    product.save()
+
+                    # Update LandingPageConfig if exists
+                    if hasattr(product, "landing_page"):
+                        landing = product.landing_page
+                        landing.landing_language = landing_language
+                        landing.layout_direction = layout_direction
+                        landing.enable_feedbacks = enable_feedbacks
+                        landing.enable_related_products = enable_related_products
+
+                        landing.full_clean()
+                        landing.save()
+
+                    # Update Additional Images (if new uploaded files exist)
+                    if product.allow_additional_images:
+                        preview_images = request.FILES.getlist("preview_images")
+                        for img in preview_images:
+                            if img:
+                                ProductImage.objects.create(product=product, image=img)
+
+            except ValidationError as ve:
+                errors += [f"{field}: {err}" for field, err_list in ve.message_dict.items() for err in err_list]
+            except Exception as e:
+                return JsonResponse({
+                    'success': False,
+                    'errors' : [str(e)]
+                })
+
+        return JsonResponse({"success": True, "redirect_url": reverse("dash:products_list")})
+
+    else: # GET request (Display the form)
+        product = get_object_or_404(Product, pk=pk, user=request.user)
+        context = {
+            "product": product, # Pass the product object for pre-filling
+            "language_choices": LandingPageConfig.LANGUAGE_CHOICES, # Needed for dropdown
+            "direction_choices": LandingPageConfig.DIRECTION_CHOICES, # Needed for dropdown
+        }
+    return render(request, "products/update.html", context) # Reuse your existing form template
 
 @login_required
 @role_required(["admin","seller"])

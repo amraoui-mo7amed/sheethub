@@ -18,6 +18,7 @@ urlpatterns = [
     # Products 
     path('products/', products.list, name='products_list'),
     path('products/create/', products.create_or_update_product, name='product_create'),
+    path('products/edit/<int:pk>/', products.update_product, name='product_update'),
     path('products/delete/<int:pk>', products.Delete, name='product_delete'),
     path('products/details/<int:pk>', products.productDetails, name='product_details'),
     # Waitlist
