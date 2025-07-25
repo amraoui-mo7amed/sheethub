@@ -52,7 +52,7 @@ def submit_order(request, product_id):
 
     # Extract form fields
     fullname = request.POST.get("fullname", "").strip()
-    email = request.POST.get("email", "").strip()
+    # email = request.POST.get("email", "").strip()
     phone = request.POST.get("phone", "").strip()
     wilaya = request.POST.get("wilaya", "").strip()
     commune = request.POST.get("commune", "").strip()
@@ -62,8 +62,8 @@ def submit_order(request, product_id):
     if not fullname:
         errors.append(t("الاسم الكامل مطلوب", "Le nom complet est requis", "Full name is required"))
 
-    if not email:
-        errors.append(t("البريد الإلكتروني مطلوب", "L'email est requis", "Email is required"))
+    # if not email:
+    #     errors.append(t("البريد الإلكتروني مطلوب", "L'email est requis", "Email is required"))
 
     if not phone or not phone.isdigit() or not phone.startswith(('5', '6', '7')) or len(phone) != 9:
         errors.append(t("رقم الهاتف غير صالح", "Numéro de téléphone invalide", "Invalid phone number"))
@@ -89,7 +89,7 @@ def submit_order(request, product_id):
     order = Order.objects.create(
         product=product,
         full_name=fullname,
-        email=email,
+        # email=email,
         phone_number=phone,
         wilaya=wilaya,
         commune=commune,

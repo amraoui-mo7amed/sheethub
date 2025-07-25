@@ -22,7 +22,7 @@ class Order(models.Model):
     ]
 
     full_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(null=True,blank=True)
     phone_number = models.CharField(max_length=20)
 
     wilaya = models.CharField(max_length=100)

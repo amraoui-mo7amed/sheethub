@@ -4,15 +4,17 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/product.css' %}" />
+    <link rel="stylesheet" href="{% static "css/action_buttons.css" %}" />
 {% endblock extra_css %}
 
 
 {% block dashContent %}
     {% include "components/errorList.html" %}
+
     <form class="container-fluid form"
-    action="{% url "dash:product_update" product.id %}"
-    method="post"
-    enctype="multipart/form-data">
+          action="{% url "dash:product_update" product.id %}"
+          method="post"
+          enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row g-2 mb-3">
             {# Product Image #}
@@ -260,43 +262,55 @@
         <div class="row g-2">
             {# Additional images #}
             <div class="col-lg-12 col-md-12">
-                    <div class="card mb-3" id="previewImagesContainer">
-                        <div class="card-header">
+                <div class="card mb-3" id="previewImagesContainer">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center justify-content-between w-100">
                             <h5 class="mb-0">
-                                {% trans "Product Additional Images" %}
+                                {% trans "Additional Images" %}
                             </h5>
-                        </div>
-                        <div class="card-body d-flex flex-wrap gap-2" id="add_images">
-                            {% for image in product.preview_images.all %}
-                                <div class="preview_image position-relative" style="width:48%;">
-                                    <img src="{{ image.image.url }}"
-                                         alt="{{ image.product.name }}"
-                                         class="rounded w-100 preview-img"
-                                         data-index="{{ forloop.counter0 }}" />
-
-                                    <!-- Store original URL as hidden input -->
-                                    <input type="hidden" name="preview_images" value="{{ image.image.url }}" />
-
-                                    <!-- File input (hidden) -->
-                                    <input type="file"
-                                           class="d-none file-input"
-                                           accept="image/*"
-                                           value="{{ image.image.url }}"
-                                           name="preview_images"
-                                           data-index="{{ forloop.counter0 }}" />
-
-                                    <div class="action-buttons d-flex flex-column gap-2 position-absolute top-0 end-0 m-1 z-index-1 p-1 rounded">
-                                        <button type="button"
-                                                class="btn btn-primary  upload-btn"
-                                                data-index="{{ forloop.counter0 }}">
-                                            <i class="fas fa-upload fs-6"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
+                            <button type="button" class="btn btn-primary  " id="uploadBtn">
+                                <i class="fas fa-upload fs-6"></i>
+                            </button>
                         </div>
                     </div>
+                   
+
+                    <!-- Hidden input trigger -->
+                    <input type="file"
+                           id="uploadInput"
+                           name="preview_images"
+                           accept="image/*"
+                           multiple
+                           class="d-none" />
+
+                    <!-- Preview Container -->
+                    <div class="card-body d-flex flex-wrap gap-2" id="add_images">
+                        {% for image in product.preview_images.all %}
+                            <div class="preview_image position-relative" style="width:48%;">
+                                <img src="{{ image.image.url }}"
+                                     alt="{{ image.product.name }}"
+                                     class="rounded w-100 preview-img"
+                                     data-index="{{ forloop.counter0 }}" />
+
+                                <!-- Hidden original file input -->
+                                <input type="hidden" name="existing_images" value="{{ image.pk }}" />
+
+                                <!-- Delete Button -->
+                                <div class="action-buttons d-flex flex-column gap-2 position-absolute top-0 end-0 m-1 z-index-1 p-1 rounded">
+                                    {% url "dash:product_image_delete" image.pk as delete_url %}
+                                    <button type="button"
+                                            class="btn btn-action btn-delete delete-button bg-danger text-light"
+                                            data-delete-url="{{ delete_url }}"
+                                            data-csrf-token="{{ csrf_token }}"
+                                            title="{% trans 'Delete' %}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">

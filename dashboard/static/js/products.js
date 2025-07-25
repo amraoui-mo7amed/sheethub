@@ -298,3 +298,65 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+document.getElementById("uploadBtn").addEventListener("click", function () {
+    document.getElementById("uploadInput").click();
+});
+
+document.getElementById("uploadInput").addEventListener("change", function (e) {
+    const files = e.target.files;
+    const container = document.getElementById("add_images");
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "preview_image position-relative";
+            wrapper.style.width = "48%";
+
+            // Create a new file input element
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.name = "preview_images";
+            fileInput.className = "d-none file-input";
+            fileInput.accept = "image/*";
+
+            // Set its value with the uploaded file using DataTransfer
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            fileInput.files = dt.files;
+
+            // Append all elements to wrapper
+            wrapper.innerHTML = `
+                <img src="${event.target.result}"
+                     alt="preview"
+                     class="rounded w-100 preview_images border" />
+
+                <div class="action-buttons d-flex flex-column gap-2 position-absolute top-0 end-0 m-1 z-index-1 p-1 rounded">
+                    <button type="button"
+                            class="btn btn-action btn-delete bg-danger text-light"
+                            title="Remove">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            // Append the file input into the wrapper
+            wrapper.appendChild(fileInput);
+
+            // Delete functionality
+            wrapper.querySelector(".btn-delete").addEventListener("click", function () {
+                wrapper.remove();
+            });
+
+            container.appendChild(wrapper);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    // Reset input for future uploads
+    e.target.value = "";
+});

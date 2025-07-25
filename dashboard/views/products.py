@@ -228,8 +228,6 @@ def update_product(request, pk):
 
                         landing.full_clean()
                         landing.save()
-
-                    # Update Additional Images (if new uploaded files exist)
                     if product.allow_additional_images:
                         preview_images = request.FILES.getlist("preview_images")
                         for img in preview_images:
@@ -271,4 +269,10 @@ def productDetails(request, pk):
 def Delete(request, pk):
     return BaseDelete(request,Product,pk)
 
+
+
+@login_required
+@role_required(["admin","seller"])
+def DeleteProductImage(request, pk):
+    return BaseDelete(request,ProductImage,pk)
 

@@ -21,6 +21,7 @@ urlpatterns = [
     path('products/edit/<int:pk>/', products.update_product, name='product_update'),
     path('products/delete/<int:pk>', products.Delete, name='product_delete'),
     path('products/details/<int:pk>', products.productDetails, name='product_details'),
+    path('products/images/delete/<int:pk>', products.DeleteProductImage, name='product_image_delete'),
     # Waitlist
     path('waitlist/', waitlist.List.as_view(), name='waitlist'),
     # SMTP Server
