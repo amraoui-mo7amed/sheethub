@@ -1,3 +1,8 @@
+/* table body */
+tbody td
+{
+    max-width:170px;
+}
 /* Floating Search Widget Styling */
 .floating-search-widget {
     position: fixed;
