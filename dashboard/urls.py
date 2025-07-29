@@ -34,6 +34,9 @@ urlpatterns = [
     path('contacts/details/<int:pk>', contacts.details, name='contact_details'),
     path('contacts/reply/<int:contact_pk>', contacts.Reply, name='reply'),
     # Order 
+    path('orders/', order.list, name='orders_list'),
+    path('orders/details/<int:order_id>', order.order_details, name='order_details'),
+    path('orders/filter/', order.filter_orders_ajax, name='filter_orders'),
     path('orders/update-status/', order.update_order_status, name='update_order_status'),
     # feedback 
     path('feedback/', feedback.feedback_list, name='feedback_list'),

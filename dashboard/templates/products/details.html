@@ -280,7 +280,7 @@
                         <div class="timeline-line d-none d-md-block">
                         </div>
                         <div class="row g-2 ">
-                            {% for order in product.orders.all %}
+                            {% for order in product.orders.all|slice:':6' %}
                                 <div class="col-lg-6 col-md-12">
                                     <div class="timeline-item d-flex flex-column flex-md-row">
                                         <!-- Dot -->

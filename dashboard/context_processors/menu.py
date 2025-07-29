@@ -53,6 +53,12 @@ menu_items = [
         "url" : "dash:feedback_list",
         "icon" : "fas fa-comments",
         "roles": ["admin"]
+    },
+    {
+        "name" : _('Orders'),
+        "url" : "dash:orders_list",
+        "icon" : "fas fa-box",
+        "roles": ["seller"]
     }
 
 ]

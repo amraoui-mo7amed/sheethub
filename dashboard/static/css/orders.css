@@ -1,0 +1,344 @@
+/* Floating Search Widget Styling */
+.floating-search-widget {
+    position: fixed;
+    /* Positions it relative to the viewport */
+    top: 20px;
+    /* Distance from the top */
+    right: 20px;
+    /* Distance from the right */
+    background-color: var(--bs-light);
+    /* Your defined white color */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    /* More pronounced shadow for floating effect */
+    z-index: 1050;
+    /* Ensures it stays above most other content */
+
+    /* Animation properties - initially hidden */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    /* Starts slightly above its final position */
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out, transform 0.3s ease-out;
+
+    max-width: 35%;
+    min-width: 360px;
+    width: 100%;
+}
+
+/* Class to show the widget */
+.floating-search-widget.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    /* Moves to its final position */
+}
+
+/* Overlay for dimming background and clicking outside to close */
+.floating-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Semi-transparent dark background */
+    z-index: 1040;
+    /* Below the widget, above other content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+}
+
+/* Class to show the overlay */
+.floating-search-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .floating-search-widget {
+        top: 10px;
+        right: 10px;
+        width: calc(100% - 20px);
+        /* Adjust width to fit smaller screens */
+    }
+}
+
+/* Styles for highlighting search results */
+.table tbody tr.highlight-row {
+    background-color: #fff3cd !important;
+    /* A light yellow/orange, similar to Bootstrap's bg-warning-subtle. Use !important if needed to override default Bootstrap table hover styles. */
+    border-left: 5px solid #ffc107;
+    /* A solid yellow line on the left for emphasis */
+}
+
+/* Optional: remove hover effect for highlighted rows if desired */
+.table tbody tr.highlight-row:hover {
+    background-color: #ffeeba !important;
+    /* Slightly darker highlight on hover */
+}
+
+
+/* --- Custom Modal Styling --- */
+
+/* General Modal Appearance */
+.custom-modal .modal-dialog {
+    transform: translateY(-50px);
+    /* Start slightly above center */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.custom-modal.show .modal-dialog {
+    transform: translateY(0);
+    /* Animate to center */
+}
+
+.custom-modal-content {
+    border-radius: 18px;
+    /* More rounded corners */
+    border: none;
+    overflow: hidden;
+    /* Ensures child elements respect border-radius */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25), 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* Deeper, softer shadow */
+    background: linear-gradient(145deg, var(--white) 0%, #f9f9f9 100%);
+    /* Subtle gradient background */
+}
+
+/* Modal Header */
+.custom-modal-header {
+    background-color: var(--primary);
+    /* Use your primary color */
+    color: var(--white);
+    border-bottom: none;
+    /* Remove default border */
+    padding: 25px 35px;
+    /* More generous padding */
+    position: relative;
+    overflow: hidden;
+    /* For background patterns/gradients */
+}
+
+.custom-modal-header::before {
+    /* Subtle background pattern/texture */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.custom-modal-header .modal-title {
+    font-size: 1.8rem;
+    /* Larger title */
+    font-weight: 700;
+    z-index: 1;
+    /* Bring title above pseudo-element */
+    position: relative;
+}
+
+.custom-modal-header .custom-btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--white);
+    /* White 'x' button */
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+    position: relative;
+}
+
+.custom-modal-header .custom-btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+    /* Little animation on hover */
+}
+
+/* Modal Body */
+.custom-modal-body {
+    padding: 30px 35px;
+    /* Consistent padding */
+    background-color: #fcfcfc;
+    /* Slightly off-white background for content area */
+}
+
+/* Detail Cards within Modal */
+.detail-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Lighter shadow for inner cards */
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-3px);
+    /* Subtle lift on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.detail-card-header {
+    background-color: #e9ecef;
+    /* Light grey background for card headers */
+    padding: 15px 20px;
+    font-weight: 600;
+    color: var(--dark);
+    /* Your defined dark color */
+    border-bottom: 1px solid #dee2e6;
+    /* Subtle separator */
+    font-size: 1.1rem;
+}
+
+.detail-card-body {
+    padding: 20px;
+}
+
+.detail-card-body p {
+    margin-bottom: 10px;
+    /* Spacing between detail lines */
+    color: var(--gray);
+    /* Softer text color */
+}
+
+.detail-card-body strong {
+    color: var(--dark);
+    /* Stronger color for labels */
+}
+
+/* Specific badge styling for status */
+#modalOrderStatus {
+    font-weight: 700;
+    padding: 0.5em 0.8em;
+    /* Make badges a bit larger */
+    border-radius: 6px;
+    min-width: 100px;
+    /* Ensure consistent width */
+    text-align: center;
+    display: inline-block;
+    /* For width to apply */
+}
+
+/* Loading Spinner and Error */
+#modalLoadingSpinner {
+    color: var(--primary);
+}
+
+#modalError {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Modal Footer */
+.custom-modal-footer {
+    border-top: 1px solid #f0f0f0;
+    /* Lighter border */
+    padding: 20px 35px;
+    background-color: #f8f9fa;
+    /* Slightly different background */
+}
+
+.custom-modal-footer .btn {
+    min-width: 100px;
+    /* Consistent button width */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+
+    /* Adjust for smaller screens like tablets */
+    .custom-modal .modal-dialog {
+        margin: 1rem;
+    }
+
+    .custom-modal-header,
+    .custom-modal-body,
+    .custom-modal-footer {
+        padding: 20px 25px;
+    }
+
+    .custom-modal-header .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .detail-card-header {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    /* Adjust for mobile phones */
+    .custom-modal-header,
+    .custom-modal-body,
+    .custom-modal-footer {
+        padding: 15px 20px;
+    }
+
+    .custom-modal-header .modal-title {
+        font-size: 1.3rem;
+    }
+
+    .detail-card-body p {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* filter widget */
+
+/* Styles for the Floating Filter Widget */
+.floating-filter-widget {
+    position: fixed;
+    top: 10vh;
+    bottom: 10vh;
+    right: 0;
+    transform: translateY(-50%) translateX(100%);
+    /* Start off-screen to the right */
+    width: 300px;
+    /* Adjust width as needed */
+    background-color: white;
+    border-radius: 8px 0 0 8px;
+    /* Rounded left corners, sharp right */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1050;
+    /* Above modals, below modal backdrop */
+    transition: transform 0.3s ease-in-out;
+    /* Smooth transition for sliding */
+}
+
+.floating-filter-widget.show {
+    transform: translateX(0);
+    /* Slide into view */
+}
+
+/* Overlay for the floating filter widget */
+.floating-filter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Semi-transparent black */
+    z-index: 1040;
+    /* Below widget, above content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.floating-filter-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}

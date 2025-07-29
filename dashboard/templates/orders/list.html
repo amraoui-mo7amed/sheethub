@@ -1,0 +1,393 @@
+{% extends "dashboard/index.html" %}
+
+{% load static i18n %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/orders.css' %}?v={% now 'U' %}" />
+{% endblock extra_css %}
+
+
+{% block dashContent %}
+    {# Floating Search Widget #}
+    <div id="floatingSearchWidget" class="floating-search-widget">
+        <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="{% trans 'Search orders...' %}"
+                   aria-label="{% trans 'Search orders' %}"
+                   id="searchInput" />
+            <button class="btn btn-primary" type="button" id="searchSubmitBtn">
+                <i class="fas fa-search fs-6"></i>
+            </button>
+            <button class="btn btn-outline-secondary" type="button" id="closeSearchBtn">
+                <i class="fas fa-times fs-6"></i>
+            </button>
+        </div>
+    </div>
+
+    {# Floating Filter Widget (Custom client-side implementation with more options) #}
+    <div id="floatingFilterWidget" class="floating-filter-widget">
+
+        <form id="orderFilterForm"
+              action="{% url 'dash:filter_orders' %}"
+              method="GET">
+            {# Filter by Status #}
+            <div class="mb-3">
+                <label for="filterStatusSelect" class="form-label">
+                    {% trans "Status" %}
+                </label>
+                <select class="form-select form-select-sm"
+                        id="filterStatusSelect"
+                        name="status">
+                    <option value="">
+                        {% trans "All Statuses" %}
+                    </option>
+                    <option value="pending">
+                        {% trans "Pending" %}
+                    </option>
+                    <option value="confirmed">
+                        {% trans "Confirmed" %}
+                    </option>
+                    <option value="shipped">
+                        {% trans "Shipped" %}
+                    </option>
+                    <option value="delivered">
+                        {% trans "Delivered" %}
+                    </option>
+                    <option value="cancelled">
+                        {% trans "Cancelled" %}
+                    </option>
+                </select>
+            </div>
+
+            {# Filter by Product Name #}
+            <div class="mb-3">
+                <label for="filterProductNameInput" class="form-label">
+                    {% trans "Product Name" %}
+                </label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       id="filterProductNameInput"
+                       name="product_name"
+                       placeholder="{% trans 'e.g., Smartphone' %}" />
+            </div>
+
+            {# Filter by Client Full Name #}
+            <div class="mb-3">
+                <label for="filterClientFullNameInput" class="form-label">
+                    {% trans "Client Name" %}
+                </label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       id="filterClientFullNameInput"
+                       name="client_full_name"
+                       placeholder="{% trans 'e.g., Mohamed Amraoui' %}" />
+            </div>
+
+            {# Filter by Client Phone Number #}
+            <div class="mb-3">
+                <label for="filterClientPhoneNumberInput" class="form-label">
+                    {% trans "Phone Number" %}
+                </label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       id="filterClientPhoneNumberInput"
+                       name="client_phone_number"
+                       placeholder="{% trans 'e.g., 0550123456' %}" />
+            </div>
+
+            {# Filter by Wilaya #}
+            <div class="mb-3">
+                <label for="filterWilayaInput" class="form-label">
+                    {% trans "Wilaya" %}
+                </label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       id="filterWilayaInput"
+                       name="wilaya"
+                       placeholder="{% trans 'e.g., Tebessa' %}" />
+            </div>
+
+            {# Filter by Commune #}
+            <div class="mb-3">
+                <label for="filterCommuneInput" class="form-label">
+                    {% trans "Commune" %}
+                </label>
+                <input type="text"
+                       class="form-control form-control-sm"
+                       id="filterCommuneInput"
+                       name="commune"
+                       placeholder="{% trans 'e.g., El Houidjbet' %}" />
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-primary btn-sm" type="submit" id="applyFilterBtn">
+                    {% trans "Apply Filters" %}
+                </button>
+                <a class="btn btn-outline-secondary btn-sm mt-2"
+                   type="button"
+                   id="clearAllFiltersBtn"
+                   href="{% url 'dash:orders_list' %}">
+                    {% trans "Clear Filters" %}
+                </a>
+            </div>
+        </form>
+    </div>
+    {# End Floating Filter Widget #}
+
+    {# Modal for Order Details (No changes needed) #}
+    <div class="modal fade"
+         id="orderDetailsModal"
+         tabindex="-1"
+         aria-labelledby="orderDetailsModalLabel"
+         aria-hidden="true"
+         data-update-status-url="{% url 'dash:update_order_status' %}">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">
+                        {% trans "Order Details" %} <span class="text-primary">#<span id="modalOrderId">0000</span></span>
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalLoadingSpinner"
+                         class="text-center my-5"
+                         style="display: none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">
+                            {% trans "Loading order details..." %}
+                        </p>
+                    </div>
+                    <div id="modalError"
+                         class="alert alert-danger"
+                         role="alert"
+                         style="display: none">
+                        {% trans "Failed to load order details. Please try again." %}
+                    </div>
+                    <div id="modalContent">
+                        <div class="row gx-4 gy-3 mb-4">
+                            <div class="col-md-6">
+                                <h6 class="text-primary mb-3">
+                                    {% trans "Client Information" %}
+                                </h6>
+                                <p class="mb-2">
+                                    <strong>{% trans "Full Name:" %}</strong> <span id="modalOrderFullName"></span>
+                                </p>
+                                <p class="mb-2">
+                                    <strong>{% trans "Phone Number:" %}</strong> <span id="modalOrderPhoneNumber"></span>
+                                </p>
+                                <p class="mb-2">
+                                    <strong>{% trans "Wilaya:" %}</strong> <span id="modalOrderWilaya"></span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>{% trans "Commune:" %}</strong> <span id="modalOrderCommune"></span>
+                                </p>
+                            </div>
+
+                            <div class="col-md-6 border-start ps-4">
+                                <h6 class="text-success mb-3">
+                                    {% trans "Product Details" %}
+                                </h6>
+                                <p class="mb-2">
+                                    <strong>{% trans "Product Name:" %}</strong> <span id="modalProductName"></span>
+                                </p>
+                                <p class="mb-2">
+                                    <strong>{% trans "Unit Price:" %}</strong> <span id="modalProductPrice"></span> DZD
+                                </p>
+                                <p class="mb-2">
+                                    <strong>{% trans "Quantity:" %}</strong> <span id="modalOrderQuantity"></span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>{% trans "Total Price:" %}</strong> <strong class="fs-5 text-success" id="modalOrderTotalPrice"></strong> DZD
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr class="my-3" />
+
+                        <div class="row gx-4 gy-3">
+                            <div class="col-md-6">
+                                <h6 class="text-danger mb-3">
+                                    {% trans "Order Status" %}
+                                </h6>
+                                <span id="statusUpdatingSpinner"
+                                      class="spinner-border spinner-border-sm text-primary ms-2"
+                                      role="status"
+                                      aria-hidden="true"
+                                      style="display: none"></span>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="mb-0">
+                                        <strong>{% trans "Current Status:" %}</strong>
+                                    </p>
+                                    <div class="dropdown d-inline-block align-middle">
+                                        <button class="btn btn-sm dropdown-toggle"
+                                                type="button"
+                                                id="dropdownOrderStatus"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                            <span id="modalOrderStatusText" class="text-light"></span>
+                                        </button>
+                                        <ul class="dropdown-menu"
+                                            aria-labelledby="dropdownOrderStatus"
+                                            id="modalStatusDropdownMenu">
+                                            {# Dynamically populated #}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 border-start ps-4">
+                                <h6 class="text-muted mb-3">
+                                    {% trans "Order Timeline" %}
+                                </h6>
+                                <p class="mb-0">
+                                    <strong>{% trans "Ordered On:" %}</strong> <span id="modalOrderCreatedAt"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {% trans "Close" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# Main Content #}
+    <div class="container-fluid">
+        <div class="card position-relative">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">
+                    {% trans "Orders" %}
+                </h5>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="btn btn-outline-secondary btn-sm" id="searchOrders">
+                        <i class="fa-solid fa-magnifying-glass fs-6"></i>
+                    </div>
+                    <div class="btn btn-outline-secondary btn-sm" id="filterOrdersBtn">
+                        <i class="fa-solid fa-filter fs-6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if orders %}
+                    <div class="table-responsive-lg">
+                        <table class="table table-responsive table-bordered table-hover">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th scope="col">
+                                        #
+                                    </th>
+                                    <th scope="col">
+                                        {% trans "Product" %}
+                                    </th>
+                                    <th scope="col">
+                                        {% trans "Client" %}
+                                    </th>
+                                    <th scope="col">
+                                        {% trans "Total Price" %}
+                                    </th>
+                                    <th scope="col">
+                                        {% trans "Status" %}
+                                    </th>
+                                    <th class="text-center" scope="col" style="width: 120px;">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                    {# RE-ADDED data-status for client-side filtering #}
+                                    <tr data-status="{{ order.status|lower }}">
+                                        <th scope="row">
+                                            {{ order.pk|stringformat:"04d" }}
+                                        </th>
+                                        <td class="text-truncate"
+                                            data-product-name="{{ order.product.name|lower }}">
+                                            {{ order.product.name }}
+                                        </td>
+                                        <td class="text-truncate"
+                                            data-client-full-name="{{ order.full_name|lower }}"
+                                            data-client-phone-number="{{ order.phone_number|lower }}"
+                                            data-wilaya="{{ order.wilaya|lower }}"
+                                            data-commune="{{ order.commune|lower }}">
+                                            {{ order.full_name }}
+                                        </td>
+                                        <td class="text-truncate">
+                                            {# Using floatformat for consistent price formatting #}
+                                            <strong class="text-muted">
+                                                {{ order.total_price|floatformat:2 }}
+                                            </strong>
+                                            <small class="text-muted">
+                                                DZD
+                                            </small>
+                                        </td>
+                                        <td>
+                                            {# Ensuring text contrast on static badges #}
+                                            {% if order.status == "pending" %}
+                                                <span class="badge bg-warning text-dark">
+                                                    {% trans "Pending" %}
+                                                </span>
+                                            {% elif order.status == "confirmed" %}
+                                                <span class="badge bg-info text-light">
+                                                    {% trans "Confirmed" %}
+                                                </span>
+                                            {% elif order.status == "shipped" %}
+                                                <span class="badge bg-primary text-light">
+                                                    {% trans "Shipped" %}
+                                                </span>
+                                            {% elif order.status == "delivered" %}
+                                                <span class="badge bg-success text-light">
+                                                    {% trans "Delivered" %}
+                                                </span>
+                                            {% elif order.status == "cancelled" %}
+                                                <span class="badge bg-danger text-light">
+                                                    {% trans "Cancelled" %}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary text-light">
+                                                    {{ order.status|title }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="d-flex gap-1 justify-content-center">
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-sm text-truncate"
+                                                    data-order-details-url="{% url 'dash:order_details' order.pk %}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#orderDetailsModal">
+                                                {% trans "View More" %}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">
+                            {% trans "No orders found" %}
+                        </h4>
+                        <p class="text-muted mb-0">
+                            {% trans "When you receive new orders, they'll appear here" %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock dashContent %}
+
+
+{% block extra_js %}
+    <script src="{% static "js/orders.js" %}?v={% now "U" %}"></script>
+{% endblock extra_js %}
