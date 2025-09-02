@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from .views import dash, users, waitlist, smtp, notifications, products, contacts, order, feedback
+import django_eventstream
 
 app_name = 'dash'  # Changed from 'dashboard' to match the namespace in the template
 
@@ -41,4 +42,7 @@ urlpatterns = [
     # feedback 
     path('feedback/', feedback.feedback_list, name='feedback_list'),
     path('feedback/create/', feedback.create, name='create_feedback'),
+    # Dahboard events 
+    path("events/", include(django_eventstream.urls), {"channels": ["notifications"]}),
+
 ]

@@ -38,6 +38,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,10 +51,11 @@ INSTALLED_APPS = [
     'translator',
     'frontend',
     'user_auth',
-    "subscription"
+    "subscription", 
+    "django_eventstream"
 
 ]
-
+ASGI_APPLICATION = "core.asgi.application"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

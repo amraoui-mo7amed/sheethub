@@ -799,3 +799,82 @@ body.modal-open {
     margin-bottom: 5px !important;
     border-radius: 5px !important;
 }
+
+/* =====================
+    Start of floating notification 
+======================== */
+
+/* Container for live notifications */
+.live-notification-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+/* Individual live notification */
+.live-notification {
+    background: var(--primary-dark);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.5s forwards;
+}
+
+.live-notification strong {
+    margin-right: 8px;
+}
+
+.live-notification button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+}
+.live-notification button  i 
+{
+    font-size: 18px !important;
+}
+/* Slide animations for live notifications */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+
+/* ======================
+    End of floating notifications 
+========================= */

@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404
 from dashboard.decorators import role_required, admin_required, user_is_self
 from utils import loadJSON
-from dashboard.utils import create_user_notification
 
 userModel = get_user_model()
 

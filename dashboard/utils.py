@@ -7,29 +7,69 @@ import smtplib
 from socket import gaierror
 import socket
 from django.utils.translation import gettext_lazy as _
+from django_eventstream import send_event
+from django_eventstream import send_event
+from django.contrib.auth import get_user_model
+from . import models  # your Notification model
 
 userModel = get_user_model()
 
+def send_notification(title: str, message: str, user=None, batch_size=1000):
+    """
+    Send a notification either to a specific user or to all users.
 
-def create_user_notification(user, title: str, message: str ):
-    """
-    Create a notification for a single user
-    
     Args:
-        user: User instance or user ID
-        message: Notification message content
-        notification_type: One of Notification.NOTIFICATION_TYPES
-        event: Optional related Event instance
-    
+        title (str): Notification title
+        message (str): Notification message content
+        user (User instance or None): Target user. If None, broadcast to all users.
+        batch_size (int): Number of notifications to create per bulk insert batch.
+
     Returns:
-        Notification object
+        List of created Notification objects
     """
-    
-    return models.Notification.objects.create(
-        user=user,
-        title=title,
-        message=message,
-    )
+    if user:
+        # Single user
+        notification = models.Notification.objects.create(
+            user=user,
+            title=title,
+            message=message,
+        )
+
+        # Push event for this user only
+        send_event(
+            "notifications",
+            "new_notification",
+            {"title": title, "message": message, "user_id": user.id}
+        )
+
+        return [notification]
+
+    else:
+        # Broadcast to all users
+        notifications = []
+        all_users = userModel.objects.only("id")  # only fetch ids for efficiency
+
+        batch = []
+        for u in all_users.iterator():  # use iterator to avoid loading all users in memory
+            batch.append(models.Notification(user=u, title=title, message=message))
+            if len(batch) >= batch_size:
+                notifications.extend(models.Notification.objects.bulk_create(batch))
+                batch = []
+
+        # create remaining notifications
+        if batch:
+            notifications.extend(models.Notification.objects.bulk_create(batch))
+
+        # Push a single global event
+        send_event(
+            "notifications",
+            "new_notification",
+            {"title": title, "message": message}
+        )
+
+        return notifications
+
+
 
 def translate(text: str):
     MISTRALAI_API_KEY = config('MISTRAL_API_KEY')

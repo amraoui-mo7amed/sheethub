@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
 from dashboard.models import Product
 from frontend.models import Order
+from dashboard.utils import send_notification, send_event
+from django.utils.translation import override, gettext_lazy as _
+from django.utils.translation import get_language
 
 def getCommunes(request, province_id, lang_code):
     algeria = loadJSON('algeria.json')
@@ -97,7 +100,31 @@ def submit_order(request, product_id):
         created_at=now()
     )
     product.stock -= quantity
-    product.save()
+    product.save()    
+    
+    # Send English notification
+    send_event(
+        "notifications",
+        "new_notification",
+        {
+            "title": "New order submitted",
+            "message": f"You have a new order submission for {order.product.name}. You may review it in Orders List",
+            "user_id": order.product.user.id
+        }
+    )
+
+    # Send French notification
+    send_event(
+        "notifications",
+        "new_notification",
+        {
+            "title": "Nouvelle commande soumise",
+            "message": f"Vous avez une nouvelle soumission de commande pour {order.product.name}. Vous pouvez la consulter dans la liste des commandes",
+            "user_id": order.product.user.id
+        }
+    )
+
+
     return JsonResponse({
         "success": True,
         "message": t("تم إرسال الطلب بنجاح", "Commande envoyée avec succès", "Order submitted successfully"),

@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.db.models import F, FloatField, Sum, ExpressionWrapper, Count
 from datetime import timedelta
 from django.http import JsonResponse
+from django.utils.translation import get_language
 
 
 userModel = get_user_model()
@@ -18,9 +19,10 @@ def home(request):
     """
     Render the home page of the dashboard.
     """
+
     context = {}
     if request.user.profile.role == "admin":
-        context['sellers'] = userModel.objects.filter(profile__role="seller")
+        context['sellers'] = userModel.objects.filter(profile__role="seller").order_by() [:6]
         context['products'] = Product.objects.all()            
         context['waitlist'] = WaitList.objects.all() 
         context['orders'] = 0

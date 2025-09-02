@@ -476,117 +476,209 @@ function sendActivationEmail() {
 
 // feedback model 
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('customModal');
-    const openBtn = document.getElementById('openModal');
-    const closeBtn = modal.querySelector('.close-button');
-    const modalContent = modal.querySelector('.custom-modal-content');
+    try {
+        const modal = document.getElementById('customModal');
+        const openBtn = document.getElementById('openModal');
 
-    // Open modal
-    openBtn.addEventListener('click', () => openModal());
+        if (!modal) throw new Error("Modal element (#customModal) not found.");
+        if (!openBtn) throw new Error("Open button (#openModal) not found.");
 
-    // Close modal
-    closeBtn.addEventListener('click', closeModal);
+        const closeBtn = modal.querySelector('.close-button');
+        const modalContent = modal.querySelector('.custom-modal-content');
 
-    // Close on background click
-    modal.addEventListener('mousedown', function (e) {
-        if (e.target === modal) closeModal();
-    });
+        if (!closeBtn) throw new Error("Close button (.close-button) not found inside modal.");
+        if (!modalContent) console.warn("Modal content (.custom-modal-content) not found."); // optional
 
-    // Exit with Esc key
-    window.addEventListener('keydown', function (e) {
-        if (e.key === "Escape" && modal.classList.contains('show')) closeModal();
-    });
+        // Open modal
+        openBtn.addEventListener('click', () => openModal());
 
-    // Keyboard accessible close button
-    closeBtn.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') closeModal();
-    });
+        // Close modal
+        closeBtn.addEventListener('click', closeModal);
 
-    function openModal() {
-        modal.classList.add('show');
-        document.body.classList.add('modal-open');
-        // Focus for accessibility
-        setTimeout(() => closeBtn.focus(), 200);
-    }
+        // Close on background click
+        modal.addEventListener('mousedown', function (e) {
+            if (e.target === modal) closeModal();
+        });
 
-    function closeModal() {
-        modal.classList.remove('show');
-        document.body.classList.remove('modal-open');
+        // Exit with Esc key
+        window.addEventListener('keydown', function (e) {
+            if (e.key === "Escape" && modal.classList.contains('show')) closeModal();
+        });
+
+        // Keyboard accessible close button
+        closeBtn.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') closeModal();
+        });
+
+        function openModal() {
+            modal.classList.add('show');
+            document.body.classList.add('modal-open');
+            // Focus for accessibility
+            setTimeout(() => {
+                if (closeBtn) closeBtn.focus();
+            }, 200);
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+
+    } catch (error) {
+        // console.error("Modal initialization error:", error.message);
     }
 });
 
-// feedback form 
 document.addEventListener("DOMContentLoaded", function () {
-    const feedbackForm = document.getElementById("feedbackForm");
-    const feedbackErrors = document.getElementById("feedbackErrors");
-    const customModal = document.getElementById("customModal");
-    const closeButton = customModal.querySelector(".close-button");
+    try {
+        const feedbackForm = document.getElementById("feedbackForm");
+        const feedbackErrors = document.getElementById("feedbackErrors");
+        const customModal = document.getElementById("customModal");
 
+        if (!feedbackForm) throw new Error("Feedback form (#feedbackForm) not found.");
+        if (!feedbackErrors) console.warn("Feedback errors container (#feedbackErrors) not found.");
+        if (!customModal) console.warn("Modal (#customModal) not found.");
 
+        const closeButton = customModal ? customModal.querySelector(".close-button") : null;
 
-    feedbackForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
+        feedbackForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-        feedbackErrors.innerHTML = ""; // Clear old errors
+            if (feedbackErrors) feedbackErrors.innerHTML = ""; // Clear old errors
 
-        const formData = new FormData(feedbackForm);
+            const formData = new FormData(feedbackForm);
 
-        try {
-            const response = await fetch(feedbackForm.getAttribute('data-target-url'), {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": getCookie("csrftoken"),
-                },
-                body: formData,
-            });
+            try {
+                const targetUrl = feedbackForm.getAttribute("data-target-url");
+                if (!targetUrl) throw new Error("Feedback form data-target-url not set.");
 
-            const data = await response.json();
-
-            if (!response.ok || data.success === false) {
-                const errors = data.errors || ["Unexpected error."];
-                for (const error of errors) {
-                    const li = document.createElement("li");
-                    li.textContent = error;
-                    li.classList.add("text-danger", "mb-1");
-                    feedbackErrors.appendChild(li);
-                }
-            } else {
-                // Close modal
-                customModal.classList.remove('show');
-                // Show SweetAlert using backend message
-                Swal.fire({
-                    icon: "success",
-                    title: data.message || "✅ Success",
-                    text: "",
-                    timer: 2500,
-                    showConfirmButton: false,
+                const response = await fetch(targetUrl, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                    },
+                    body: formData,
                 });
 
-                feedbackForm.reset();
+                const data = await response.json();
+
+                if (!response.ok || data.success === false) {
+                    const errors = data.errors || ["Unexpected error."];
+                    if (feedbackErrors) {
+                        for (const error of errors) {
+                            const li = document.createElement("li");
+                            li.textContent = error;
+                            li.classList.add("text-danger", "mb-1");
+                            feedbackErrors.appendChild(li);
+                        }
+                    } else {
+                        console.error("Feedback errors:", errors);
+                    }
+                } else {
+                    // Close modal
+                    if (customModal) customModal.classList.remove("show");
+
+                    // Show SweetAlert success message
+                    Swal.fire({
+                        icon: "success",
+                        title: data.message || "✅ Success",
+                        timer: 2500,
+                        showConfirmButton: false,
+                    });
+
+                    feedbackForm.reset();
+                }
+            } catch (error) {
+                console.error("Feedback submission error:", error);
+                if (feedbackErrors) {
+                    const li = document.createElement("li");
+                    li.textContent = "❌ Server error. Try again.";
+                    li.classList.add("text-danger");
+                    feedbackErrors.appendChild(li);
+                }
             }
-        } catch (error) {
-            console.error("Feedback error:", error);
-            const li = document.createElement("li");
-            li.textContent = "❌ Server error. Try again.";
-            li.classList.add("text-danger");
-            feedbackErrors.appendChild(li);
+        });
+
+        // CSRF cookie helper
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    } catch (error) {
+        // console.error("Feedback form initialization error:", error.message);
+    }
+});
+
+
+// ===============================
+// Start of floating notification
+// ===============================
+
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("liveNotificationContainer");
+    if (!container) return;
+    const currentUserId = container.dataset.userId || null;
+
+    const evtSource = new EventSource("/dashboard/events/?channels=notifications");
+
+    // Default messages (event: message)
+    evtSource.onmessage = function (event) {
+        console.log("Default message event:", event.data);
+    };
+
+    // Custom event: new_notification
+    evtSource.addEventListener("new_notification", function (event) {
+        try {
+            const data = JSON.parse(event.data);
+            console.log("NEW NOTIFICATION:", data);
+
+            // Skip if user-specific and not current user
+            if (data.user_id && data.user_id != currentUserId) return;
+
+            createLiveNotification(data.title, data.message, 5000);
+        } catch (err) {
+            console.error("EventStream parse error:", err);
         }
     });
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            const cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === name + "=") {
-                    cookieValue = decodeURIComponent(
-                        cookie.substring(name.length + 1)
-                    );
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+    function createLiveNotification(title, message, duration = 5000) {
+        const notif = document.createElement("div");
+        notif.className = "live-notification";
+
+        notif.innerHTML = `
+            <div class="d-flex align-items-center justify-content-between w-100 mb-1">
+                <strong>${title}</strong>
+                <button class="btn btn-sm btn-light">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <span>${message}</span>
+        `;
+
+        notif.querySelector("button").addEventListener("click", () => removeLiveNotification(notif));
+
+        container.appendChild(notif);
+
+        setTimeout(() => removeLiveNotification(notif), duration);
+    }
+
+    function removeLiveNotification(notif) {
+        notif.style.animation = "slideOut 0.5s forwards";
+        notif.addEventListener("animationend", () => notif.remove());
     }
 });
+
+
+// ===============================
+// End of floating notification
+// ===============================

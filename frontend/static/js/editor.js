@@ -3,17 +3,19 @@ const htmlLanguage = htlm.getAttribute('lang');
 
 
 const form = document.querySelector('form');
-form.addEventListener('submit', function (e) {
-  tinymce.triggerSave(); // Sync TinyMCE content to textarea
+if (form) {
+  form.addEventListener('submit', function (e) {
+    tinymce.triggerSave(); // Sync TinyMCE content to textarea
 
-  const description = document.querySelector('[name="description"]').value;
-  if (!description.trim()) {
-    e.preventDefault(); // Stop form submission
-    alert("Description is required!"); // Or show a nicer error
-    tinymce.get('description').focus(); // Focus TinyMCE editor
-  }
-});
+    const description = document.querySelector('[name="description"]').value;
+    if (!description.trim()) {
+      e.preventDefault(); // Stop form submission
+      alert("Description is required!"); // Or show a nicer error
+      tinymce.get('description').focus(); // Focus TinyMCE editor
+    }
+  });
 
+}
 tinymce.init({
   selector: 'textarea.tiny',
   height: 500,
