@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n filters %}
 
 <div class="col-lg-4 col-md-6 col-sm-12">
     <div class="product-card row g-1 border rounded position-relative">
@@ -11,16 +11,21 @@
         </div>
         <div class="col-lg-12 col-md-12 p-2">
             <div class="product-info">
-                <h5 class="product-name text-truncate fw-bold {% if product.landing_page.landing_language == "ar" %}text-end{% endif %}">
+                <h5 class="product-name text-truncate fw-bold text-primary mb-1 {% if product.landing_page.landing_language == "ar" %}text-end{% endif %}">
                     {{ product.name }}
                 </h5>
                 <div class="d-flex align-items-end justify-content-between">
-                    <div class="product-meta">
-                        <div class="d-flex flex-column align-items-start">
-                            {% comment %} <p class="product-price text-accent fw-bold mb-0 fs-5 text-truncate">
-                                {{ product.price }} DZD
-                            </p> {% endcomment %}
-                            <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="product-meta w-100">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-coins fs-5"></i>
+                                <p class="text-muted fw-bold mb-0">
+
+                                    {{ product.price|format_revenue }} DZD
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2">
                                 <i class="fas fa-ticket fs-5"></i>
                                 <p class="text-muted fw-bold mb-0">
                                     {{ product.orders.count|default:"0" }}
@@ -35,38 +40,45 @@
                             </div>
                         </div>
                     </div>
-                    {% if is_editable == True %}
-                        <!-- Menu toggle button -->
-                        <button class="dots-menu-btn" onclick="toggleMenu(this)">
-                            &#8942;
-                        </button>
 
-                        <!-- Dropdown menu -->
-                        <div class="dots-menu">
-                            <a href="{% url 'dash:product_details' pk=product.pk %}">
-                                {% trans "View Details" %}
-                            </a>
-                            {% if product.is_public %}
-                                <a href="{% url "frontend:product_landing" product.user.profile.shop_code product.pk %}"
-                                   target="_blank">
-                                    {% trans "Product Page" %}
-                                </a>
-                            {% endif %}
-                            <a href="{% url "dash:product_update" product.pk %}">
-                                {% trans "Edit" %}
-                            </a>
-                            <button href="#"
-                                    class="btn btn-action btn-delete delete-button bg-danger text-start mx-1 text-secondary"
-                                    data-delete-url="{% url "dash:product_delete" product.pk %}"
-                                    style="width:95%"
-                                    data-csrf-token="{{ csrf_token }}"
-                                    title="{% trans 'Delete' %}">
-                                {% trans "Delete" %}
-                            </button>
-                        </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
+        {% if is_editable == True %}
+            <div class="col-lg-12 col-md-12 m-0">
+                <div class="card-footer bg-transparent border-top p-2">
+                    <!--  tidy button bar - no icons  -->
+                    <div class="d-flex gap-1 flex-wrap">
+
+                        <a href="{% url 'dash:product_details' pk=product.pk %}"
+                           class="btn btn-sm btn-outline-primary flex-fill">
+                            {% trans "Details" %}
+                        </a>
+
+                        {% if product.is_public %}
+                            <a href="{% url 'frontend:product_landing' product.user.profile.shop_code product.pk %}"
+                               target="_blank"
+                               class="btn btn-sm btn-outline-success flex-fill">
+                                {% trans "Page" %}
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'dash:product_update' product.pk %}"
+                           class="btn btn-sm btn-outline-secondary flex-fill">
+                            {% trans "Edit" %}
+                        </a>
+
+
+                        <button class="btn btn-sm delete-button btn-delete btn-outline-danger w-100"
+                                data-delete-url="{% url 'dash:product_delete' product.pk %}"
+                                data-csrf-token="{{ csrf_token }}"
+                                style="max-width:min-content">
+                            {% trans "Delete" %}
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
