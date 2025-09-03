@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.db.models import F, FloatField, Sum, ExpressionWrapper, Count
 from datetime import timedelta
 from django.http import JsonResponse
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext_lazy as _
 from django.db.models.functions import TruncDate
 
 
@@ -145,16 +145,13 @@ def seller_data(request):
     })
 
 
-
-
+@role_required(['admin'])
 def admin_data(request):
     end_date   = timezone.now().date()
     start_date = end_date - timedelta(days=6)
+    labels     = [str(start_date + timedelta(days=i)) for i in range(7)]
 
-    # Labels for the last 7 days
-    labels = [str(start_date + timedelta(days=i)) for i in range(7)]
-
-    # 1) New sellers per day
+    # new sellers
     sellers_qs = (
         userModel.objects
         .filter(profile__role='seller', date_joined__date__gte=start_date)
@@ -166,7 +163,7 @@ def admin_data(request):
     sellers_map = {str(item['day']): item['count'] for item in sellers_qs}
     sellers_per_day = [sellers_map.get(l, 0) for l in labels]
 
-    # 2) Deliveries (orders) per day
+    # deliveries (orders)
     orders_qs = (
         Order.objects
         .filter(created_at__date__gte=start_date)
@@ -178,21 +175,27 @@ def admin_data(request):
     orders_map = {str(item['day']): item['count'] for item in orders_qs}
     deliveries_per_day = [orders_map.get(l, 0) for l in labels]
 
-    # 3) Top 5 products by revenue (same 7-day window)
+    # top 5 products by revenue
     top_products = (
         Product.objects
         .filter(orders__created_at__date__gte=start_date)
         .annotate(revenue=Sum(F('orders__quantity') * F('price')))
         .order_by('-revenue')[:5]
     )
-    top_products_labels = [p.name for p in top_products]
-    top_products_values = [float(p.revenue or 0) for p in top_products]
 
-    return render(request, 'dashboard/home.html', {
+    return JsonResponse({
         'labels': labels,
         'sellers_per_day': sellers_per_day,
         'deliveries_per_day': deliveries_per_day,
-        'orders_per_day': deliveries_per_day,  # identical here
-        'top_products_labels': top_products_labels,
-        'top_products_values': top_products_values,
+        'orders_per_day': deliveries_per_day,
+        'top_products_labels': [p.name for p in top_products],
+        'top_products_values': [float(p.revenue or 0) for p in top_products],
+
+        # phrases
+        'phrases': {
+            'new_sellers': str(_('New Sellers')),
+            'deliveries' : str(_('Deliveries')),
+            'orders'     : str(_('Orders')),
+            'top_products': str(_('Top Products')),
+        }
     })
