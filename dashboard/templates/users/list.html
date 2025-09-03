@@ -13,6 +13,130 @@
 
 {% block dashContent %}
     {% if request.user.profile.role == "admin" %}
+        <!-- Statistics Cards – modern / gradient / Font Awesome -->
+        <div class="row g-4 mb-5">
+
+            <!-- Total Users -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Total Users" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ total_users }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-users fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sellers -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, var(--accent) 0%, #059669 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Sellers" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ total_sellers }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-store fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admins -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Admins" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ total_admins }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-user-shield fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beta Users -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Beta Users" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ beta_count }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-rocket fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmed Email -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Confirmed Email" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ confirmed }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-envelope-open-text fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unconfirmed Email -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 rounded-4 shadow-lg position-relative overflow-hidden"
+                     style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%)">
+                    <div class="card-body text-white p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    {% trans "Unconfirmed Email" %}
+                                </h5>
+                                <h2 class="fw-bolder mb-0">
+                                    {{ unconfirmed }}
+                                </h2>
+                            </div>
+                            <i class="fas fa-envelope fa-3x opacity-25"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         {# Recent Users Row #}
         <div class="row mt-4">
             <div class="col-12 ">

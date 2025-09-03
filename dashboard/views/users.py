@@ -9,7 +9,6 @@ from dashboard.decorators import role_required, admin_required, user_is_self
 from utils import loadJSON
 
 userModel = get_user_model()
-
 class list(AdminRequiredMixin, BaseListView):
     model = userModel
     template_name = "users/list.html"
@@ -20,16 +19,14 @@ class list(AdminRequiredMixin, BaseListView):
         # Base queryset
         users = userModel.objects.all().exclude(is_staff=True)
 
-        # GET filters
-        role = self.request.GET.get("role")
-        country = self.request.GET.get("country")
-        is_beta = self.request.GET.get("is_beta")
-        email_confirmed = self.request.GET.get("email_confirmed")
+        # --- filtering (unchanged) ---
+        role               = self.request.GET.get("role")
+        country            = self.request.GET.get("country")
+        is_beta            = self.request.GET.get("is_beta")
+        email_confirmed    = self.request.GET.get("email_confirmed")
 
         if role:
             users = users.filter(profile__role=role)
-        if is_beta:
-            email_confirmed = None
         if country:
             users = users.filter(profile__country__icontains=country)
 
@@ -44,8 +41,25 @@ class list(AdminRequiredMixin, BaseListView):
             users = users.filter(auth__email_confirmed=False)
 
         context["objects"] = users
-        context['beta_users'] = is_beta
-        context["active_email_filter"] = email_confirmed  # for tab highlighting
+        context["beta_users"]            = is_beta
+        context["active_email_filter"]   = email_confirmed
+
+        # --- STATIC CARDS ---
+        total_users   = userModel.objects.exclude(is_staff=True).count()
+        total_sellers = userModel.objects.filter(profile__role="seller").count()
+        total_admins  = userModel.objects.filter(profile__role="admin").count()
+        beta_count    = userModel.objects.filter(profile__is_beta=True).count()
+        confirmed     = userModel.objects.filter(auth__email_confirmed=True).count()
+        unconfirmed   = total_users - confirmed
+
+        context.update({
+            "total_users":   total_users,
+            "total_sellers": total_sellers,
+            "total_admins":  total_admins,
+            "beta_count":    beta_count,
+            "confirmed":     confirmed,
+            "unconfirmed":   unconfirmed,
+        })
 
         return context
 
