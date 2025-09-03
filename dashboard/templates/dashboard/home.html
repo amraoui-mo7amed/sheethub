@@ -1,5 +1,7 @@
 {% extends "dashboard/index.html" %}
 
+{% load filters %}
+
 {% load static i18n %}
 {% load filters %}
 
@@ -23,7 +25,7 @@
                         </div>
                         <div class="stats-info">
                             <h4>
-                                {{ sellers.count|default:"0" }}
+                                {{ sellers_count|default:"0" }}
                             </h4>
                             <p>
                                 {% trans "Total Sellers" %}
@@ -86,219 +88,153 @@
                         <h5>
                             {% trans "Top Sellers" %}
                         </h5>
-                        <a href="#" class="view-all">{% trans "View All" %}</a>
+                        <a href="{% url "dash:users_list" %}" class="view-all">{% trans "View All" %}</a>
                     </div>
 
                     <div class="sellers-list p-3">
                         <div class="row g-4">
-                            {# Seller 1 #}
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="seller-modern-card">
-                                    <div class="seller-tier premium">
-                                        Premium
-                                    </div>
-                                    <div class="seller-main">
-                                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                                             class="seller-avatar"
-                                             alt="Seller" />
-                                        <div class="seller-details">
-                                            <h5>
-                                                John Smith
-                                            </h5>
-                                            <div class="seller-meta">
-                                                <span class="seller-email">john@example.com</span>
-                                                <span class="seller-since">Since 2023</span>
+                            {% for seller in top_sellers %}
+                                {% with plan_name=seller.sub.plan.name|default:'Basic' %}
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="seller-modern-card">
+                                            {#  translated tier badge  #}
+                                            <div class="seller-tier {{ plan_name|lower }}">
+                                                {% trans plan_name %}
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="seller-stats">
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                🚚
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    245
-                                                </div>
-                                                <div class="stat-label">
-                                                    Deliveries
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                📦
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    42
-                                                </div>
-                                                <div class="stat-label">
-                                                    Products
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="seller-rating">
-                                        <div class="stars">
-                                            ★★★★½
-                                        </div>
-                                        <div class="rating-value">
-                                            4.5
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {# Seller 2 #}
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="seller-modern-card">
-                                    <div class="seller-tier standard">
-                                        Standard
-                                    </div>
-                                    <div class="seller-main">
-                                        <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                                             class="seller-avatar"
-                                             alt="Seller" />
-                                        <div class="seller-details">
-                                            <h5>
-                                                Sarah Johnson
-                                            </h5>
-                                            <div class="seller-meta">
-                                                <span class="seller-email">sarah@example.com</span>
-                                                <span class="seller-since">Since 2022</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="seller-stats">
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                🚚
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    198
-                                                </div>
-                                                <div class="stat-label">
-                                                    Deliveries
+                                            {#  avatar: profile.image first, gravatar fallback  #}
+                                            <div class="seller-main">
+                                                <img src=" {% if seller.profile.image %} {{ seller.profile.image.url }} {% else %} {{ seller.email|gravatar:160 }} {% endif %} "
+                                                     class="seller-avatar"
+                                                     alt="{% trans 'Seller' %}" />
+                                                <div class="seller-details">
+                                                    <h5>
+                                                        {{ seller.get_full_name|default:seller.email }}
+                                                    </h5>
+                                                    <div class="seller-meta flex-column gap-0">
+                                                        <span class="seller-email">{{ seller.email }}</span>
+                                                        <span class="seller-since">
+                                                            {% blocktrans with year=seller.date_joined|date:"Y" %}Since {{ year }}{% endblocktrans %}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                📦
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    35
-                                                </div>
-                                                <div class="stat-label">
-                                                    Products
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="seller-rating">
-                                        <div class="stars">
-                                            ★★★★★
-                                        </div>
-                                        <div class="rating-value">
-                                            5
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {# Seller 3 #}
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="seller-modern-card">
-                                    <div class="seller-tier basic">
-                                        Basic
-                                    </div>
-                                    <div class="seller-main">
-                                        <img src="https://randomuser.me/api/portraits/men/75.jpg"
-                                             class="seller-avatar"
-                                             alt="Seller" />
-                                        <div class="seller-details">
-                                            <h5>
-                                                Michael Brown
-                                            </h5>
-                                            <div class="seller-meta">
-                                                <span class="seller-email">michael@example.com</span>
-                                                <span class="seller-since">Since 2021</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="seller-stats">
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                🚚
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    176
+                                            {#  stats  #}
+                                            <div class="seller-stats">
+                                                <div class="stat">
+                                                    <div class="stat-icon">
+                                                        🚚
+                                                    </div>
+                                                    <div>
+                                                        <div class="stat-value">
+                                                            {{ seller.order_count|default:0 }}
+                                                        </div>
+                                                        <div class="stat-label">
+                                                            {% trans 'Deliveries' %}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="stat-label">
-                                                    Deliveries
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="stat">
-                                            <div class="stat-icon">
-                                                📦
-                                            </div>
-                                            <div>
-                                                <div class="stat-value">
-                                                    28
-                                                </div>
-                                                <div class="stat-label">
-                                                    Products
+                                                <div class="stat">
+                                                    <div class="stat-icon">
+                                                        📦
+                                                    </div>
+                                                    <div>
+                                                        <div class="stat-value">
+                                                            {{ seller.products.count }}
+                                                        </div>
+                                                        <div class="stat-label">
+                                                            {% trans 'Products' %}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="seller-rating">
-                                        <div class="stars">
-                                            ★★★★½
-                                        </div>
-                                        <div class="rating-value">
-                                            4.5
-                                        </div>
-                                    </div>
+                                {% endwith %}
+                            {% empty %}
+                                <div class="col-12 text-center py-5 text-muted">
+                                    {% trans 'No sellers found.' %}
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {# Charts Row #}
-        <div class="row mt-4">
-            <div class="col-lg-6">
+        {% load static %}
+
+        {% load static %}
+
+        <div class="row mt-4"
+             data-chart-labels="{{ labels|join:',' }}"
+             data-chart-sellers="{{ sellers_per_day|join:',' }}"
+             data-chart-deliveries="{{ deliveries_per_day|join:',' }}"
+             data-chart-orders="{{ orders_per_day|join:',' }}"
+             data-chart-products-labels="{{ top_products_labels|join:',' }}"
+             data-chart-products-values="{{ top_products_values|join:',' }}"
+             data-title-sellers="{% trans 'New Sellers' %}"
+             data-title-deliveries="{% trans 'Deliveries' %}"
+             data-title-orders="{% trans 'Orders' %}"
+             data-title-products="{% trans 'Top Products' %}">
+
+            <!-- Sellers per day -->
+            <div class="col-lg-6 col-md-6">
                 <div class="booking-card">
                     <div class="card-header">
                         <h5>
-                            {% trans "Sellers Per Day" %}
+                            {% trans "New Sellers" %}
                         </h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="sellersChart" height="300"></canvas>
+                        <canvas id="sellersChart" height="250"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+
+            <!-- Deliveries per day -->
+            <div class="col-lg-6 col-md-6">
                 <div class="booking-card">
                     <div class="card-header">
                         <h5>
-                            {% trans "Deliveries Per Day" %}
+                            {% trans "Deliveries" %}
                         </h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="deliveriesChart" height="300"></canvas>
+                        <canvas id="deliveriesChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders per day -->
+            <div class="col-lg-6 col-md-6">
+                <div class="booking-card">
+                    <div class="card-header">
+                        <h5>
+                            {% trans "Orders" %}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="ordersChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Products doughnut -->
+            <div class="col-lg-6 col-md-6">
+                <div class="booking-card">
+                    <div class="card-header">
+                        <h5>
+                            {% trans "Top Products" %}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="productsChart" height="250"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+
     {% elif request.user.profile.role == "seller" %}
         <div class="container-fluid">
             <div class="row g-2 mb-4">
@@ -395,7 +331,7 @@
                 </div>
             </div>
         </div>
-        
+
     {% endif %}
 
 

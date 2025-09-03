@@ -1,3 +1,4 @@
+# dashboard/templatetags/filters.py
 from django import template
 import hashlib
 from django.utils.safestring import mark_safe

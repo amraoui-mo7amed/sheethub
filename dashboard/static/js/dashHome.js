@@ -10,7 +10,54 @@ document.addEventListener('DOMContentLoaded', function () {
     const userRole = userNameDiv.dataset.userRole; // read data attribute
 
     if (userRole === "admin") {
+        (() => {
+            const wrapper = document.querySelector('.row[data-chart-labels]');
+            if (!wrapper) return;
 
+            // Raw data
+            const labels = wrapper.dataset.chartLabels.split(',');
+            const sellers = wrapper.dataset.chartSellers.split(',').map(Number);
+            const deliveries = wrapper.dataset.chartDeliveries.split(',').map(Number);
+            const orders = wrapper.dataset.chartOrders.split(',').map(Number);
+            const prodLabels = wrapper.dataset.chartProductsLabels.split(',');
+            const prodValues = wrapper.dataset.chartProductsValues.split(',').map(Number);
+
+            // Translated titles from data-*
+            const titleSellers = wrapper.dataset.titleSellers;
+            const titleDeliveries = wrapper.dataset.titleDeliveries;
+            const titleOrders = wrapper.dataset.titleOrders;
+            const titleProducts = wrapper.dataset.titleProducts;
+
+            const colors = ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796'];
+
+            // Helpers
+            const mkLine = (id, data, label, color) =>
+                new Chart(document.getElementById(id), {
+                    type: 'line',
+                    data: { labels, datasets: [{ label, data, fill: false, borderColor: color, tension: 0.3 }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+            const mkBar = (id, data, label, color) =>
+                new Chart(document.getElementById(id), {
+                    type: 'bar',
+                    data: { labels, datasets: [{ label, data, backgroundColor: color }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+                });
+
+            const mkDoughnut = (id, labels, data, label) =>
+                new Chart(document.getElementById(id), {
+                    type: 'doughnut',
+                    data: { labels, datasets: [{ label, data, backgroundColor: colors }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                });
+
+            // Render
+            mkLine('sellersChart', sellers, titleSellers, '#4e73df');
+            mkBar('deliveriesChart', deliveries, titleDeliveries, '#1cc88a');
+            mkLine('ordersChart', orders, titleOrders, '#f6c23e');
+            mkDoughnut('productsChart', prodLabels, prodValues, titleProducts);
+        })();
     } else if (userRole === "seller") {
         // Dynamic charts for seller
         fetch("/dashboard/seller-data/")

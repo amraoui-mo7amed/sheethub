@@ -9,6 +9,7 @@ from django.db.models import F, FloatField, Sum, ExpressionWrapper, Count
 from datetime import timedelta
 from django.http import JsonResponse
 from django.utils.translation import get_language
+from django.db.models.functions import TruncDate
 
 
 userModel = get_user_model()
@@ -22,7 +23,14 @@ def home(request):
 
     context = {}
     if request.user.profile.role == "admin":
-        context['sellers'] = userModel.objects.filter(profile__role="seller").order_by() [:6]
+        context['sellers_count'] = userModel.objects.filter(profile__role="seller").count()
+        context['top_sellers'] = (
+            userModel.objects
+            .filter(profile__role="seller")
+            .annotate(order_count=Count('products__orders', distinct=True))
+            .order_by('-order_count')[:6]
+        )
+
         context['products'] = Product.objects.all()            
         context['waitlist'] = WaitList.objects.all() 
         context['orders'] = 0
@@ -136,3 +144,55 @@ def seller_data(request):
         "status_revenue_per_day": status_revenue_per_day,  # <-- for charting
     })
 
+
+
+
+def admin_data(request):
+    end_date   = timezone.now().date()
+    start_date = end_date - timedelta(days=6)
+
+    # Labels for the last 7 days
+    labels = [str(start_date + timedelta(days=i)) for i in range(7)]
+
+    # 1) New sellers per day
+    sellers_qs = (
+        userModel.objects
+        .filter(profile__role='seller', date_joined__date__gte=start_date)
+        .annotate(day=TruncDate('date_joined'))
+        .values('day')
+        .annotate(count=Count('id'))
+        .order_by('day')
+    )
+    sellers_map = {str(item['day']): item['count'] for item in sellers_qs}
+    sellers_per_day = [sellers_map.get(l, 0) for l in labels]
+
+    # 2) Deliveries (orders) per day
+    orders_qs = (
+        Order.objects
+        .filter(created_at__date__gte=start_date)
+        .annotate(day=TruncDate('created_at'))
+        .values('day')
+        .annotate(count=Count('id'))
+        .order_by('day')
+    )
+    orders_map = {str(item['day']): item['count'] for item in orders_qs}
+    deliveries_per_day = [orders_map.get(l, 0) for l in labels]
+
+    # 3) Top 5 products by revenue (same 7-day window)
+    top_products = (
+        Product.objects
+        .filter(orders__created_at__date__gte=start_date)
+        .annotate(revenue=Sum(F('orders__quantity') * F('price')))
+        .order_by('-revenue')[:5]
+    )
+    top_products_labels = [p.name for p in top_products]
+    top_products_values = [float(p.revenue or 0) for p in top_products]
+
+    return render(request, 'dashboard/home.html', {
+        'labels': labels,
+        'sellers_per_day': sellers_per_day,
+        'deliveries_per_day': deliveries_per_day,
+        'orders_per_day': deliveries_per_day,  # identical here
+        'top_products_labels': top_products_labels,
+        'top_products_values': top_products_values,
+    })

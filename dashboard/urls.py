@@ -13,6 +13,9 @@ urlpatterns = [
     path('users/delete/<int:pk>', users.Delete, name='user_delete'),
     # Seller Data
     path("seller-data/", dash.seller_data, name="seller_data"),  
+    # admin data 
+    path('admin-data/', dash.admin_data, name='admin_data'),
+
     # Notifications 
     path("notifications/", notifications.get_notifications , name="notifications"),
     path("notifications/mark-all-read/", notifications.set_read , name="mark_all_read"),
