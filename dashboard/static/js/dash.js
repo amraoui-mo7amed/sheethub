@@ -679,6 +679,28 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ===============================
-// End of floating notification
-// ===============================
+// clipboard + sweetalert2
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.copy-trigger').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const url = btn.dataset.targetUrl;
+            const msg = btn.dataset.successMessage || 'Copied!';
+            console.log('clicked');
+            
+            try {
+                await navigator.clipboard.writeText(url);
+                Swal.fire({
+                    icon: 'success',
+                    title: msg,
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            } catch (err) {
+                Swal.fire({ icon: 'error', title: 'Copy failed', text: err.message });
+            }
+        });
+    });
+});
