@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const modalOrderId = document.getElementById('modalOrderId');
+    const lang = document.documentElement.lang || 'en';
     const modalOrderFullName = document.getElementById('modalOrderFullName');
     const modalOrderPhoneNumber = document.getElementById('modalOrderPhoneNumber');
     const modalOrderWilaya = document.getElementById('modalOrderWilaya');
@@ -234,13 +235,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalStatusDropdownMenu = document.getElementById('modalStatusDropdownMenu');
     const statusUpdatingSpinner = document.getElementById('statusUpdatingSpinner');
 
-    const STATUS_OPTIONS = [
+    // 2.  English master list
+    const ENG_STATUS_OPTIONS = [
         { value: 'pending', display: 'Pending', badgeClass: 'bg-warning text-dark' },
         { value: 'confirmed', display: 'Confirmed', badgeClass: 'bg-info text-light' },
         { value: 'shipped', display: 'Shipped', badgeClass: 'bg-primary text-light' },
         { value: 'delivered', display: 'Delivered', badgeClass: 'bg-success text-light' },
         { value: 'cancelled', display: 'Cancelled', badgeClass: 'bg-danger text-light' },
     ];
+
+    // 3.  French list (same keys, only label changes)
+    const FR_STATUS_OPTIONS = [
+        { value: 'pending', display: 'En attente', badgeClass: 'bg-warning text-dark' },
+        { value: 'confirmed', display: 'Confirmé', badgeClass: 'bg-info text-light' },
+        { value: 'shipped', display: 'Expédié', badgeClass: 'bg-primary text-light' },
+        { value: 'delivered', display: 'Livré', badgeClass: 'bg-success text-light' },
+        { value: 'cancelled', display: 'Annulé', badgeClass: 'bg-danger text-light' },
+    ];
+
+    // 4.  pick the array that matches the page language
+    const STATUS_OPTIONS = (lang === 'fr') ? FR_STATUS_OPTIONS : ENG_STATUS_OPTIONS;
 
     function getCookie(name) {
         let cookieValue = null;
@@ -325,6 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         year: 'numeric', month: 'short', day: 'numeric',
                         hour: '2-digit', minute: '2-digit', hour12: true
                     });
+                    console.log(currentOrderData.status);
 
                     updateOrderStatusUI(currentOrderData.status);
 

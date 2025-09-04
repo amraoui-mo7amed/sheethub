@@ -83,6 +83,7 @@ def update_order_status(request):
 def order_details(request, order_id):
     try:
         order = Order.objects.select_related("product").get(id=order_id, product__user=request.user)
+        print(order.status)
         return JsonResponse({
             "success": True,
             "order": {
@@ -97,7 +98,8 @@ def order_details(request, order_id):
                     "price": str(order.product.price),  # Convert to string for JSON serialization
                 },
                 "quantity": order.quantity,
-                "status": order.get_status_display(),  # Get the human-readable status
+                "status": order.status,
+                "status_label": _(order.get_status_display()),  # Get the human-readable status
                 "total_price": str(order.total_price),  # Convert to string for JSON serialization
                 "is_confirmed": order.is_confirmed,
                 "created_at": order.created_at.isoformat(),
