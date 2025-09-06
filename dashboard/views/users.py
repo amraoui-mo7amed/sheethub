@@ -69,7 +69,7 @@ def Delete(request, pk):
     return BaseDelete(request,userModel,pk)
 
 @login_required
-@user_is_self
+@role_required(['admin', 'seller'])
 def userProfile(request, pk):
     user = get_object_or_404(userModel, pk=pk)
     context = {
