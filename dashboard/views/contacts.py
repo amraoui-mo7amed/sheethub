@@ -12,7 +12,7 @@ mailjet = MailJet()
 @admin_required
 def List(request):
     qs          = Contact.objects.all().order_by('-id')
-    paginator   = Paginator(qs, 5)                   # 15 rows per page
+    paginator   = Paginator(qs, 15)                   # 15 rows per page
     page_number = request.GET.get('page')
     page_obj    = paginator.get_page(page_number)
 
