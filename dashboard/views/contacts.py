@@ -5,15 +5,22 @@ from dashboard.models import contactReply
 from django.urls import reverse, reverse_lazy
 from dashboard.decorators import admin_required
 from django.utils.translation import gettext_lazy as _
+from django.core.paginator import Paginator
 
 mailjet = MailJet()
 
 @admin_required
 def List(request):
+    qs          = Contact.objects.all().order_by('-id')
+    paginator   = Paginator(qs, 15)                       # 15 rows per page
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+
     context = {
-        'contacts': Contact.objects.all()
+        'contacts': page_obj,          # only the slice for this page
+        'page_obj': page_obj,          # needed by the template tag
     }
-    return render(request, 'contacts/list.html', context=context)
+    return render(request, 'contacts/list.html', context)
 
 @admin_required
 def details(request, pk):

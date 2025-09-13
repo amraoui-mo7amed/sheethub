@@ -33,6 +33,7 @@ urlpatterns = [
     path('smtp/update/', smtp.update_smtp_config, name='update_smtp_config'),
     path('smtp/test-connection/', smtp.test_connection, name='test_smtp_connection'),
     path('smtp/delete/<int:pk>', smtp.Delete, name='smtp_delete'),
+    path('smtp/send-mail/', smtp.send_mail, name='send_mail'),
     # Contacts 
     path('contacts/', contacts.List, name='contacts'),
     path('contacts/details/<int:pk>', contacts.details, name='contact_details'),

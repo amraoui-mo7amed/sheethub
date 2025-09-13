@@ -15,7 +15,6 @@ class MailJet:
         elif type == "noreply":
             from_email = config('DEFAULT_NOREPLY_EMAIL')
 
-        print(from_email)
         data = {
         'Messages': [
                         {

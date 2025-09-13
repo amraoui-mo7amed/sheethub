@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.views.decorators.csrf import csrf_exempt
 from dashboard.models import SMTPConfig
 from dashboard.decorators import admin_required
@@ -10,6 +10,12 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render
 from dashboard.utils import test_smtp_connection
 from dashboard.views.generic import BaseDelete
+from mailjet import MailJet
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
+
+mailjet = MailJet()
 
 @login_required
 @admin_required
@@ -145,3 +151,55 @@ def SMTPConfigDetails(request):
 @admin_required
 def Delete(request, pk):
     return BaseDelete(request,SMTPConfig,pk)
+
+
+
+@require_POST
+@admin_required
+def send_mail(request):
+    """
+    send_to_all = False  ->  send to the single e-mail in the modal
+    send_to_all = True   ->  send to every Contact e-mail
+    Returns JSON: {success: bool, errors: list[str]}
+    """
+    subject      = request.POST.get('subject', '').strip()
+    message      = request.POST.get('message', '').strip()
+    send_to_all  = request.POST.get('send_to_all') == 'on'   # checkbox
+
+    errors = []
+    if not subject:
+        errors.append(_('Subject is required.'))
+    if not message:
+        errors.append(_('Message body is required.'))
+    if errors:
+        return JsonResponse({'success': False, 'errors': errors}, status=400)
+
+    # decide recipient list
+    if send_to_all:
+        recipients = list(UserModel.objects.values_list('email', flat=True).distinct())
+        if not recipients:
+            return JsonResponse({'success': False, 'errors': [_("No contacts to send to.")]}, status=400)
+    else:
+        to = request.POST.get('to', '').strip()
+        if not to:
+            return JsonResponse({'success': False, 'errors': ['Recipient e-mail is missing.']}, status=400)
+        recipients = [to]
+
+    # bulk send – collect failures
+    failed = []
+
+    for email in recipients:
+        ok, info = mailjet.sendMessage(
+            templateID=7151620,               # plain-text fallback
+            subject=subject,
+            recipiant_email=email,
+            recipiant_name=email,       # fallback
+            variabels={'text': message},
+            type='noreply'
+        )
+        if not ok:
+            failed.append(f'{email}: {info}')
+
+    if failed:
+        return JsonResponse({'success': False, 'errors': failed}, status=400)
+    return JsonResponse({'success': True, 'message': _('Email sent successfully')})

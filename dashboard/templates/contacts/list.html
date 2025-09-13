@@ -4,62 +4,183 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static "css/action_buttons.css" %}" />
+
 {% endblock extra_css %}
 
 {% block dashContent %}
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    {% trans "Contacts" %}
-                </h5>
-            </div>
-            <div class="card-body">
-                {% if contacts %}
-                    <div class="row g-2">
-                        {% for contact in contacts %}
-                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                <div class="row g-1 border rounded px-2 align-items-top">
-                                    <div class="col-lg-4 col-md-4 col-sm-12">
-                                        {% comment %} <i class="fas fa-address-card display-1 text-primary"></i> {% endcomment %}
-                                        <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" class="text-primary">
-                                            <path  fill="currentColor" d="M528 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-352 96c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zm112 236.8c0 10.6-10 19.2-22.4 19.2H86.4C74 384 64 375.4 64 364.8v-19.2c0-31.8 30.1-57.6 67.2-57.6h5c12.3 5.1 25.7 8 39.8 8s27.6-2.9 39.8-8h5c37.1 0 67.2 25.8 67.2 57.6v19.2zM512 312c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-64c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-64c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16z" />
-                                        </svg>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-12">
-                                        <h5 class="mb-1 text-truncate text-primary fw-bold">
-                                            {{ contact.name }}
-                                        </h5>
-                                        <p class="mb-1 text-muted text-truncate">
-                                            {{ contact.email }}
-                                        </p>
-                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                            <div class="d-flex justify-content-end gap-2 my-2">
-                                                <a class="btn btn-primary" href="{% url 'dash:contact_details' contact.pk %}">
-                                                    {% trans "Details" %}
-                                                </a>
+
+        {% if contacts %}
+
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        {% trans "Contacts" %}
+                    </h5>
+                    <span class="badge bg-primary">{{ page_obj.paginator.count }} {% trans "total" %}</span>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-nowrap mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>
+                                        {% trans "Name" %}
+                                    </th>
+                                    <th>
+                                        {% trans "E-mail" %}
+                                    </th>
+                                    <th>
+                                        {% trans "Subject" %}
+                                    </th>
+                                    <th>
+                                        {% trans "Message" %}
+                                    </th>
+                                    <th width="1">
+                                        {% trans "Actions" %}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for contact in contacts %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="fw-semibold">{{ contact.name }}</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+                                        </td>
+                                        <td>
+                                            {{ contact.email }}
+                                        </td>
+                                        <td>
+                                            {{ contact.subject|default:"—" }}
+                                        </td>
+                                        <td>
+                                            {{ contact.message|default:"—"|truncatewords:5 }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-1">
+                                                <a href="{% url 'dash:contact_details' contact.pk %}"
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   data-bs-toggle="tooltip"
+                                                   title="{% trans 'Details' %}">
+                                                    {% trans "details" %}
+                                                </a>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-success text-nowrap"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#mailModal"
+                                                        data-email="{{ contact.email }}"
+                                                        data-name="{{ contact.name }}"
+                                                        data-pk="{{ contact.pk }}">
+                                                    {% trans "Send mail" %}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">
+                                            {% trans "No contacts found." %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                {% else %}
-                    <div class="empty-state text-center py-5">
-                        <div class="empty-state-icon mb-3">
-                            <i class="fas fa-envelope fs-1"></i>
-                        </div>
-                        <h6>
-                            {% trans "No Contacts Found" %}
-                        </h6>
-                        <p class="text-muted text-truncate">
-                            {% trans "There are no contacts to display at the moment." %}
-                        </p>
+                </div>
+
+                {% if page_obj.has_other_pages %}
+                    <div class="card-footer py-2">
+                        {% include 'components/pagination.html' %}
+
                     </div>
                 {% endif %}
             </div>
-        </div>
+            <!--  Mail Modal  -->
+            <div class="modal fade" id="mailModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form method="post" class="form" action="{% url 'dash:send_mail' %}">
+                        {% csrf_token %}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    {% trans "Send E-mail: " %}
+                                    <span class="contact-name"></span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                </button>
+                            </div>
+                            {% include "components/errorList.html" %}
+
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        {% trans "To" %}
+                                    </label>
+                                    <input type="email" class="form-control" name="to" id="mailTo" readonly />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        {% trans "Subject" %}
+                                    </label>
+                                    <input type="text" class="form-control" name="subject" required />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        {% trans "Message" %}
+                                    </label>
+                                    <textarea class="form-control" name="message" rows="5" required></textarea>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="send_to_all"
+                                           id="sendToAll" />
+                                    <label class="form-check-label" for="sendToAll">
+                                        {% trans "Send to all contacts" %}
+                                    </label>
+                                </div>
+                                <input type="hidden" name="contact_pk" id="contactPk" />
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    {% trans "Close" %}
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    {% trans "Send" %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        {% else %}
+            <div class="empty-state text-center py-5">
+                <div class="empty-state-icon mb-3">
+                    <i class="fas fa-envelope fs-1"></i>
+                </div>
+                <h6>
+                    {% trans "No Contacts Found" %}
+                </h6>
+                <p class="text-muted text-truncate">
+                    {% trans "There are no contacts to display at the moment." %}
+                </p>
+            </div>
+        {% endif %}
+
     </div>
 
 {% endblock dashContent %}
+
+
+{% block extra_js %}
+    <script src="{% static "js/contacts.js" %}?v={% now "U" %}"></script>
+{% endblock extra_js %}
