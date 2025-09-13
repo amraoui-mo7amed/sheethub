@@ -25,6 +25,7 @@
                         <table class="table table-hover table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
+                                    <td>#</td>
                                     <th>
                                         {% trans "Name" %}
                                     </th>
@@ -45,6 +46,9 @@
                             <tbody>
                                 {% for contact in contacts %}
                                     <tr>
+                                        <td>
+                                            {{ contact.pk|stringformat:"04d" }}
+                                        </td>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <span class="fw-semibold text-nowrap">{{ contact.name|truncatechars:35 }}</span>
