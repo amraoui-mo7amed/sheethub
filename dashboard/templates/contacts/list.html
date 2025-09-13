@@ -47,17 +47,17 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <span class="fw-semibold">{{ contact.name }}</span>
+                                                <span class="fw-semibold">{{ contact.name|truncatechars:35 }}</span>
                                             </div>
                                         </td>
                                         <td>
-                                            {{ contact.email }}
+                                            {{ contact.email|truncatechars:35 }}
                                         </td>
                                         <td>
-                                            {{ contact.subject|default:"—" }}
+                                            {{ contact.subject|default:"—"|truncatechars:35 }}
                                         </td>
                                         <td>
-                                            {{ contact.message|default:"—"|truncatewords:5 }}
+                                            {{ contact.message|default:"—"|truncatechars:35 }}
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center gap-1">
