@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.i18n',  # Add this line
     'tinymce',  # Add TinyMCE app
     # Custom apps
     'dashboard',
