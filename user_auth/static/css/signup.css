@@ -51,20 +51,7 @@
     opacity: 1;
 }
 
-.btn-primary {
-    height: 50px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background: var(--primary);
-    border: none;
-    transition: all 0.3s ease;
-}
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
-}
 
 .terms-link, .login-link {
     color: var(--primary);
@@ -72,9 +59,6 @@
     transition: color 0.3s ease;
 }
 
-.terms-link:hover, .login-link:hover {
-    color: var(--secondary);
-}
 
 /* Add these styles to your existing CSS */
 .input-group-text {

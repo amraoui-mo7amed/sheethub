@@ -1,9 +1,11 @@
 {% load static i18n %}
+{% load pwa %}
 
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang={{ LANGUAGE_CODE }}>
     <head>
+        {% progressive_web_app_meta %}
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PB04SB7T0E"></script>
         <script>
@@ -19,9 +21,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description"
-              content="SheetHub - Product Pages & Order Tracking for WhatsApp, Instagram, and TikTok Sellers" />
+              content="{% trans "SheetHub - Product Pages & Order Tracking for WhatsApp, Instagram, and TikTok Sellers" %}" />
         <meta name="keywords"
-              content="SheetHub, Product Page, Order Management, WhatsApp Sellers, E-Commerce, No Shopify" />
+              content="{% trans "SheetHub, Product Page, Order Management, WhatsApp Sellers, E-Commerce, No Shopify, Landing Page, Order Tracking, Algerie, Shop Dz, Dz, " %}" />
         <meta name="author" content="SheetHub" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#007bff" />
@@ -81,7 +83,11 @@
               href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css" />
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-        <link rel="stylesheet" href="https://unpkg.com/sal.js/dist/sal.css" />
+
+        {# Sal Animation #}
+        {% if LANGUAGE_CODE == 'en' %}
+            <link rel="stylesheet" href="https://unpkg.com/sal.js/dist/sal.css" />
+        {% endif %}
 
         {% block css %}
             <link rel="stylesheet" href="{% static 'css/subscriptions.css' %}" />
@@ -95,38 +101,45 @@
         {% block nav %}
             <header class="sticky-header" role="banner">
                 <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light"
-                         role="navigation"
-                         aria-label="Main Navigation">
-                        <div class="container-fluid">
-                            <a class="navbar-brand fw-bold fs-3" href="/" aria-label="SheetHub Home">
-                                <span style="color: var(--primary);">Sheet</span><span style="color: var(--dark);">Hub</span>
+                    <nav class="custom-nav" role="navigation" aria-label="Main Navigation">
+                        <div class="nav-container">
+
+                            {#  logo / brand  #}
+                            <a href="{% url 'frontend:index' %}" class="nav-brand">
+                                <img src="{% static "icons/favicon.webp" %}"
+                                     alt="{% trans "Sheethub icon" %}"
+                                     class="w-100" />
                             </a>
-                            <button class="navbar-toggler"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#navbarNav"
-                                    aria-controls="navbarNav"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav ms-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#our-mission">{% trans "Our Mission" %}</a>
+
+                            {#  hamburger (hidden on desktop)  #}
+                            <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+                            <label for="nav-toggle" class="nav-hamburger" aria-label="Toggle navigation">
+                                <span></span><span></span><span></span>
+                            </label>
+
+                            {#  links + buttons  #}
+                            <div class="nav-panel">
+                                <ul class="nav-links">
+                                    <li>
+                                        <a href="{% url 'frontend:index' %}">{% trans "Home" %}</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#features">{% trans "Our Features" %}</a>
+                                    <li>
+                                        <a href="#our-mission">{% trans "Our Mission" %}</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#faq">{% trans "FAQ" %}</a>
+                                    <li>
+                                        <a href="#features">{% trans "Our Features" %}</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#contact">{% trans "Contact Us" %}</a>
+                                    <li>
+                                        <a href="#faq">{% trans "FAQ" %}</a>
                                     </li>
                                 </ul>
+
+                                <div class="nav-buttons">
+                                    <a href="{% url 'user_auth:login' %}" class="btn-nav btn-primary">{% trans "Login" %}</a>
+                                    <a href="{% url 'frontend:index' %}#contact" class="btn-nav btn-outline">{% trans "Contact Us" %}</a>
+                                </div>
                             </div>
+
                         </div>
                     </nav>
                 </div>
@@ -134,49 +147,79 @@
         {% endblock nav %}
 
         {% block hero %}
-            <section class="py-2" role="region" aria-labelledby="hero-title">
-                <div class="container">
-                    <div class="row align-items-start">
-                        <!-- Left Text Column -->
-                        <div class="col-lg-6 mb-2 mb-lg-0"
-                             data-sal="slide-left"
-                             data-sal-duration="1000">
-                            <h1 class="display-4 fw-bold my-3" id="hero-title">
-                                {% trans "Start Selling with a single Click" %}
-                            </h1>
-                            <p class="lead mb-2 text-muted mt-3" id="hero-subtitle">
-                                {% trans "All-in-one, no coding, no credit card — just smart, effortless selling." %}
-                            </p>
-                            <p class="lead text-muted d-block mb-2" id="hero-description">
-                                {% trans "Create your page, track your orders, and grow your business with our smart solution for e-commerce sellers." %}
-                            </p>
+            <div class="hero-container bg-light" style="margin-top:1rem">
+                <div class="container " id="hero">
+                    <div class="row g-2 align-items-center ">
+                        <div class="col-md-8">
+                            <div class="hero-text">
+                                <span class="fw-dark fs-5 text-muted fw-bold">
+                                    {% trans "Start selling using" %}
+                                </span>
+                                <h3 class="text-primary display-1 fw-bold">
+                                    {% trans "Single Click" %}
+                                </h3>
+                                <div class="lead text-muted fs-6">
+                                    {% trans "Get started at no cost with our all-in-one service that drives sales and grows your business." %}
+                                    <br />
+                                    {% trans "From setup to management, we give you the full set of tools to handle your online business effortlessly." %}
+                                </div>
 
-                            <a href="{% url 'user_auth:login' %}"
-                               class="btn btn-lg btn-primary border rounded mt-3 animate animate__animated animate__backInLeft">
-                                {% trans "Start Selling For Free" %}
-                            </a>
-                            <p class="text-muted d-block mt-2">
-                                {% trans "150 free orders for early users" %}
-                            </p>
+                                <div class="col-md-12 gap-2 mb-5">
+                                    <div class="row g-3 mt-4">
+                                        <!-- 1. Landing Page  -->
+                                        <div class="col-md-4">
+                                            <div class="feature-box glass-feature">
+                                                <i class="fas fa-check-circle text-accent"></i>
+                                                <div class="feature-text">
+                                                    {% trans "Product Page" %}
+                                                </div>
+                                                <small class="text-muted">{% trans "Shareable, mobile-first page in 30s" %}</small>
+                                            </div>
+                                        </div>
+
+                                        <!-- 2. Stock Management  -->
+                                        <div class="col-md-4">
+                                            <div class="feature-box glass-feature">
+                                                <i class="fas fa-check-circle text-accent"></i>
+                                                <div class="feature-text">
+                                                    {% trans "Stock Management" %}
+                                                </div>
+                                                <small class="text-muted">{% trans "Live stock, low-stock alerts, auto-hide sold-out" %}</small>
+                                            </div>
+                                        </div>
+                                        <!-- 3. Order Tracking  -->
+                                        <div class="col-md-4">
+                                            <div class="feature-box glass-feature">
+                                                <i class="fas fa-check-circle text-accent"></i>
+                                                <div class="feature-text">
+                                                    {% trans "Order Tracking" %}
+                                                </div>
+                                                <small class="text-muted">{% trans "COD, 58 wilayas, bulk status updates, SMS alerts" %}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a href="{% url "user_auth:login" %}" class="btn btn-primary">
+                                            {% trans "Get Started For Free" %}
+                                        </a>
+                                        <a href="{% url "frontend:index" %}#contact"
+                                           class="btn btn-outline-primary">
+                                            {% trans "Contact Us" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Right Image Column -->
-                        <div class="col-lg-6" data-sal="zoom-in" data-sal-duration="1500">
-                            <picture>
-                                <source srcset="{% static 'images/online_shopping_concept.webp' %}"
-                                        type="image/webp" />
-                                <img loading="eager"
-                                     fetchpriority="high"
-                                     src="{% static 'images/online_shopping_concept.webp' %}"
-                                     class="img-fluid hero-image"
-                                     alt="{% trans 'Woman shopping online illustration' %}"
-                                     width="600"
-                                     height="450" />
-                            </picture>
+                        <div class="col-md-4">
+                            <img src="{% static "images/hero-image.png" %}"
+                                 alt="{% trans "Sheethub hero image" %}"
+                                 class="w-100" />
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
         {% endblock hero %}
 
         {% block content %}
@@ -195,27 +238,28 @@
                         </div>
                         <div class="col-lg-7 text-start">
                             <h2 class="fw-bold mb-3">
-                                {% trans "Built for Sellers Who’ve Had Enough" %}
+                                {% trans "Made for sellers who are tired of the hassle" %}
                             </h2>
                             <p class="lead text-muted mb-4">
-                                {% trans "Tired of losing orders in chat? Tired of copying names and addresses into spreadsheets? Tired of Shopify asking for your credit card before you even sell?" %}
+                                {% trans "Losing orders in chat again? Still copying customer details into spreadsheets? Still forced to give Shopify your card before your first sale?" %}
                             </p>
                             <p class="text-muted">
-                                {% trans "SheetHub gives you what actually matters: a clean product link, simple order tracking, and no setup stress. Just add your product and start selling — all in one link." %}
+                                {% trans "We give you what truly matters — from inventory control to order tracking, everything managed in one place." %}
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
-            {# Fetures Section #}
+            {# =======  ICON-CARD FEATURES (English primary)  ======= #}
             <section id="features" class="py-5 bg-light-custom">
                 <div class="container">
-                    <!-- Section Title -->
+
+                    {# Section title #}
                     <div class="text-center mb-5">
-                        <h2 class="fw-bold mb-3 " data-sal="slide-down" data-sal-delay="100">
-                            {% trans "We Solve Real Problems for Real Sellers" %}
+                        <h2 class="fw-bold" data-sal="slide-down" data-sal-delay="100">
+                            {% trans "Smart selling made easy" %}
                         </h2>
-                        <p class="lead text-muted mx-auto "
+                        <p class="lead text-muted mx-auto"
                            data-sal="slide-up"
                            data-sal-delay="200"
                            style="max-width: 700px">
@@ -223,123 +267,122 @@
                         </p>
                     </div>
 
-                    <!-- Feature 1 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="100">
-                            <img loading="lazy"
-                                 src="{% static 'images/website.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="No website needed" />
+                    {# Icon cards grid #}
+                    <div class="row g-4">
+
+                        {% comment %}  Card 1 : No Website  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-link fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "One Link = Your Shop" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "No website? No problem. Create a shareable product page in 30 s — no code, no card, no hosting." %}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="200">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No Website? No Problem." %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "Most sellers can’t afford to build a full store or don’t know where to start." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "SheetHub creates a shareable product page instantly — no tech skills or credit card required." %}
-                            </p>
+
+                        {% comment %}  Card 2 : DZ Checkout  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-map-marked-alt fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "Simple Checkout" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "58-wilaya dropdown, COD by default, mobile-first design — built for Algerian shoppers." %}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+
+                        {% comment %}  Card 3 : Analytics  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "Track What’s Selling" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "Track what’s driving results, from hot products to how customers behave — everything at a glance in one spot." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% comment %}  Card 4 : Inbox Zero  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-inbox fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "All Orders in One Place" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "WhatsApp, Instagram, Excel — unified. Bulk-update status, print labels, and notify customers in seconds." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% comment %}  Card 5 : Speed  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-bolt fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "3 min to first sale" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "Upload photos, set price, stock & delivery fee — done before your coffee finishes brewing." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% comment %}  Card 6 : Zero Fees  {% endcomment %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 hover-lift text-center p-3">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                                    </div>
+                                    <h5 class="fw-bold">
+                                        {% trans "Zero-Hidden-Fee Plans" %}
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        {% trans "No surprises, no lock-ins. Upgrade, downgrade, or cancel anytime — your data stays yours." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {# /row #}
+
+                    <div class="text-center mt-5">
+                        <a href="{% url 'user_auth:login' %}" class="btn btn-primary btn-lg">
+                            {% trans "Try it now — free" %}
+                        </a>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="row align-items-center flex-md-row-reverse mb-5">
-                        <div class="col-md-4 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="200">
-                            <img loading="lazy"
-                                 src="{% static 'images/order.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Wilaya support" />
-                        </div>
-                        <div class="col-md-8" data-sal="slide-up" data-sal-delay="300">
-                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
-                                {% trans "Order Forms That Work anaywhere" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
-                                {% trans "Shopify-style forms confuse local buyers and don’t support wilayas." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInLeft">
-                                {% trans "SheetHub’s forms are optimized for Algerian delivery — full province list, COD, and common needs." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="300">
-                            <img loading="lazy"
-                                 src="{% static 'images/analytics_interface.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Smart Analytics" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="400">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No More Guessing What's Working" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "You post and ship — but you don’t know what’s converting or where people drop off." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "Track visits, conversions, and revenue. Plus, add your Meta Pixel in one click." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="row align-items-center flex-md-row-reverse mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="400">
-                            <img loading="lazy"
-                                 src="{% static 'images/communication.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInRight"
-                                 alt="Orders dashboard" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="500">
-                            <h4 class="fw-bold animate__animated animate__fadeInLeft">
-                                {% trans "Orders Are a Mess in Your Inbox" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInLeft">
-                                {% trans "WhatsApp, Instagram, Excel... everything is scattered." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInLeft">
-                                {% trans "SheetHub shows you every order in one place, with status tracking, filters, and notifications." %}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Feature 5 -->
-                    <div class="row align-items-center mb-5">
-                        <div class="col-md-6 mb-3 mb-md-0"
-                             data-sal="slide-up"
-                             data-sal-delay="500">
-                            <img loading="lazy"
-                                 src="{% static 'images/tools.webp' %}"
-                                 class="img-fluid animate__animated animate__fadeInLeft"
-                                 alt="Fast setup" />
-                        </div>
-                        <div class="col-md-6" data-sal="slide-up" data-sal-delay="600">
-                            <h4 class="fw-bold animate__animated animate__fadeInRight">
-                                {% trans "No Time to Learn New Tools" %}
-                            </h4>
-                            <p class="text-muted mb-1 animate__animated animate__fadeInRight">
-                                {% trans "Most tools are made for agencies, not busy sellers with 50 DMs a day." %}
-                            </p>
-                            <p class="text-muted animate__animated animate__fadeInRight">
-                                {% trans "SheetHub is built for speed. You can create a product and accept orders in under 3 minutes." %}
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </section>
-
             {% if plans %}
                 <!-- Pricing Section -->
                 <section id="pricing" class="py-5 py-lg-7">
@@ -701,7 +744,7 @@
                                      width="40"
                                      height="40" />
                                 <h5 class="fw-bold text-white mb-0">
-                                    <span class="text-secondary">Sheet</span><span class="text-accent">Hub</span>
+                                    {% trans "All-in-one ecommerce solution" %}
                                 </h5>
                             </div>
                             <p class="text-muted small mb-0">
@@ -796,19 +839,23 @@
                 <div class="language-option" data-lang="en">
                     {% trans "English" %}
                 </div>
-                <div class="language-option" data-lang="fr">
-                    {% trans "Français" %}
+                <div class="language-option" data-lang="ar">
+                    {% trans "Arabic" %}
                 </div>
             </div>
         </div>
         <!-- Scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://unpkg.com/sal.js/dist/sal.js"></script>
+        {% if LANGUAGE_CODE == 'en' %}
+            <script src="https://unpkg.com/sal.js/dist/sal.js"></script>
+        {% endif %}
         <script src="{% static "js/index.js" %}?v={% now "U" %}"></script>
-        <script>
-            sal()
-        </script>
+        {% if LANGUAGE_CODE == 'en' %}
+            <script>
+                sal()
+            </script>
+        {% endif %}
         <!-- DataTables JS -->
         <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>

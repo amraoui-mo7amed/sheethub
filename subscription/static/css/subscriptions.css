@@ -44,7 +44,7 @@
 
 .subscription-card .features-list i {
     font-size: 1.5rem !important;
-    margin-right: 0.75rem;
+    margin: 0 0.75rem;
 }
 .subscription-card .features-list i[class="fas fa-check-circle"]
 {

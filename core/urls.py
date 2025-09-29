@@ -22,7 +22,9 @@ from frontend import urls as frontend_urls
 from decouple import config
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('', include('pwa.urls')),  # You MUST use an empty string as the URL prefix
+
     path('i18n/', include('django.conf.urls.i18n')),
     path('tinymce/', include('tinymce.urls')),
     path('', include(frontend_urls, namespace='frontend')),

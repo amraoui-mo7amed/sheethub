@@ -1,0 +1,137 @@
+{% load static i18n %}
+<!-- Terms of Use Modal -->
+<div class="modal fade terms-modal"
+     id="termsModal"
+     tabindex="-1"
+     aria-labelledby="termsModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content shadow rounded-3">
+            <div class="modal-header bg-light">
+                <h4 class="modal-title fw-bold" id="termsModalLabel">
+                    {% trans "Terms of Use" %}
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="{% trans 'Close' %}">
+                </button>
+            </div>
+
+            <div class="modal-body p-4">
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "1. Introduction" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "These Terms of Use ('Terms') govern your access to and use of this platform. By using our services, you agree to these Terms. If you do not agree, you must not use this platform." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "2. Eligibility" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "You must be at least 18 years old and legally capable to use this platform. You are responsible for ensuring that your sales comply with applicable laws." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "3. User Accounts" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "Provide accurate details when registering. You are responsible for all activity on your account and must keep your password secure." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "4. Acceptable Use" %}
+                </h5>
+                <ul class="text-muted mb-4">
+                    <li>
+                        {% trans "No illegal, fraudulent, or harmful activities." %}
+                    </li>
+                    <li>
+                        {% trans "No selling of prohibited goods or counterfeit items." %}
+                    </li>
+                    <li>
+                        {% trans "No harassment, spam, or misuse of the platform." %}
+                    </li>
+                </ul>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "5. Services" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "This platform provides product links, order tracking, and analytics. We are not responsible for product quality, delivery, or customer disputes." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "6. Payments & Fees" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "Paid features may apply. Pricing and fees can change with notice. Third-party payment providers may have their own terms and policies." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "7. Orders & Transactions" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "Sellers are fully responsible for fulfilling, delivering, and refunding customer orders." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "8. Intellectual Property" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "This platform’s brand and software remain our property. Users retain rights to their content but grant this platform permission to host it." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "9. Account & Product Deletion Policy" %}
+                </h5>
+                <ul class="text-muted mb-4">
+                    <li>
+                        {% trans "Products with zero orders for 3 consecutive days may be deleted automatically." %}
+                    </li>
+                    <li>
+                        {% trans "Unconfirmed accounts or accounts with zero products may also be deleted." %}
+                    </li>
+                </ul>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "10. Termination" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "We may suspend or terminate accounts for violations. Users can close their accounts at any time." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "11. Disclaimer & Liability" %}
+                </h5>
+                <p class="text-muted mb-4">
+                    {% trans "Services are provided 'as is.' We are not liable for lost profits, data loss, or third-party issues." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2">
+                    {% trans "12. Changes" %}
+                </h5>
+                <p class="text-muted mb-0">
+                    {% trans "We may update these Terms. Continued use of this platform means you accept the changes." %}
+                </p>
+
+                <h5 class="fw-semibold text-primary mb-2 mt-4">
+                    {% trans "13. Governing Law" %}
+                </h5>
+                <p class="text-muted">
+                    {% trans "These Terms are governed by the laws of Algeria (or applicable jurisdiction where you operate this platform)." %}
+                </p>
+            </div>
+
+            <div class="modal-footer bg-light d-flex">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {% trans "Close" %}
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    {% trans "Accept" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

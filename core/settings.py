@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',  # Add TinyMCE app
+    'pwa',  # Progressive Web App
     # Custom apps
     'dashboard',
     'translator',
@@ -55,7 +56,55 @@ INSTALLED_APPS = [
     "django_eventstream"
 
 ]
+<<<<<<< Updated upstream
 ASGI_APPLICATION = "core.asgi.application"
+=======
+# Progressive Web App settings
+PWA_APP_NAME = 'Sheethub'
+PWA_APP_DESCRIPTION = "Manage your online business with Sheethub"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/icons/favicon.webp',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        'src': '/static/icons/favicon.webp',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/icons/favicon.webp',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+PWA_APP_SHORTCUTS = [
+    {
+        'name': 'Shortcut',
+        'url': '/target',
+        'description': 'Shortcut to a page in my application'
+    }
+]
+PWA_APP_SCREENSHOTS = [
+    {
+    'src': '/static/icons/favicon.webp',
+      'sizes': '750x1334',
+      "type": "image/png"
+    }
+]
+
+>>>>>>> Stashed changes
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -150,7 +199,7 @@ USE_TZ = True
 
 LANGUAGES = [
     ('en', 'English'),
-    ('fr', 'French'),
+    ('ar', 'Arabic')
 ]
 
 # Static files (CSS, JavaScript, Images)

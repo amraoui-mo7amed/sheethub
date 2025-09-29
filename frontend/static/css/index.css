@@ -8,7 +8,12 @@
     --light-gray: #e5e7eb;
 }
 
-/* Backgrounds */
+/* ================================
+    Start of custom bootstrap classes
+====================== */
+/* ================================
+    Start of custom bootstrap classes
+====================== */
 .bg-primary {
     background-color: var(--primary) !important;
 }
@@ -95,7 +100,7 @@
     border-color: var(--light-gray) !important;
 }
 
-/* Buttons (Optional) */
+/* ----------  BUTTONS  ---------- */
 .btn-primary {
     background-color: var(--primary);
     color: #fff;
@@ -116,15 +121,74 @@
     background-color: #0f9f79;
 }
 
-/* Utility for border, text, bg hover if needed */
-.hover-bg-primary:hover {
-    background-color: var(--primary) !important;
+/*  outline buttons  */
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: transparent;
 }
 
-.hover-text-primary:hover {
-    color: var(--primary) !important;
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
 }
 
+.btn-outline-secondary {
+    color: var(--gray);
+    border-color: var(--gray);
+    background: transparent;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: var(--gray);
+    border-color: var(--gray);
+    color: #fff;
+}
+
+.btn-outline-success {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: transparent;
+}
+
+.btn-outline-success:hover,
+.btn-outline-success:focus {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.btn-outline-dark {
+    color: var(--dark);
+    border-color: var(--dark);
+    background: transparent;
+}
+
+.btn-outline-dark:hover,
+.btn-outline-dark:focus {
+    background-color: var(--dark);
+    border-color: var(--dark);
+    color: #fff;
+}
+
+/* ----------  FORM CONTROLS  ---------- */
+.form-control,
+.form-select {
+    border-color: var(--light-gray);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+/* ================================
+    End of custom bootstrap classes 
+====================== */
 body {
     font-family: 'Inter', sans-serif;
     color: var(--dark);
@@ -271,13 +335,114 @@ small {
 }
 
 .sticky-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1020;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: var(--bs-light);
     backdrop-filter: blur(5px);
 }
+/* ----------  PURE CSS NAVBAR  ---------- */
+.custom-nav{
+  position:relative;
+  background:var(--bs-light);
+  z-index:1000;
+}
+.nav-container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  max-width:1200px;
+  margin:0 auto;
+}
 
+/*  brand  */
+.nav-brand{
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--dark);
+  text-decoration:none;
+}
+
+/*  hamburger (pure CSS)  */
+.nav-toggle{display:none;}
+.nav-hamburger{
+  display:none;
+  flex-direction:column;
+  gap:4px;
+  cursor:pointer;
+  padding:4px;
+}
+.nav-hamburger span{
+  width:24px;
+  height:3px;
+  background:var(--dark);
+  border-radius:2px;
+  transition:transform .3s ease;
+}
+.nav-toggle:checked ~ .nav-hamburger span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.nav-toggle:checked ~ .nav-hamburger span:nth-child(2){opacity:0;}
+.nav-toggle:checked ~ .nav-hamburger span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+/*  links & buttons  */
+.nav-panel{
+  display:flex;
+  align-items:center;
+  gap:2rem;
+}
+.nav-links{
+  display:flex;
+  gap:1.5rem;
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.nav-links a{
+  color:var(--dark);
+  text-decoration:none;
+  font-weight:500;
+  transition:color .2s ease;
+}
+.nav-links a:hover{color:var(--accent);}
+.nav-buttons{display:flex;gap:1rem;}
+.btn-nav{
+  padding:5px 8px;
+  border-radius:5px;
+  font-weight:600;
+  text-decoration:none;
+  transition:all .3s ease;
+}
+/* .btn-primary{background:#fff;color:var(--primary-dark);} */
+.btn-outline{background:transparent;color:var(--primary);border:1px solid var(--primary-dark);}
+/*.btn-nav:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.25);} */
+
+/*  mobile menu (pure CSS)  */
+@media (max-width:768px){
+  .nav-hamburger{display:flex;}
+  .nav-panel{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:var(--bs-light);
+    flex-direction:column;
+    padding:1.5rem;
+    gap:1rem;
+    transform:translateY(-150%);
+    transition:transform .3s ease;
+  }
+  .nav-toggle:checked ~ .nav-panel{transform:translateY(0);}
+  .nav-links{flex-direction:column;gap:1rem;width: 100%;}
+  .nav-buttons{flex-direction:column;width:100%;}
+  .btn-nav{width:100%;text-align:center;}
+}
+
+/*  RTL support  */
+[dir="rtl"] .nav-container{flex-direction:row-reverse;}
+[dir="rtl"] .nav-hamburger{order:-1;}
+[dir="rtl"] .nav-panel{transform:translateY(-120%);} /* same slide direction */
+[dir="rtl"] .nav-toggle:checked ~ .nav-panel{transform:translateY(0);}
 .trust-badge {
     height: 40px;
     opacity: 0.8;
@@ -384,19 +549,27 @@ footer .container h6 {
     z-index: 1;
 }
 
+
 footer .container h6::before {
     content: "";
     position: absolute;
     width: 3.5px;
     bottom: -3px;
     top: -3px;
-    left: -7px;
     background-color: var(--primary);
     display: inline-block;
     transition: all 0.5s ease;
     z-index: -1;
 }
+body.rtl footer .container h6::before 
+{
+    right: -7px;
 
+}
+body.ltr footer .container h6::before 
+{
+    left: -7px;
+}
 footer .container h6:hover::before {
     width: 100%;
 }
@@ -655,3 +828,41 @@ body.rtl .language-options {
     background-color: var(--primary-dark) !important;
     border-color: var(--primary-dark) !important;
 }
+
+.hover-lift {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, .08) !important;
+}
+
+/* Start of hero */
+@media (max-width:992px) {
+    #hero 
+    {
+        margin-top: 4rem;
+    }
+}
+/* ----------  GLASS FEATURE BOXES  ---------- */
+.glass-feature{
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  border:2px solid var(--light-gray);
+  border-radius:5px;
+  padding:5px;
+  display: flex;
+  align-items: center;
+  text-align:center;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+
+.glass-feature:hover{
+  transform:translateY(-5px);
+}
+.glass-feature i{font-size:1rem;margin:0 .75rem;}
+.glass-feature .feature-text{color:var(--dark);font-size: 16px;}
+.glass-feature small{color:rgba(255,255,255,.7); display: none;}
+
+

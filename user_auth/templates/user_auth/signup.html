@@ -31,11 +31,7 @@
                         <div class="col-md-10">
                             <div class="d-flex align-items-start flex-column">
                                 <h2 class="fw-bold mb-2 d-flex flex-nowrap">
-                                    {% trans "Welcome to" %}
-                                    <div class="d-flex align-items-center mx-2 bg-secondary">
-                                        <span class="text-primary">Sheet</span>
-                                        <span class="text-accent">Hub</span>
-                                    </div>
+                                    {% trans "Welcome" %}
                                 </h2>
                                 <small class="text-muted text-secondary">{% trans "Signup to enjoy the amazing features to grow your business " %}</small>
                             </div>
@@ -129,7 +125,25 @@
                                                     </button>
                                                 </div>
                                             </div>
+
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input"
+                                                       type="checkbox"
+                                                       value=""
+                                                       id="termsCheck"
+                                                       name="terms"
+                                                       
+                                                        />
+                                                <label class="form-check-label" for="termsCheck">
+                                                    {% blocktrans %}I agree to the <a href="#" class="terms-link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Use</a>{% endblocktrans %}
+                                                </label>
+                                                {% include 'components/terms_of_use.html' %}
+
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

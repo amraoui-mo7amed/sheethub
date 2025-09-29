@@ -28,6 +28,10 @@ def signup(request):
         email = request.POST.get('email', '').strip().lower()
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
+        is_terms_accepted = "terms" in request.POST
+        if not is_terms_accepted:
+            errors.append(_('You must agree to the Terms of Use to register.'))
+
         # Get the geoLocations 
         try:
             ip = gl.get_client_ip(request)
@@ -64,13 +68,9 @@ def signup(request):
 
         try:
 
-            # Override for first 10 users
-            if userModel.objects.all().count() <= 10:
-                plan = SubscriptionPlan.objects.get(code='beta')
-                is_beta = True
-            else:
-                plan = SubscriptionPlan.objects.get(code='free')
-                is_beta = False
+
+            plan = SubscriptionPlan.objects.get(code='free')
+            is_beta = False
             with transaction.atomic():
                 user = userModel.objects.create_user(
                     email=email,
